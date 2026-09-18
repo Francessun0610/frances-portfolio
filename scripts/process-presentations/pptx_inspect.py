@@ -131,6 +131,48 @@ def inspect_slide(zf, part_name):
     return is_hidden, title, visible_text
 
 
+def fonts_used(path):
+    """Typefaces referenced by the deck's slides, with theme tokens resolved.
+
+    Only ppt/slides/*.xml is read, so this reflects what actually renders
+    rather than every face mentioned by an unused layout.
+    """
+    import zipfile as _zipfile
+
+    with _zipfile.ZipFile(path) as zf:
+        names = zf.namelist()
+
+        major = minor = None
+        for name in sorted(n for n in names if re.match(r"ppt/theme/theme\d+\.xml$", n)):
+            xml = zf.read(name).decode("utf8", "ignore")
+            major_match = re.search(r"<a:majorFont>\s*<a:latin typeface=\"([^\"]*)\"", xml)
+            minor_match = re.search(r"<a:minorFont>\s*<a:latin typeface=\"([^\"]*)\"", xml)
+            if major is None and major_match:
+                major = major_match.group(1)
+            if minor is None and minor_match:
+                minor = minor_match.group(1)
+            if major and minor:
+                break
+
+        used = {}
+        for name in names:
+            match = re.match(r"ppt/slides/slide(\d+)\.xml$", name)
+            if not match:
+                continue
+            slide_number = int(match.group(1))
+            xml = zf.read(name).decode("utf8", "ignore")
+            for typeface in set(re.findall(r"<a:(?:latin|ea|cs)[^>]*typeface=\"([^\"]+)\"", xml)):
+                if typeface.startswith("+mj"):
+                    typeface = major or "Arial"
+                elif typeface.startswith("+mn"):
+                    typeface = minor or "Arial"
+                if not typeface:
+                    continue
+                used.setdefault(typeface, set()).add(slide_number)
+
+    return used
+
+
 def inspect_deck(path):
     """Inspect a deck. Returns a dict describing every slide in deck order."""
     with zipfile.ZipFile(path) as zf:

@@ -15,13 +15,16 @@
     "astro": "ASTRO_TELEMETRY_DISABLED=1 astro",
     "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
     "slides": "python3 scripts/process-presentations/process_presentations.py",
+    "slides:fonts": "python3 scripts/process-presentations/build_render_fonts.py",
     "slides:verify": "python3 scripts/process-presentations/verify_presentations.py",
+    "slides:textfit": "python3 scripts/process-presentations/check_text_fit.py",
     "capture:ratecard": "node scripts/capture-rate-card.mjs",
-    "import:carbonmade": "node scripts/import-carbonmade.mjs",
-    "qa:screenshots": "node scripts/qa/responsive-screenshots.mjs",
-    "qa:functional": "node scripts/qa/functional-qa.mjs",
-    "qa:a11y": "node scripts/qa/a11y-qa.mjs",
-    "qa:lighthouse": "node scripts/qa/lighthouse-qa.mjs"
+    "qa:screenshots": "PLAYWRIGHT_BROWSERS_PATH=\"${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}\" node scripts/qa/responsive-screenshots.mjs",
+    "qa:functional": "PLAYWRIGHT_BROWSERS_PATH=\"${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}\" node scripts/qa/functional-qa.mjs",
+    "qa:a11y": "PLAYWRIGHT_BROWSERS_PATH=\"${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}\" node scripts/qa/a11y-qa.mjs",
+    "qa:lighthouse": "PLAYWRIGHT_BROWSERS_PATH=\"${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}\" node scripts/qa/lighthouse-qa.mjs",
+    "qa:previous": "PLAYWRIGHT_BROWSERS_PATH=\"${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}\" node scripts/qa/previous-work-qa.mjs",
+    "import:previous": "PLAYWRIGHT_BROWSERS_PATH=\"${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}\" node scripts/migrate-carbonmade-direct.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-17T15:41:05-0500",
+  "generated": "2026-09-17T22:47:33-0500",
   "decks": [
     {
       "slug": "canux-2025",
@@ -12,24 +12,10 @@
       "aspectRatio": 1.7778,
       "speakerNotePartsInSource": 65,
       "speakerNotesExported": false,
-      "fullBytes": 3746830,
-      "thumbBytes": 369406,
-      "outputDir": "public/slides/canux-2025/"
-    },
-    {
-      "slug": "uiuc-ux-day-2026",
-      "source": "content/speaking/source/uiuc-ux-day-2026.pptx",
-      "sourceSlideCount": 78,
-      "hiddenSlideCount": 1,
-      "visibleSlideCount": 77,
-      "exportedSlideCount": 77,
-      "thumbnailCount": 77,
-      "aspectRatio": 1.7778,
-      "speakerNotePartsInSource": 67,
-      "speakerNotesExported": false,
-      "fullBytes": 3926614,
-      "thumbBytes": 379440,
-      "outputDir": "public/slides/uiuc-ux-day-2026/"
+      "fullBytes": 3764710,
+      "thumbBytes": 366644,
+      "outputDir": "public/slides/canux-2025/",
+      "missingFonts": []
     }
   ]
 }

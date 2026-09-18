@@ -1,0 +1,290 @@
+{
+  "generatedAt": "2026-09-18T04:09:37.965Z",
+  "source": "https://francessun.carbonmade.com",
+  "pagesCrawled": [
+    {
+      "url": "https://francessun.carbonmade.com",
+      "kind": "index",
+      "projectLinksFound": 16
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/7231012",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/6350158",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/4639461",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/6373992",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/7231065",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/6794490",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/2881757",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/6983864",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/6350134",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/3223201",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/5837403",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/5837749",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/2700116",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/6982081",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/4639509",
+      "kind": "project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/2647490",
+      "kind": "project"
+    }
+  ],
+  "excluded": [
+    {
+      "url": "https://francessun.carbonmade.com/about",
+      "reason": "Site page (About/Contact), not a portfolio project"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/contact",
+      "reason": "Site page (About/Contact), not a portfolio project"
+    }
+  ],
+  "projects": [
+    {
+      "slug": "project-7231012",
+      "title": "",
+      "client": "",
+      "year": "2021",
+      "order": 1,
+      "imageCount": 35,
+      "captionedImages": 0,
+      "descriptionChars": 0,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/7231012"
+    },
+    {
+      "slug": "reach4-0",
+      "title": "Reach4.0",
+      "client": "Lenovo Group",
+      "year": "2016 April",
+      "order": 2,
+      "imageCount": 41,
+      "captionedImages": 0,
+      "descriptionChars": 882,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/6350158"
+    },
+    {
+      "slug": "lenovo-support-win8-metro-app",
+      "title": "Lenovo Support- Win8 Metro app",
+      "client": "Lenovo group",
+      "year": "2012",
+      "order": 3,
+      "imageCount": 17,
+      "captionedImages": 1,
+      "descriptionChars": 132,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/4639461"
+    },
+    {
+      "slug": "smart-home-related-project",
+      "title": "Smart home related project",
+      "client": "Advantech taiwan",
+      "year": "~2007",
+      "order": 4,
+      "imageCount": 17,
+      "captionedImages": 1,
+      "descriptionChars": 40,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/6373992"
+    },
+    {
+      "slug": "voter-atlas-user-experience",
+      "title": "Voter Atlas User Experience",
+      "client": "Erehwon Atlas",
+      "year": "2021",
+      "order": 5,
+      "imageCount": 14,
+      "captionedImages": 0,
+      "descriptionChars": 0,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/7231065"
+    },
+    {
+      "slug": "lenovo-id-single-sign-on",
+      "title": "Lenovo ID single sign on",
+      "client": "Lenovo",
+      "year": "2017",
+      "order": 6,
+      "imageCount": 7,
+      "captionedImages": 6,
+      "descriptionChars": 281,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/6794490"
+    },
+    {
+      "slug": "mfa-thesis-2020-taiwanese-smart-home",
+      "title": "MFA Thesis- 2020 Taiwanese Smart Home",
+      "client": "CCS MFA",
+      "year": "2011",
+      "order": 7,
+      "imageCount": 46,
+      "captionedImages": 0,
+      "descriptionChars": 52,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/2881757"
+    },
+    {
+      "slug": "my-selected-work",
+      "title": "My selected work",
+      "client": "Lenovo",
+      "year": "",
+      "order": 8,
+      "imageCount": 15,
+      "captionedImages": 0,
+      "descriptionChars": 103,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/6983864"
+    },
+    {
+      "slug": "connect2",
+      "title": "Connect2",
+      "client": "Lenovo Group",
+      "year": "2016 Nov",
+      "order": 9,
+      "imageCount": 12,
+      "captionedImages": 1,
+      "descriptionChars": 771,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/6350134"
+    },
+    {
+      "slug": "fender-mobile-studio-proposal",
+      "title": "Fender Mobile studio proposal",
+      "client": "CCS MFA",
+      "year": "2010",
+      "order": 10,
+      "imageCount": 22,
+      "captionedImages": 20,
+      "descriptionChars": 47,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/3223201"
+    },
+    {
+      "slug": "reachit-3-0",
+      "title": "REACHit 3.0",
+      "client": "Lenovo group",
+      "year": "2015",
+      "order": 11,
+      "imageCount": 35,
+      "captionedImages": 20,
+      "descriptionChars": 266,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/5837403"
+    },
+    {
+      "slug": "lenovo-id-universal-app",
+      "title": "Lenovo ID universal app",
+      "client": "Lenovo Group",
+      "year": "2015",
+      "order": 12,
+      "imageCount": 5,
+      "captionedImages": 5,
+      "descriptionChars": 300,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/5837749"
+    },
+    {
+      "slug": "whirlpool-sponsored-project",
+      "title": "Whirlpool sponsored project",
+      "client": "Whirlpool and CCS MFA",
+      "year": "2009",
+      "order": 13,
+      "imageCount": 15,
+      "captionedImages": 0,
+      "descriptionChars": 0,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/2700116"
+    },
+    {
+      "slug": "representative-nathan-small-website",
+      "title": "Representative Nathan Small website",
+      "client": "New Mexico House of Representatives Nathan P small",
+      "year": "2018 Summer",
+      "order": 14,
+      "imageCount": 4,
+      "captionedImages": 1,
+      "descriptionChars": 409,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/6982081"
+    },
+    {
+      "slug": "thinkpad-tablet-android-ui-design",
+      "title": "ThinkPad Tablet Android UI Design",
+      "client": "Lenovo Group",
+      "year": "2012",
+      "order": 15,
+      "imageCount": 30,
+      "captionedImages": 10,
+      "descriptionChars": 0,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/4639509"
+    },
+    {
+      "slug": "my-portfolio-2010",
+      "title": "My portfolio 2010",
+      "client": "",
+      "year": "",
+      "order": 16,
+      "imageCount": 27,
+      "captionedImages": 0,
+      "descriptionChars": 0,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/2647490"
+    }
+  ],
+  "imageFailures": [],
+  "warnings": [
+    {
+      "url": "https://francessun.carbonmade.com/projects/7231012",
+      "issue": "Untitled on Carbonmade (empty <title>, no og:title, no heading, index card shows only \"VIEW PROJECT\"). Imported and kept, but held back from the published grid until a title is supplied."
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/7231012",
+      "issue": "No description prose on the source page"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/7231065",
+      "issue": "No description prose on the source page"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/2700116",
+      "issue": "No description prose on the source page"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/4639509",
+      "issue": "No description prose on the source page"
+    },
+    {
+      "url": "https://francessun.carbonmade.com/projects/2647490",
+      "issue": "No description prose on the source page"
+    }
+  ]
+}

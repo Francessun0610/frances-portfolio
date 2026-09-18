@@ -1,5 +1,10 @@
 # Never upload PowerPoint sources to the deployment platform.
 # They contain speaker notes and document metadata that must stay private.
 content/speaking/source/
+content/previous-work-source/
 scripts/process-presentations/.render-cache/
 qa-output/
+
+# Render-only fonts are build tooling, never served. InspireTWDC is Disney
+# proprietary and must not leave this machine.
+scripts/process-presentations/fonts/

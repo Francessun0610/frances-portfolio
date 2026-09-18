@@ -21,10 +21,13 @@ public/slides/<deck>/                    output (published)
 ## Commands
 
 ```bash
+npm run slides:fonts                # build the render fonts (do this first)
 npm run slides                      # export every deck in decks.py
 npm run slides -- --deck canux-2025 # one deck
 npm run slides -- --keep-pdf        # keep the intermediate PDF to inspect
 npm run slides:verify               # verify exports against the sources
+npm run slides:textfit              # check every text box for rewrap/overflow
+npm run slides -- --clean-fonts     # unstage fonts from the LibreOffice bundle
 ```
 
 ## Requirements
@@ -47,6 +50,20 @@ python3 -m pip install --user -r scripts/process-presentations/requirements.txt
 
 `pypdfium2` wraps PDFium, the same renderer Chrome uses for PDFs, so page
 output matches what a browser would show.
+
+**The decks' fonts** are the part that is easy to get wrong, and getting it
+wrong is silent. Both decks are typeset in Raleway. When Raleway is absent the
+renderer substitutes a wider face, a line rewraps, and `spAutoFit` text boxes
+overflow downward onto the artwork beneath — which is exactly how the first
+export of these decks shipped with the ADVANTECH and Lenovo logos colliding
+with the job titles above them.
+
+Run `npm run slides:fonts` before exporting. See `fonts/README.md` for where
+the fonts come from, why the embedded copies in the `.pptx` cannot be used, and
+how they are staged so only LibreOffice sees them.
+
+`process_presentations.py` prints a font report for every deck and marks any
+unresolved family `MISSING`. Treat that as a failure, not a warning.
 
 ## If LibreOffice is not available
 
@@ -96,7 +113,19 @@ Both are 16:9. Change them in `decks.py`.
 | --------------------------- | ---------------------------------------------------- |
 | `decks.py`                  | Deck registry and output settings                     |
 | `pptx_inspect.py`           | Read-only .pptx inspection (stdlib only)              |
+| `build_render_fonts.py`     | Builds the render-only font set                       |
 | `process_presentations.py`  | The pipeline                                          |
 | `verify_presentations.py`   | Post-export verification                              |
+| `check_text_fit.py`         | Per-text-box rewrap/overflow analysis                 |
+| `fonts/`                    | Render-only fonts (git-ignored, see its README)       |
 | `requirements.txt`          | Python dependencies                                   |
 | `last-run-report.json`      | Counts and byte sizes from the most recent run        |
+
+## Why a text-fit check exists
+
+Counting slides, checking file sizes and skimming a contact sheet all passed
+while the career-journey slides were visibly broken. `check_text_fit.py`
+measures each text box with the real font file, wraps it to the box's usable
+width, and fails if it needs more lines than the height PowerPoint stored —
+reporting which picture the overflow would land on. That is the specific defect
+that got through, so it is now checked directly.

@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { withDetailPages, imageAlt, metaLine, type ArchiveProject } from '../../lib/previousWork';
+
+export function getStaticPaths() {
+  return withDetailPages.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: ArchiveProject;
+}
+
+const { project } = Astro.props;
+
+const meta = metaLine(project);
+const paragraphs = project.description.split('\n\n').filter((text) => text.trim());
+
+const title = `${project.title} | Previous Work | Frances Sun`;
+
+// Prefer the project's own words. Where the source carried no prose, fall back
+// to the facts it did provide rather than writing marketing copy.
+const firstParagraph = paragraphs[0]?.replace(/\s+/g, ' ').trim() ?? '';
+const description = firstParagraph
+  ? firstParagraph.slice(0, 155)
+  : [
+      `${project.title} — earlier work by Frances Sun`,
+      project.client ? ` for ${project.client}` : '',
+      project.year ? `, ${project.year}` : '',
+      '.',
+    ].join('');
+---
+
+<BaseLayout title={title} description={description} path={`/previous-work/${project.slug}`}>
+  <article class="archive-detail">
+    <div class="shell">
+      <a class="back-link" href="/previous-work">
+        <span aria-hidden="true">←</span> Back to Previous Work
+      </a>
+
+      <header class="archive-detail__head">
+        <h1>{project.title}</h1>
+        {meta && <p class="archive-detail__meta">{meta}</p>}
+        {project.role && <p class="archive-detail__role">{project.role}</p>}
+      </header>
+
+      {
+        paragraphs.length > 0 && (
+          <div class="archive-detail__text measure">
+            {paragraphs.map((text) => (
+              <p>{text}</p>
+            ))}
+          </div>
+        )
+      }
+
+      <div class="archive-detail__gallery">
+        {
+          project.images.map((image, index) => (
+            <figure class="archive-figure">
+              <img
+                src={image.file}
+                alt={imageAlt(project, image, index)}
+                width={image.width}
+                height={image.height}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+              {image.caption && <figcaption>{image.caption}</figcaption>}
+            </figure>
+          ))
+        }
+      </div>
+
+      <a class="back-link back-link--bottom" href="/previous-work">
+        <span aria-hidden="true">←</span> Back to Previous Work
+      </a>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .archive-detail {
+    padding-block: clamp(2rem, 1.5rem + 3vw, 3.5rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    font-size: var(--step-small);
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--text);
+  }
+
+  .back-link--bottom {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+
+  .archive-detail__head {
+    margin-block: clamp(1.25rem, 1rem + 1vw, 2rem) clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  .archive-detail__head h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .archive-detail__meta,
+  .archive-detail__role {
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+  }
+
+  .archive-detail__text {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: clamp(2rem, 1.5rem + 2vw, 3rem);
+    color: var(--text-secondary);
+  }
+
+  .archive-detail__gallery {
+    display: grid;
+    gap: clamp(2rem, 1.5rem + 3vw, 4rem);
+    max-width: 1000px;
+  }
+
+  .archive-figure {
+    margin: 0;
+  }
+
+  .archive-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #05070a;
+  }
+
+  .archive-figure figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+  }
+</style>

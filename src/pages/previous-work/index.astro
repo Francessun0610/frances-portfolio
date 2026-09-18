@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { previousWorkIntro } from '../../data/site';
+import {
+  published,
+  coverImage,
+  hasDetailPage,
+  imageAlt,
+  metaLine,
+  summary,
+} from '../../lib/previousWork';
+
+const title = 'Previous UX Work | Frances Sun';
+const description =
+  'Earlier UX and product design work by Frances Sun across consumer technology, interaction design, enterprise software, and digital products.';
+---
+
+<BaseLayout title={title} description={description} path="/previous-work">
+  <section class="archive-page">
+    <div class="shell">
+      <header class="archive-page__head">
+        <h1>Previous Work</h1>
+        <p class="lede measure">{previousWorkIntro.copy}</p>
+      </header>
+
+      <ul class="archive">
+        {
+          published.map((project, index) => {
+            const cover = coverImage(project);
+            const meta = metaLine(project);
+            const blurb = summary(project);
+            const linked = hasDetailPage(project);
+            const headingId = `archive-${project.slug}`;
+
+            return (
+              <li class="archive__item" class:list={[{ 'archive__item--linked': linked }]}>
+                {linked && (
+                  <a class="archive__link" href={`/previous-work/${project.slug}`}>
+                    <span class="visually-hidden">View {project.title}</span>
+                  </a>
+                )}
+
+                {cover && (
+                  <div class="archive__media">
+                    <img
+                      src={cover.thumbnail}
+                      alt={imageAlt(project, cover, 0)}
+                      width={cover.thumbWidth}
+                      height={cover.thumbHeight}
+                      loading={index < 3 ? 'eager' : 'lazy'}
+                      decoding="async"
+                    />
+                  </div>
+                )}
+
+                <div class="archive__body">
+                  <h2 class="archive__title" id={headingId}>
+                    {project.title}
+                  </h2>
+                  {meta && <p class="archive__meta">{meta}</p>}
+                  {blurb && <p class="archive__description">{blurb}</p>}
+                </div>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive-page {
+    padding-block: clamp(2.5rem, 2rem + 4vw, 5rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+  }
+
+  .archive-page__head {
+    margin-bottom: clamp(2rem, 1.5rem + 2.5vw, 3.25rem);
+  }
+
+  .archive-page__head h1 {
+    margin-bottom: 1.25rem;
+  }
+
+  .archive {
+    display: grid;
+    gap: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .archive {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .archive {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .archive__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-raised);
+  }
+
+  .archive__item--linked {
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .archive__item--linked:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+
+  .archive__item:focus-within {
+    border-color: var(--cobalt);
+  }
+
+  /* The whole card is the target. The overlay covers it, so its own focus ring
+     reads as a ring around the card. */
+  .archive__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .archive__link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -4px;
+    border-radius: var(--radius);
+  }
+
+  .archive__media {
+    /* Artwork keeps its own proportions inside a consistent frame, so the grid
+       stays tidy without ever cropping the original. The image is taken out of
+       flow because its intrinsic height would otherwise override aspect-ratio
+       and give every card a different frame. */
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: #05070a;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .archive__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .archive__body {
+    display: grid;
+    gap: 0.4rem;
+    padding: 1.15rem 1.25rem 1.4rem;
+  }
+
+  .archive__title {
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+
+  .archive__meta {
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+  }
+
+  .archive__description {
+    font-size: var(--step-small);
+    color: var(--text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .archive__item--linked {
+      transition: none;
+    }
+
+    .archive__item--linked:hover {
+      transform: none;
+    }
+  }
+</style>

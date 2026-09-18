@@ -51,33 +51,73 @@ See [`scripts/process-presentations/README.md`](scripts/process-presentations/RE
 for how the slide images are produced, and for the rules that keep speaker
 notes out of the published output.
 
+> **Before re-exporting slides, run `npm run slides:fonts`.** Both decks are
+> typeset in Raleway. If Raleway is missing the renderer silently substitutes a
+> wider face, lines rewrap, and text boxes overflow onto the artwork beneath
+> them. The export still succeeds and the slide counts still match, so nothing
+> downstream catches it — `fonts/README.md` explains the whole failure.
+
 ## Scripts
 
 ```bash
+npm run slides:fonts      # build the render fonts — required before exporting
 npm run slides            # export decks -> public/slides/
 npm run slides:verify     # verify exports against the .pptx sources
+npm run slides:textfit    # check text boxes for font-substitution rewrap
 npm run capture:ratecard  # re-capture the Rate Card Manager screenshot
-npm run import:carbonmade # see below
+npm run import:previous   # re-import the Previous Work archive — see below
 npm run check             # astro check (TypeScript)
 
 npm run qa:functional     # routes, links, viewer behaviour, content, performance
 npm run qa:a11y           # axe-core + keyboard/focus/reduced-motion checks
+npm run qa:previous       # Previous Work archive: imagery, links, 5 breakpoints
 npm run qa:screenshots    # 8 viewports x every route -> qa-output/screenshots/
 npm run qa:lighthouse     # Lighthouse -> qa-output/lighthouse/
 ```
 
 The QA scripts start their own preview server, so run `npm run build` first.
 
-### Carbonmade import
+### Previous Work archive
+
+`/previous-work` is populated from the old Carbonmade portfolio at
+`francessun.carbonmade.com`. The importer drives a real Chromium through
+Playwright, because Carbonmade returns 403 to any request whose User-Agent is
+not a desktop browser.
 
 ```bash
-node scripts/import-carbonmade.mjs --source /path/to/carbonmade-export --dry-run
-node scripts/import-carbonmade.mjs --source /path/to/carbonmade-export
+npm run import:previous            # crawl and rebuild the archive
+npm run import:previous -- --headed  # same, with the browser visible
 ```
 
-It expects `site-index.json`, `pages/*.json`, `pages/*.md` and `assets/*`,
-copies images into `public/images/previous-work/`, and writes
-`src/data/previousWork.json`. Nothing is iframed or hotlinked from Carbonmade.
+It writes three things:
+
+| Path                            | Contents                                        |
+| ------------------------------- | ----------------------------------------------- |
+| `src/data/previousWork.json`    | Project data consumed by the site               |
+| `public/images/previous-work/`  | Local WebP imagery plus `thumbs/`                |
+| `content/previous-work-source/` | Audit trail: captured HTML and migration report |
+
+Notes on how it treats the source:
+
+- Nothing is invented. Titles, descriptions, captions, client, role and year
+  all come verbatim from Carbonmade, and missing values stay empty.
+- Carbonmade's CDN bakes a display size into the image path
+  (`;960x540.jpeg`), which crops artwork. The importer drops that directive to
+  fetch the original, then resizes to fit within 1600px preserving the exact
+  aspect ratio. That took the archive from 575MB to 29MB.
+- Carbonmade renders its structured fields as body text ("Role UX/UI
+  designer", "For Lenovo Group", "Date 2016 April"). Those are lifted into real
+  fields so they do not read as noise inside a description.
+- Per-image captions become alt text.
+- Images are deduplicated by content hash.
+- Every image is served locally. Nothing is iframed or hotlinked, and no public
+  page mentions the source platform.
+
+One project (`/projects/7231012`) is untitled at source: empty `<title>`, no
+`og:title`, no heading, and an index card reading only "VIEW PROJECT". It is
+imported and kept in the data but withheld from the published grid, because a
+card with no name is broken and inventing one would misrepresent the work. Give
+it a `title` in `previousWork.json` to publish it.
 
 ### Regenerating imagery
 
@@ -88,9 +128,18 @@ python3 scripts/generate-brand-assets.py  # favicons, touch icons, OG card
 
 ## Things that still need Frances
 
-- **Resume PDF** — the `/Frances-Sun-Resume.pdf` route is reserved and linked
-  from the header and footer, but no file exists yet. Drop it at
-  `public/Frances-Sun-Resume.pdf`.
+- **Resume PDF** — in place at `public/Frances-Sun-Resume.pdf`, generated from
+  the .docx in iCloud Drive. Regenerate it after any résumé edit:
+
+  ```bash
+  python3 scripts/build-resume-pdf.py
+  npm run build
+  ```
+
+  That script corrects two things in a temporary copy, never in the source
+  document: it remaps the Aptos theme font to Helvetica Neue (Aptos is not
+  installed on macOS, so the converter would otherwise fall back to a serif),
+  and it rewrites the header's `http://user@host` email link to `mailto:`.
 - **Atlas, SIMBA and Linear screenshots** — these three cards currently use
   abstract placeholder panels, and each card says so on the page. Replace
   `public/images/projects/{atlas,simba,linear}.webp` with cleared captures at
