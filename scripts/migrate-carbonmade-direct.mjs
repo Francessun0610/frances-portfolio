@@ -41,6 +41,43 @@ const DATA_FILE = path.join(ROOT, 'src', 'data', 'previousWork.json');
 /** Pages that are site furniture, not portfolio projects. */
 const NON_PROJECT_PATHS = new Set(['/', '/about', '/contact']);
 
+/**
+ * Titles supplied by Frances for projects the source cannot name.
+ *
+ * /projects/7231012 is untitled on Carbonmade: empty <title>, no og:title, and
+ * a heading that is an icon-font glyph (U+E003) rather than text. Its name
+ * appears only inside the artwork ("Dell Seller Offline Experience" on the
+ * opening slide), which is not machine-readable, so the first import produced
+ * an empty title and the project was held back from the published grid.
+ */
+const MANUAL_TITLES = {
+  '/projects/7231012': 'Dell Works',
+};
+
+/**
+ * Projects pinned to the front of the archive, in this order. Everything else
+ * keeps the order Carbonmade lists it in. This is an explicit sequence, not a
+ * sort: no alphabetising, no ordering by year.
+ */
+const PINNED_ORDER = [
+  '/projects/6983864', // My selected work
+  '/projects/7231012', // Dell Works
+  '/projects/2881757', // MFA Thesis- 2020 Taiwanese Smart Home
+];
+
+/** Front-load the pinned projects, leaving the rest in crawl order. */
+function applyOrder(projects) {
+  const rank = (project) => {
+    const index = PINNED_ORDER.indexOf(new URL(project.sourceUrl).pathname);
+    return index === -1 ? PINNED_ORDER.length : index;
+  };
+
+  return projects
+    .map((project, crawlIndex) => ({ project, crawlIndex }))
+    .sort((a, b) => rank(a.project) - rank(b.project) || a.crawlIndex - b.crawlIndex)
+    .map(({ project }, index) => ({ ...project, order: index + 1 }));
+}
+
 /** Chrome text that belongs to the template, never to a project description. */
 const BOILERPLATE = [
   'view project',
@@ -413,8 +450,17 @@ async function main() {
 
     report.pagesCrawled.push({ url: entry.url, kind: 'project' });
 
-    const title = stripPrivateUse(tidy(scraped.title || entry.indexTitle || ''));
-    if (!title) {
+    const scrapedTitle = stripPrivateUse(tidy(scraped.title || entry.indexTitle || ''));
+    // Applied before the slug is derived, so the override also names the image
+    // folder and the archive route.
+    const title = scrapedTitle || MANUAL_TITLES[entry.pathname] || '';
+
+    if (!scrapedTitle && title) {
+      report.warnings.push({
+        url: entry.url,
+        issue: `Untitled on Carbonmade; titled "${title}" from MANUAL_TITLES.`,
+      });
+    } else if (!title) {
       report.warnings.push({
         url: entry.url,
         issue:
@@ -490,7 +536,13 @@ async function main() {
     });
   }
 
-  await writeFile(DATA_FILE, `${JSON.stringify(projects, null, 2)}\n`, 'utf8');
+  const ordered = applyOrder(projects);
+  report.projects = ordered.map((project) => {
+    const entry = report.projects.find((candidate) => candidate.slug === project.slug);
+    return { ...entry, order: project.order };
+  });
+
+  await writeFile(DATA_FILE, `${JSON.stringify(ordered, null, 2)}\n`, 'utf8');
   await writeFile(
     path.join(SOURCE_DIR, 'migration-report.json'),
     `${JSON.stringify(report, null, 2)}\n`,

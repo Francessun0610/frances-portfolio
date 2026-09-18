@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import SpeakingCard from '../components/SpeakingCard.astro';
-import { person, links, projects, talks, about, previousWorkIntro } from '../data/site';
+import { person, links, projects, talksNewestFirst, about, previousWorkIntro } from '../data/site';
 
 const title = 'Frances Sun | Lead UX Designer — Enterprise Product Design';
 const description =
@@ -17,7 +17,10 @@ const description =
         <p class="hero__role">{person.role}</p>
         <p class="hero__statement">{person.statement}</p>
         <p class="hero__supporting">{person.supporting}</p>
-        <p class="hero__location">{person.location}</p>
+        <p class="hero__location">
+          <span>{person.location}</span>
+          <span>{person.relocation}</span>
+        </p>
 
         <div class="hero__actions">
           <a class="button button--primary" href="#work">View selected work</a>
@@ -69,7 +72,10 @@ const description =
       </div>
 
       <div class="speaking-grid">
-        {talks.map((talk) => <SpeakingCard talk={talk} />)}
+        {/* The grid is two up, so it shows the two most recent talks rather
+            than leaving a third stranded on its own row. The rest are one
+            click away. */}
+        {talksNewestFirst.slice(0, 2).map((talk) => <SpeakingCard talk={talk} />)}
       </div>
 
       <p class="speaking-more">
@@ -161,6 +167,12 @@ const description =
     margin-top: 1.15rem;
     font-size: var(--step-small);
     color: var(--text-tertiary);
+  }
+
+  /* Two sentences, one block. Each sits on its own line without adding
+     spacing between them, and each still wraps normally on a narrow screen. */
+  .hero__location span {
+    display: block;
   }
 
   .hero__actions {

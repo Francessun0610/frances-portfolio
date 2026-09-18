@@ -21,6 +21,11 @@ DECKS = [
         "source": "uiuc-ux-day-2026.pptx",
         "label": "UX Day 2026 — What Enterprise UX Taught Me About Clarity",
     },
+    {
+        "slug": "ddd-europe-2026",
+        "source": "ddd-europe-2026.pptx",
+        "label": "DDD Europe 2026 — When the Domain Is Fuzzy, the UI Pays the Price",
+    },
 ]
 
 # Full-size slide export. 1440x810 is a 16:9 frame that stays sharp on a 2x

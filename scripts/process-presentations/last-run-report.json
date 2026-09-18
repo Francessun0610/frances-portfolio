@@ -1,20 +1,21 @@
 {
-  "generated": "2026-09-17T22:47:33-0500",
+  "generated": "2026-09-18T10:48:31-0500",
   "decks": [
     {
-      "slug": "canux-2025",
-      "source": "content/speaking/source/canux-2025.pptx",
-      "sourceSlideCount": 73,
-      "hiddenSlideCount": 1,
-      "visibleSlideCount": 72,
-      "exportedSlideCount": 72,
-      "thumbnailCount": 72,
+      "slug": "ddd-europe-2026",
+      "renderer": "powerpoint",
+      "source": "content/speaking/source/ddd-europe-2026.pptx",
+      "sourceSlideCount": 101,
+      "hiddenSlideCount": 3,
+      "visibleSlideCount": 98,
+      "exportedSlideCount": 98,
+      "thumbnailCount": 98,
       "aspectRatio": 1.7778,
-      "speakerNotePartsInSource": 65,
+      "speakerNotePartsInSource": 92,
       "speakerNotesExported": false,
-      "fullBytes": 3764710,
-      "thumbBytes": 366644,
-      "outputDir": "public/slides/canux-2025/",
+      "fullBytes": 4929228,
+      "thumbBytes": 525494,
+      "outputDir": "public/slides/ddd-europe-2026/",
       "missingFonts": []
     }
   ]

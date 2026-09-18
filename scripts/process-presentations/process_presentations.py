@@ -115,7 +115,11 @@ def report_fonts(source):
     print("    fonts:")
     for typeface in sorted(used, key=lambda t: (-len(used[t]), t)):
         slides = sorted(used[typeface])
-        status = "ok" if not families or typeface in families else "MISSING"
+        # A font reached through an alias is resolved, not missing.
+        resolved = typeface in families or FONT_ALIASES.get(typeface) in families
+        status = "ok" if not families or resolved else "MISSING"
+        if typeface in FONT_ALIASES and resolved:
+            status = "alias"
         if status == "MISSING":
             missing.append((typeface, slides))
         preview = ", ".join(str(s) for s in slides[:6]) + ("…" if len(slides) > 6 else "")
@@ -182,6 +186,60 @@ def find_soffice():
     )
 
 
+# macOS reserves the "SF" font namespace, so a third-party family named
+# "SF Pro Heavy" cannot be registered and LibreOffice falls back to Arial
+# Black. The render fonts carry these aliases instead, and the deck's font
+# references are rewritten to match in a throwaway copy. Same outlines, same
+# metrics, different name. See fonts/README.md.
+FONT_ALIASES = {
+    "SF Pro Heavy": "Portfolio SFP Heavy",
+    "SF Pro Semibold": "Portfolio SFP Semibold",
+    "SF Pro Medium": "Portfolio SFP Medium",
+    "SF Pro": "Portfolio SFP",
+}
+
+
+def alias_fonts(source, workdir):
+    """Copy the deck, rewriting reserved font names. Returns the copy's path.
+
+    The original .pptx is opened read-only and never modified. Longest names
+    are replaced first so "SF Pro Heavy" is not partly matched by "SF Pro".
+    """
+    import zipfile
+
+    with zipfile.ZipFile(source) as probe:
+        needed = {
+            name: alias
+            for name, alias in FONT_ALIASES.items()
+            if any(
+                f'typeface="{name}"'.encode() in probe.read(part)
+                for part in probe.namelist()
+                if part.startswith("ppt/slides/slide") and part.endswith(".xml")
+            )
+        }
+
+    if not needed:
+        return source
+
+    target = workdir / f"{source.stem}-aliased.pptx"
+    ordered = sorted(needed.items(), key=lambda pair: -len(pair[0]))
+
+    with zipfile.ZipFile(source) as src, zipfile.ZipFile(
+        target, "w", zipfile.ZIP_DEFLATED
+    ) as out:
+        for item in src.infolist():
+            data = src.read(item.filename)
+            if item.filename.endswith(".xml") and item.filename.startswith("ppt/"):
+                text = data.decode("utf8", "ignore")
+                for name, alias in ordered:
+                    text = text.replace(f'typeface="{name}"', f'typeface="{alias}"')
+                data = text.encode("utf8")
+            out.writestr(item, data)
+
+    print(f"    aliased {len(needed)} reserved font name(s): {', '.join(needed)}")
+    return target
+
+
 def stage_render_fonts(soffice):
     """Copy the render-only fonts into LibreOffice's bundled font directory.
 
@@ -226,6 +284,79 @@ def clean_render_fonts(soffice):
     marker.unlink()
     print(f"Removed {removed} staged fonts from {target}")
     return 0
+
+
+POWERPOINT_APP = Path("/Applications/Microsoft PowerPoint.app")
+
+# AppleScript needs a POSIX file for the destination, and `open` does not hand
+# back a reference, so the document is looked up by name afterwards. Hidden
+# slides are omitted by PowerPoint's own PDF export, which matches what the
+# rest of the pipeline expects.
+_PPT_EXPORT_SCRIPT = """
+tell application "Microsoft PowerPoint"
+    open POSIX file "{source}"
+    set waited to 0
+    repeat until (exists presentation "{name}") or waited > 600
+        delay 1
+        set waited to waited + 1
+    end repeat
+    if not (exists presentation "{name}") then error "deck did not open"
+    set theDoc to presentation "{name}"
+    save theDoc in (POSIX file "{target}") as save as PDF
+    close theDoc saving no
+    return "ok"
+end tell
+"""
+
+
+def powerpoint_available():
+    return POWERPOINT_APP.is_dir()
+
+
+def convert_to_pdf_powerpoint(source, workdir):
+    """Export the deck with Microsoft PowerPoint itself.
+
+    This is the most faithful renderer available, for two reasons that matter
+    to these decks:
+
+    - It reads the fonts embedded in the .pptx. They are stored as
+      MicroType-Express-compressed EOT, which LibreOffice cannot decompress,
+      so LibreOffice needs a separately reconstructed font set while
+      PowerPoint just uses the deck's own Raleway.
+    - It renders SVG images correctly. Several pictures here are SVG with no
+      raster fallback, and LibreOffice drops their fill and draws hairline
+      outlines instead, which is what broke the ADVANTECH wordmark.
+
+    The deck is copied into the work directory first, so PowerPoint's lock
+    file is never written next to the private source.
+    """
+    local = workdir / source.name
+    shutil.copy2(source, local)
+    target = workdir / f"{source.stem}.pdf"
+
+    script = _PPT_EXPORT_SCRIPT.format(
+        source=local, name=local.name, target=target
+    )
+
+    started = time.time()
+    result = subprocess.run(
+        ["osascript", "-e", script], capture_output=True, text=True, timeout=3600
+    )
+    elapsed = time.time() - started
+
+    if result.returncode != 0 or not target.exists():
+        raise PipelineError(
+            "PowerPoint failed to export the deck.\n"
+            f"exit code: {result.returncode}\n"
+            f"stdout: {result.stdout.strip()}\n"
+            f"stderr: {result.stderr.strip()}"
+        )
+
+    print(
+        f"    exported via Microsoft PowerPoint in {elapsed:.1f}s "
+        f"({target.stat().st_size / 1e6:.1f} MB)"
+    )
+    return target
 
 
 def convert_to_pdf(soffice, source, workdir):
@@ -328,7 +459,7 @@ def render_pdf(pdf_path, slide_dir, thumb_dir, expected_pages):
     return written
 
 
-def process_deck(deck, soffice, keep_pdf=False):
+def process_deck(deck, soffice, keep_pdf=False, renderer="powerpoint"):
     slug = deck["slug"]
     source = SOURCE_DIR / deck["source"]
 
@@ -352,7 +483,13 @@ def process_deck(deck, soffice, keep_pdf=False):
             "these are never read or exported"
         )
 
-    missing_fonts = report_fonts(source)
+    if renderer == "powerpoint":
+        # PowerPoint reads the deck's own embedded fonts, so the system font
+        # inventory says nothing useful about what it will draw.
+        print("    fonts: supplied by the deck's embedded font list")
+        missing_fonts = []
+    else:
+        missing_fonts = report_fonts(source)
 
     slide_dir = OUTPUT_ROOT / slug
     thumb_dir = slide_dir / "thumbs"
@@ -362,7 +499,12 @@ def process_deck(deck, soffice, keep_pdf=False):
 
     with tempfile.TemporaryDirectory(prefix=f"slides-{slug}-") as tmp:
         workdir = Path(tmp)
-        pdf_path = convert_to_pdf(soffice, source, workdir)
+        if renderer == "powerpoint":
+            # PowerPoint reads the deck's embedded fonts, so the alias and
+            # font-staging workarounds LibreOffice needs are skipped.
+            pdf_path = convert_to_pdf_powerpoint(source, workdir)
+        else:
+            pdf_path = convert_to_pdf(soffice, alias_fonts(source, workdir), workdir)
         written = render_pdf(pdf_path, slide_dir, thumb_dir, len(visible))
         if keep_pdf:
             cache = Path(__file__).resolve().parent / ".render-cache"
@@ -397,6 +539,7 @@ def process_deck(deck, soffice, keep_pdf=False):
 
     return {
         "slug": slug,
+        "renderer": renderer,
         "source": str(source.relative_to(REPO_ROOT)),
         "sourceSlideCount": info["slide_count"],
         "hiddenSlideCount": info["hidden_count"],
@@ -422,6 +565,16 @@ def main():
         action="store_true",
         help="remove the render fonts staged into the LibreOffice bundle, then exit",
     )
+    parser.add_argument(
+        "--renderer",
+        choices=["auto", "powerpoint", "libreoffice"],
+        default="auto",
+        help=(
+            "which application renders the deck. 'auto' prefers Microsoft "
+            "PowerPoint when it is installed, because it reads the deck's "
+            "embedded fonts and renders SVG pictures correctly."
+        ),
+    )
     args = parser.parse_args()
 
     try:
@@ -435,14 +588,23 @@ def main():
 
     decks = [deck_by_slug(args.deck)] if args.deck else DECKS
 
-    print(f"LibreOffice: {soffice}")
-    stage_render_fonts(soffice)
+    renderer = args.renderer
+    if renderer == "auto":
+        renderer = "powerpoint" if powerpoint_available() else "libreoffice"
+
+    if renderer == "powerpoint":
+        print("Renderer: Microsoft PowerPoint (native)")
+    else:
+        print(f"Renderer: LibreOffice ({soffice})")
+        stage_render_fonts(soffice)
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
 
     reports = []
     for deck in decks:
         try:
-            reports.append(process_deck(deck, soffice, keep_pdf=args.keep_pdf))
+            reports.append(
+                process_deck(deck, soffice, keep_pdf=args.keep_pdf, renderer=renderer)
+            )
         except PipelineError as exc:
             print(f"\nERROR [{deck['slug']}]: {exc}\n", file=sys.stderr)
             return 1

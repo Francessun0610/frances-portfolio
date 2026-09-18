@@ -25,6 +25,7 @@ Node 20.3+ is required (see `.nvmrc`).
 | `/speaking`                  | Speaking index                                    |
 | `/speaking/canux-2025`       | CanUX 2025 talk + 72-slide viewer                 |
 | `/speaking/uiuc-ux-day-2026` | UX Day 2026 talk + 77-slide viewer                |
+| `/speaking/ddd-europe-2026`  | DDD Europe 2026 talk + 98-slide viewer            |
 | `/previous-work`             | Carbonmade archive                                |
 | `/404`                       | Not found                                         |
 
@@ -159,6 +160,21 @@ python3 scripts/generate-brand-assets.py  # favicons, touch icons, OG card
 Targeting Vercel as a static site: build `npm run build`, output `dist/`.
 `content/speaking/source/` is excluded by both `.gitignore` and `.vercelignore`,
 so the PowerPoint sources are never uploaded.
+
+### One deployable project
+
+The root Astro site is the only application here. `vercel.json` pins the
+framework, build command and output directory so nothing is inferred, and
+`.vercelignore` keeps `scripts/` out of the upload entirely.
+
+That second part matters: `scripts/process-presentations/requirements.txt` is
+the only file besides the root `package.json` that Vercel can read as a
+deployable project, and leaving it in the upload invites it to be detected as a
+separate Python app. The scripts are local build and QA tooling. They are run
+by hand on a machine with PowerPoint, LibreOffice and Python, they write their
+results into `public/`, and `astro build` never reads them. Excluding them was
+verified to produce a byte-identical site (the only files that change between
+any two builds are the sitemaps, because `lastmod` records the build time).
 
 ## Layout
 

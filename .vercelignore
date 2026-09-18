@@ -2,9 +2,18 @@
 # They contain speaker notes and document metadata that must stay private.
 content/speaking/source/
 content/previous-work-source/
-scripts/process-presentations/.render-cache/
 qa-output/
 
-# Render-only fonts are build tooling, never served. InspireTWDC is Disney
+# Local build and QA tooling. None of it is part of the site: `astro build`
+# only reads src/ and public/, and these scripts are run by hand on a Mac that
+# has LibreOffice, PowerPoint and Python available.
+#
+# Keeping the whole tree out of the upload also keeps
+# scripts/process-presentations/requirements.txt away from Vercel. That file is
+# the only thing in the repository besides the root package.json that Vercel
+# can mistake for a deployable project, and excluding it means the root Astro
+# site is the sole application it ever sees.
+#
+# It also keeps the render-only fonts off the platform. InspireTWDC is Disney
 # proprietary and must not leave this machine.
-scripts/process-presentations/fonts/
+scripts/

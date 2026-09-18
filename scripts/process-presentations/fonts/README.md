@@ -16,9 +16,13 @@ The decks do embed their fonts, but as **MicroType-Express-compressed EOT**
 (`ppt/fonts/*.fntdata`). No available tool can decompress that format, so the
 fonts have to come from somewhere else.
 
-Raleway, Onest and Play are published by Google under the SIL Open Font
-License, so authentic copies are used here. InspireTWDC was supplied by
-Frances and is placed in `_src/inspire/`.
+Raleway, Onest, Play, Syne, Lato and Poppins are published by Google under the
+SIL Open Font License, so authentic copies are used here. InspireTWDC was
+supplied by Frances and is placed in `_src/inspire/`. SF Pro comes from macOS
+itself (see below).
+
+The DDD Europe deck adds Syne Medium and Lato (its theme major and minor
+fonts), Poppins SemiBold, and four SF Pro weights.
 
 ## What is generated
 
@@ -31,6 +35,38 @@ rewrites the name table to match.
 Every family also gets a real **Bold** member. Each affected run carries
 `b="1"`, and a family with no bold face makes the renderer synthesise bold,
 which widens glyphs just enough to rewrap a line.
+
+## SF Pro
+
+The DDD Europe deck asks for `SF Pro Heavy`, `SF Pro Semibold` and
+`SF Pro Medium` by name, including on the "I've been around" slide where
+"Advisory UX Designer" sits directly above the Lenovo logo. Without them
+LibreOffice substitutes Arial Black, which is far wider, so the line wrapped
+onto the logo — the same failure as the Raleway one.
+
+SF Pro is not on Google Fonts, but macOS ships it: `/System/Library/Fonts/
+SFNS.ttf` is the SF Pro variable font, with named instances for exactly these
+weights. `build_render_fonts.py` pins those instances, so the genuine Apple
+outlines and metrics are used and nothing is downloaded.
+
+Two things make this work:
+
+- **The name table is cleared first.** SFNS.ttf carries 1262 name records
+  across dozens of languages, every one of them saying "System Font" or a
+  translation of it. Overwriting only the English records leaves the font still
+  announcing itself as the system font, and it never matches by the intended
+  name.
+- **The family is registered under an alias** (`Portfolio SFP Heavy` and so
+  on). macOS reserves the "SF" font namespace and will not register a
+  third-party family called "SF Pro Heavy". `process_presentations.py` rewrites
+  the deck's font references to the aliases in a throwaway copy, so the
+  original `.pptx` is never modified.
+
+The bold member of each SF family carries the *same* weight as its regular one.
+These names already encode the weight the author picked, so `b="1"` is not a
+request for a heavier face, and stepping the weight up widens the text enough
+to matter: at 32pt "Advisory UX Designer" measures 4.60in in Heavy but 4.75in
+in Black, against 4.74in of usable box width.
 
 ## Where they are installed
 
@@ -57,6 +93,12 @@ curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/raleway/Ralew
 curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/onest/Onest%5Bwght%5D.ttf
 curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/play/Play-Regular.ttf
 curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/play/Play-Bold.ttf
+curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/syne/Syne%5Bwght%5D.ttf
+curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/lato/Lato-Regular.ttf
+curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/lato/Lato-Bold.ttf
+curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/poppins/Poppins-Regular.ttf
+curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/poppins/Poppins-SemiBold.ttf
+curl -sSLO https://raw.githubusercontent.com/google/fonts/main/ofl/poppins/Poppins-Bold.ttf
 cd -
 python3 scripts/process-presentations/build_render_fonts.py
 ```

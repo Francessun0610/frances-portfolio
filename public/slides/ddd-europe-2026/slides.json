@@ -1,0 +1,884 @@
+[
+  {
+    "index": 1,
+    "image": "/slides/ddd-europe-2026/slide-001.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-001.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "When the domain is fuzzy,",
+    "visibleText": "When the domain is fuzzy,\nthe UI pays the price\nFrances Sun\nDesigning clarity when language, ownership, and workflows don’t agree"
+  },
+  {
+    "index": 2,
+    "image": "/slides/ddd-europe-2026/slide-002.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-002.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "You are currently thinking…",
+    "visibleText": "You are currently thinking…"
+  },
+  {
+    "index": 3,
+    "image": "/slides/ddd-europe-2026/slide-003.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-003.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Raleigh, NC",
+    "visibleText": "Raleigh, NC\nAdvisory UX Designer\nI’ve been around\nUI Designer\nTaipei, Taiwan"
+  },
+  {
+    "index": 4,
+    "image": "/slides/ddd-europe-2026/slide-004.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-004.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Principal Designer",
+    "visibleText": "Principal Designer\nRound Rock, TX\nRemote\nLead Designer - Ads\nI’ve been around"
+  },
+  {
+    "index": 5,
+    "image": "/slides/ddd-europe-2026/slide-005.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-005.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "From consumer to enterprise",
+    "visibleText": "From consumer to enterprise\nSmart home\nPreload software"
+  },
+  {
+    "index": 6,
+    "image": "/slides/ddd-europe-2026/slide-006.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-006.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Server config tools",
+    "visibleText": "Server config tools\nAds tools\nFrom consumer to enterprise\nEnterprise UX is not just screen design.\nIt’s domain translation."
+  },
+  {
+    "index": 7,
+    "image": "/slides/ddd-europe-2026/slide-007.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-007.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Consumer → Fun, snackable, short bursts",
+    "visibleText": "Consumer → Fun, snackable, short bursts\nConsumer design optimizes moments.\nEnterprise design supports systems.\nEnterprise → Daily, 8-hour main course"
+  },
+  {
+    "index": 8,
+    "image": "/slides/ddd-europe-2026/slide-008.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-008.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Consumer Products:",
+    "visibleText": "Consumer Products:\nWhere Work Gets Seen"
+  },
+  {
+    "index": 9,
+    "image": "/slides/ddd-europe-2026/slide-009.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-009.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Enterprise Tools:",
+    "visibleText": "Enterprise Tools:\nWhere Work Gets Done"
+  },
+  {
+    "index": 10,
+    "image": "/slides/ddd-europe-2026/slide-010.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-010.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The castle is cute. The enterprise is real.",
+    "visibleText": "The castle is cute. The enterprise is real."
+  },
+  {
+    "index": 11,
+    "image": "/slides/ddd-europe-2026/slide-011.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-011.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Behind the castle, there‘s a system",
+    "visibleText": "Behind the castle, there‘s a system\nAnd a lot of people building it.\nSales Systems\nOperations systems\nReporting workflows\nFinance systems\nAnd so much more"
+  },
+  {
+    "index": 12,
+    "image": "/slides/ddd-europe-2026/slide-012.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-012.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Somewhere in that crowd…",
+    "visibleText": "Somewhere in that crowd…\nThere was me. Professionally Confused\nEveryone knew their part.\nNobody knew the whole castle."
+  },
+  {
+    "index": 13,
+    "image": "/slides/ddd-europe-2026/slide-013.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-013.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "So,",
+    "visibleText": "So,\nhow do you build the castle?"
+  },
+  {
+    "index": 14,
+    "image": "/slides/ddd-europe-2026/slide-014.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-014.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Set the",
+    "visibleText": "Set the\ncontext\nDecode\nreal needs\nExpose complexity\nLessons from fuzzy domains\nUnderstand the domain\nUse the metaphor"
+  },
+  {
+    "index": 15,
+    "image": "/slides/ddd-europe-2026/slide-015.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-015.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Understand the domain",
+    "visibleText": "Understand the domain\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 16,
+    "image": "/slides/ddd-europe-2026/slide-016.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-016.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "If you can’t explain it simply,",
+    "visibleText": "If you can’t explain it simply,\nyou don’t understand it well enough\nAlbert Einstein"
+  },
+  {
+    "index": 17,
+    "image": "/slides/ddd-europe-2026/slide-017.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-017.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "My first enterprise project:",
+    "visibleText": "My first enterprise project:\nServer Configuration"
+  },
+  {
+    "index": 18,
+    "image": "/slides/ddd-europe-2026/slide-018.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-018.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "1.Navigation was inconsistent",
+    "visibleText": "1.Navigation was inconsistent\n2.Users needed configuration details\n3.Pricing was getting in the way\n4.Make it pretty!\nThe request sounded simple:"
+  },
+  {
+    "index": 19,
+    "image": "/slides/ddd-europe-2026/slide-019.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-019.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Like everyone else:",
+    "visibleText": "Like everyone else:\nI started with the problem"
+  },
+  {
+    "index": 20,
+    "image": "/slides/ddd-europe-2026/slide-020.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-020.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Start with the problem:",
+    "visibleText": "Start with the problem:\nInconsistent and unclear navigation"
+  },
+  {
+    "index": 21,
+    "image": "/slides/ddd-europe-2026/slide-021.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-021.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Start with the problem:",
+    "visibleText": "Start with the problem:\nUsers wanted configuration, not pricing"
+  },
+  {
+    "index": 22,
+    "image": "/slides/ddd-europe-2026/slide-022.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-022.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "First Proposal",
+    "visibleText": "First Proposal"
+  },
+  {
+    "index": 23,
+    "image": "/slides/ddd-europe-2026/slide-023.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-023.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "1. Navigation still didn’t make sense",
+    "visibleText": "1. Navigation still didn’t make sense\n2. Users preferred the old design\nThe brutal first review"
+  },
+  {
+    "index": 24,
+    "image": "/slides/ddd-europe-2026/slide-024.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-024.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Clear UI. Unclear system.",
+    "visibleText": "Clear UI. Unclear system.\nUsers didn’t need prettier navigation.\nThey needed clearer system logic."
+  },
+  {
+    "index": 25,
+    "image": "/slides/ddd-europe-2026/slide-025.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-025.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "I designed before I understood.",
+    "visibleText": "I designed before I understood.\n1. I saw an ugly interface\n2. I didn’t ask what the product was doing\n3. I fixed the surface first"
+  },
+  {
+    "index": 26,
+    "image": "/slides/ddd-europe-2026/slide-026.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-026.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Learning the domain the hard way",
+    "visibleText": "Learning the domain the hard way"
+  },
+  {
+    "index": 27,
+    "image": "/slides/ddd-europe-2026/slide-027.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-027.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Different teams understood the product differently.",
+    "visibleText": "Different teams understood the product differently.\nLearning was easy; Explaining was hard."
+  },
+  {
+    "index": 28,
+    "image": "/slides/ddd-europe-2026/slide-028.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-028.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "What I learned:",
+    "visibleText": "What I learned:\nEvery product has its own recipe"
+  },
+  {
+    "index": 29,
+    "image": "/slides/ddd-europe-2026/slide-029.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-029.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The recipe wasn’t one product.",
+    "visibleText": "The recipe wasn’t one product.\nIt was made of parts, steps, and rules.\nParts → what goes into it\nSteps → how it gets built\nRules → what can or can’t happen\nFinal product → what users are buying"
+  },
+  {
+    "index": 30,
+    "image": "/slides/ddd-europe-2026/slide-030.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-030.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "New flow:",
+    "visibleText": "New flow:\nClear steps + Always-visible config"
+  },
+  {
+    "index": 31,
+    "image": "/slides/ddd-europe-2026/slide-031.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-031.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Good UX knows users.",
+    "visibleText": "Good UX knows users.\nGreat UX understands the rules behind their work.\nRecap: Understand the domain"
+  },
+  {
+    "index": 32,
+    "image": "/slides/ddd-europe-2026/slide-032.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-032.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Expose complexity",
+    "visibleText": "Expose complexity\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 33,
+    "image": "/slides/ddd-europe-2026/slide-033.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-033.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Complexity becomes dangerous",
+    "visibleText": "Complexity becomes dangerous\nwhen nobody sees the full system"
+  },
+  {
+    "index": 34,
+    "image": "/slides/ddd-europe-2026/slide-034.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-034.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Another project :This time, selling servers",
+    "visibleText": "Another project :This time, selling servers\nDifferent product. Same enterprise pattern."
+  },
+  {
+    "index": 35,
+    "image": "/slides/ddd-europe-2026/slide-035.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-035.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "From Complexity to Clarity",
+    "visibleText": "From Complexity to Clarity\nThe process existed. The shared view didn’t."
+  },
+  {
+    "index": 36,
+    "image": "/slides/ddd-europe-2026/slide-036.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-036.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Visualizing the chaos:",
+    "visibleText": "Visualizing the chaos:\nShow the full workflow changed the conversation."
+  },
+  {
+    "index": 37,
+    "image": "/slides/ddd-europe-2026/slide-037.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-037.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Different tools.",
+    "visibleText": "Different tools.\nDifferent languages.\nDifferent meanings of “done.”"
+  },
+  {
+    "index": 38,
+    "image": "/slides/ddd-europe-2026/slide-038.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-038.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "From 24 Tools → 1 Workflow",
+    "visibleText": "From 24 Tools → 1 Workflow"
+  },
+  {
+    "index": 39,
+    "image": "/slides/ddd-europe-2026/slide-039.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-039.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "I stopped seeing product,",
+    "visibleText": "I stopped seeing product,\nI started seeing workflow.\nSales → Quote → Order → Finance → Delivery → Support\nUsers experience workflows, not products."
+  },
+  {
+    "index": 40,
+    "image": "/slides/ddd-europe-2026/slide-040.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-040.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Recap: Expose Complexity",
+    "visibleText": "Recap: Expose Complexity\nMake invisible systems visible.\nThen people can finally argue about the right thing."
+  },
+  {
+    "index": 41,
+    "image": "/slides/ddd-europe-2026/slide-041.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-041.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Once the system was visible,",
+    "visibleText": "Once the system was visible,\nComplaints sounded different.\nComplaint\nSignal\nRoot Cause"
+  },
+  {
+    "index": 42,
+    "image": "/slides/ddd-europe-2026/slide-042.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-042.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Decode real needs",
+    "visibleText": "Decode real needs\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 43,
+    "image": "/slides/ddd-europe-2026/slide-043.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-043.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "“Users don’t want it.”",
+    "visibleText": "“Users don’t want it.”\n“They’re impossible to talk with”\n“We’ve tried everything.”\n“We’re burning resources.”\nUh oh\nWhen PMs struggle with users"
+  },
+  {
+    "index": 44,
+    "image": "/slides/ddd-europe-2026/slide-044.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-044.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "“I want EVERYTHING pink. 💖”",
+    "visibleText": "“I want EVERYTHING pink. 💖”\nIN OUR SOFTWARE\nThis is a real quote.\nAnd then the user said…\nUh oh\nUh oh"
+  },
+  {
+    "index": 45,
+    "image": "/slides/ddd-europe-2026/slide-045.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-045.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "So,",
+    "visibleText": "So,\nI made it pink\nJust kidding"
+  },
+  {
+    "index": 46,
+    "image": "/slides/ddd-europe-2026/slide-046.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-046.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "“Make it pink” was not a requirement.",
+    "visibleText": "“Make it pink” was not a requirement.\nIt was compressed frustration.\n1. Workflow blocked\n2. Key action hidden\n3. Users lacked visibility\nUsers often describe domain pain as UI pain."
+  },
+  {
+    "index": 47,
+    "image": "/slides/ddd-europe-2026/slide-047.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-047.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Uncovering the real user workflow.",
+    "visibleText": "Uncovering the real user workflow.\nDesign Detective Mode"
+  },
+  {
+    "index": 48,
+    "image": "/slides/ddd-europe-2026/slide-048.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-048.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Design Detective Mode",
+    "visibleText": "Design Detective Mode\nI stopped asking what users wanted.\nI started watching what they did."
+  },
+  {
+    "index": 49,
+    "image": "/slides/ddd-europe-2026/slide-049.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-049.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "PM",
+    "visibleText": "PM\nMe\nIt’s Restriction team\nWhat my users do everyday\nThe workflow was repetitive.\nThe mistakes were expensive."
+  },
+  {
+    "index": 50,
+    "image": "/slides/ddd-europe-2026/slide-050.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-050.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Real problem: hidden function",
+    "visibleText": "Real problem: hidden function"
+  },
+  {
+    "index": 51,
+    "image": "/slides/ddd-europe-2026/slide-051.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-051.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "It wasn’t pink. It was pain.",
+    "visibleText": "It wasn’t pink. It was pain."
+  },
+  {
+    "index": 52,
+    "image": "/slides/ddd-europe-2026/slide-052.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-052.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Real needs hide under surface.",
+    "visibleText": "Real needs hide under surface.\nListen like your job depends on it. Because it does.\nRecap: Listen for real needs"
+  },
+  {
+    "index": 53,
+    "image": "/slides/ddd-europe-2026/slide-053.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-053.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Set the context",
+    "visibleText": "Set the context\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 54,
+    "image": "/slides/ddd-europe-2026/slide-054.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-054.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Me in enterprise: presenting.",
+    "visibleText": "Me in enterprise: presenting.\nEveryone else: WA WA WAA\nLive image from my team"
+  },
+  {
+    "index": 55,
+    "image": "/slides/ddd-europe-2026/slide-055.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-055.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Too into design. Nobody understands me.",
+    "visibleText": "Too into design. Nobody understands me."
+  },
+  {
+    "index": 56,
+    "image": "/slides/ddd-europe-2026/slide-056.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-056.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Same screen. Different assumptions.",
+    "visibleText": "Same screen. Different assumptions.\nPM sees scope\nEngineer sees logic\nDesigner sees flow\nYES, This is how I see myself"
+  },
+  {
+    "index": 57,
+    "image": "/slides/ddd-europe-2026/slide-057.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-057.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Context creates alignment.",
+    "visibleText": "Context creates alignment.\nWho / What / When / Where / Why\nSteal from MBA: 5w’s"
+  },
+  {
+    "index": 58,
+    "image": "/slides/ddd-europe-2026/slide-058.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-058.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Reduces rework",
+    "visibleText": "Reduces rework\nExposes disagreement early\nPrevents UI negotiation\nAlignment starts with language."
+  },
+  {
+    "index": 59,
+    "image": "/slides/ddd-europe-2026/slide-059.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-059.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Screens show the how.",
+    "visibleText": "Screens show the how.\nShared language explains the why.\nRecap: Set the context\nJust show screens\nAdd context first"
+  },
+  {
+    "index": 60,
+    "image": "/slides/ddd-europe-2026/slide-060.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-060.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Shared language helped meetings.",
+    "visibleText": "Shared language helped meetings.\nShared stories helped systems."
+  },
+  {
+    "index": 61,
+    "image": "/slides/ddd-europe-2026/slide-061.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-061.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Use the metaphor",
+    "visibleText": "Use the metaphor\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 62,
+    "image": "/slides/ddd-europe-2026/slide-062.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-062.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Everyone knew their product.",
+    "visibleText": "Everyone knew their product.\nNobody had the full map.\nWhen context wasn’t enough"
+  },
+  {
+    "index": 63,
+    "image": "/slides/ddd-europe-2026/slide-063.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-063.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The tools were connected.",
+    "visibleText": "The tools were connected.\nThe teams were not."
+  },
+  {
+    "index": 64,
+    "image": "/slides/ddd-europe-2026/slide-064.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-064.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "So how to connect it all ?",
+    "visibleText": "So how to connect it all ?"
+  },
+  {
+    "index": 65,
+    "image": "/slides/ddd-europe-2026/slide-065.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-065.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "With references we all know",
+    "visibleText": "With references we all know\nFirst step: Connect the dots"
+  },
+  {
+    "index": 66,
+    "image": "/slides/ddd-europe-2026/slide-066.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-066.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Our team’s conclusion:",
+    "visibleText": "Our team’s conclusion:\nCandyLand."
+  },
+  {
+    "index": 67,
+    "image": "/slides/ddd-europe-2026/slide-067.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-067.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Let’s imagine an Ad as candy",
+    "visibleText": "Let’s imagine an Ad as candy"
+  },
+  {
+    "index": 68,
+    "image": "/slides/ddd-europe-2026/slide-068.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-068.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "All the TV channels are like candy stores",
+    "visibleText": "All the TV channels are like candy stores"
+  },
+  {
+    "index": 69,
+    "image": "/slides/ddd-europe-2026/slide-069.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-069.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Magic won’t restock the candy",
+    "visibleText": "Magic won’t restock the candy"
+  },
+  {
+    "index": 70,
+    "image": "/slides/ddd-europe-2026/slide-070.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-070.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The advertisers provide their candy to us",
+    "visibleText": "The advertisers provide their candy to us"
+  },
+  {
+    "index": 71,
+    "image": "/slides/ddd-europe-2026/slide-071.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-071.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "It takes a village to build a store",
+    "visibleText": "It takes a village to build a store"
+  },
+  {
+    "index": 72,
+    "image": "/slides/ddd-europe-2026/slide-072.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-072.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "How we put the “candy” on the shelves",
+    "visibleText": "How we put the “candy” on the shelves"
+  },
+  {
+    "index": 73,
+    "image": "/slides/ddd-europe-2026/slide-073.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-073.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "11:35 PM",
+    "visibleText": "11:35 PM\n2 AM\nVersus\nRate card\n9 PM"
+  },
+  {
+    "index": 74,
+    "image": "/slides/ddd-europe-2026/slide-074.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-074.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Which channels?",
+    "visibleText": "Which channels?\nWho to reach?\nWhat time?\nincludes\nProposal"
+  },
+  {
+    "index": 75,
+    "image": "/slides/ddd-europe-2026/slide-075.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-075.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "New Shoe",
+    "visibleText": "New Shoe\nDeal Management"
+  },
+  {
+    "index": 76,
+    "image": "/slides/ddd-europe-2026/slide-076.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-076.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Get actual media",
+    "visibleText": "Get actual media\nTake media through airing\nMedia Management"
+  },
+  {
+    "index": 77,
+    "image": "/slides/ddd-europe-2026/slide-077.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-077.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Stop the wrong content",
+    "visibleText": "Stop the wrong content\nBlock same-type ads in a row.\nContent Restrictor"
+  },
+  {
+    "index": 78,
+    "image": "/slides/ddd-europe-2026/slide-078.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-078.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Check for errors before launch.",
+    "visibleText": "Check for errors before launch.\nLog Management"
+  },
+  {
+    "index": 79,
+    "image": "/slides/ddd-europe-2026/slide-079.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-079.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Finally put the candy on the shelves",
+    "visibleText": "Finally put the candy on the shelves\nLog Scheduling"
+  },
+  {
+    "index": 80,
+    "image": "/slides/ddd-europe-2026/slide-080.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-080.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Complex workflow. Shared understanding",
+    "visibleText": "Complex workflow. Shared understanding"
+  },
+  {
+    "index": 81,
+    "image": "/slides/ddd-europe-2026/slide-081.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-081.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Candyland became our domain map.",
+    "visibleText": "Candyland became our domain map.\nThe system stayed complex.\nThe conversation got clearer"
+  },
+  {
+    "index": 82,
+    "image": "/slides/ddd-europe-2026/slide-082.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-082.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Recap: Align with metaphor",
+    "visibleText": "Recap: Align with metaphor\nComplex system.\nShared understanding."
+  },
+  {
+    "index": 83,
+    "image": "/slides/ddd-europe-2026/slide-083.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-083.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Symptoms of a fuzzy domain",
+    "visibleText": "Symptoms of a fuzzy domain"
+  },
+  {
+    "index": 84,
+    "image": "/slides/ddd-europe-2026/slide-084.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-084.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Teams define progress differently",
+    "visibleText": "Teams define progress differently\nToo many statuses\nWhich of these actually mean work is done?"
+  },
+  {
+    "index": 85,
+    "image": "/slides/ddd-europe-2026/slide-085.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-085.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Workflow is unclear",
+    "visibleText": "Workflow is unclear\nEndless Filters"
+  },
+  {
+    "index": 86,
+    "image": "/slides/ddd-europe-2026/slide-086.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-086.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Everyone optimized for something different.",
+    "visibleText": "Everyone optimized for something different.\nSame word. Different domain."
+  },
+  {
+    "index": 87,
+    "image": "/slides/ddd-europe-2026/slide-087.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-087.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Ownership is unclear",
+    "visibleText": "Ownership is unclear\nConfusing permissions"
+  },
+  {
+    "index": 88,
+    "image": "/slides/ddd-europe-2026/slide-088.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-088.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Business logic in disguise",
+    "visibleText": "Business logic in disguise\nLong forms"
+  },
+  {
+    "index": 89,
+    "image": "/slides/ddd-europe-2026/slide-089.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-089.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "What looked like UI problems",
+    "visibleText": "What looked like UI problems\n…were domain problems."
+  },
+  {
+    "index": 90,
+    "image": "/slides/ddd-europe-2026/slide-090.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-090.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The UI became the negotiation layer.",
+    "visibleText": "The UI became the negotiation layer.\nWhy 17 Status?\nPM\nDev\nOps\nEveryone was solving a different problem.\nUX"
+  },
+  {
+    "index": 91,
+    "image": "/slides/ddd-europe-2026/slide-091.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-091.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The UI is not the only thing paying.",
+    "visibleText": "The UI is not the only thing paying.\nTeams pay with rework.\nUsers pay with confusion.\nBusiness pays with delay."
+  },
+  {
+    "index": 92,
+    "image": "/slides/ddd-europe-2026/slide-092.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-092.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The UI is the tip of the iceberg.",
+    "visibleText": "The UI is the tip of the iceberg.\nOwnership\nLanguage\nRules\nHandoffs\nBoundaries\nUI"
+  },
+  {
+    "index": 93,
+    "image": "/slides/ddd-europe-2026/slide-093.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-093.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "If you’re a PM…",
+    "visibleText": "If you’re a PM…\nUsers ask for features.\nTeams ask for priorities.\nStakeholders ask for answers.\nBefore adding a feature,\nmake sure everyone is solving the same problem.\nAnd yes, your designer can make it pretty while helping you solve these problems."
+  },
+  {
+    "index": 94,
+    "image": "/slides/ddd-europe-2026/slide-094.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-094.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "If you're an Engineer...",
+    "visibleText": "If you're an Engineer...\nRequirements change.\nLanguage changes.\nBusiness changes\nSometimes the code is fine. The understanding isn’t.\nAnd yes, your designer can make it pretty.\nSometimes without touching your code."
+  },
+  {
+    "index": 95,
+    "image": "/slides/ddd-europe-2026/slide-095.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-095.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "If you’re my fellow designers...",
+    "visibleText": "If you’re my fellow designers...\nFollow the workflow.\nFollow the language.\nFollow the rules.\nThat’s where the real business logic lives.\nYes, sometimes the ugly screen is telling you something.\nUnderstand first. Then make it pretty."
+  },
+  {
+    "index": 96,
+    "image": "/slides/ddd-europe-2026/slide-096.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-096.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Better domains create better UX",
+    "visibleText": "Better domains create better UX\nShared language\nClear ownership\nVisible Workflow\nExplicit business rules"
+  },
+  {
+    "index": 97,
+    "image": "/slides/ddd-europe-2026/slide-097.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-097.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Set the",
+    "visibleText": "Set the\ncontext\nDecode\nreal needs\nExpose complexity\nWhen the domain is fuzzy, the UI pays the price.\nUse the metaphor\nUnderstand the domain"
+  },
+  {
+    "index": 98,
+    "image": "/slides/ddd-europe-2026/slide-098.webp",
+    "thumbnail": "/slides/ddd-europe-2026/thumbs/slide-098.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Thank You",
+    "visibleText": "Thank You\nFrances Sun\nhttps://www.linkedin.com/in/sun0610/\nFrancessun@gmail.com"
+  }
+]

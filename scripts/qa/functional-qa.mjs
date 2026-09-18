@@ -10,10 +10,10 @@ import { join } from 'node:path';
 
 import { chromium } from 'playwright';
 
-import { REPO_ROOT, ROUTES, Report, makeSink, startPreview, watchForProblems } from './lib.mjs';
+import { DECKS,
+  REPO_ROOT, ROUTES, Report, makeSink, startPreview, watchForProblems } from './lib.mjs';
 
 const RATE_CARD_URL = 'https://rate-card-demo.vercel.app/?section=atlas&slide=1';
-const DECKS = ['canux-2025', 'uiuc-ux-day-2026'];
 
 /**
  * Routes that are intentionally reserved but not yet filled in. These are
@@ -244,14 +244,21 @@ async function checkViewer(page, base, deck, manifest, report) {
 }
 
 async function checkNoSpeakerNotes(page, base, deck, report) {
-  const notes = await speakerNoteSamples(deck);
+  // A line that is also printed on the slide cannot demonstrate a note leak:
+  // it is on the page because it is part of the artwork. Frances repeats some
+  // of her on-slide lines in her notes, so those are excluded to keep this
+  // check meaningful rather than noisy.
+  const manifest = await loadManifest(deck);
+  const onSlide = manifest.map((slide) => slide.visibleText ?? '').join('\n');
+  const notes = (await speakerNoteSamples(deck)).filter((note) => !onSlide.includes(note));
+
   await page.goto(`${base}/speaking/${deck}`, { waitUntil: 'networkidle' });
   const html = await page.content();
 
   const leaked = notes.filter((note) => html.includes(note));
   report.check(
     leaked.length === 0,
-    `no speaker notes in the rendered page (${notes.length} note lines checked)`,
+    `no speaker notes in the rendered page (${notes.length} note-only lines checked)`,
     leaked.slice(0, 2).join(' | '),
   );
 
@@ -408,9 +415,11 @@ async function main() {
       'Atlas — Identity & Access Management',
       'SIMBA — Financial Systems 2.0',
       'Linear Advertising Workflows',
-      'Infusing Enterprise Creativity with a Dose of Playfulness',
+      // The homepage carries the two most recent talks; the rest live on
+      // /speaking, which is checked separately.
+      'When the Domain Is Fuzzy, the UI Pays the Price',
       'What Enterprise UX Taught Me About Clarity',
-      'CanUX 2025',
+      'DDD Europe 2026',
       'UX Day 2026',
       'Previous Work',
       'Selected Work',
@@ -424,6 +433,52 @@ async function main() {
       pageText['/speaking/canux-2025'].includes('Ottawa, Canada'),
       'CanUX page states the location Ottawa, Canada',
     );
+    report.check(
+      pageText['/speaking/ddd-europe-2026'].includes('Antwerp, Belgium') &&
+        pageText['/speaking/ddd-europe-2026'].includes(
+          'When the Domain Is Fuzzy, the UI Pays the Price',
+        ),
+      'DDD Europe page states its title and Antwerp, Belgium',
+    );
+
+    // --- Talk ordering ------------------------------------------------------
+    // Newest first, everywhere a list of talks appears.
+    report.section('speaking order');
+    const orderOf = async (path) => {
+      await page.goto(`${preview.base}${path}`, { waitUntil: 'networkidle' });
+      return page.$$eval('.talk-card a[href^="/speaking/"]', (nodes) =>
+        nodes.map((node) => node.getAttribute('href').replace('/speaking/', '')),
+      );
+    };
+
+    const indexOrder = await orderOf('/speaking');
+    report.check(
+      JSON.stringify(indexOrder) ===
+        JSON.stringify(['ddd-europe-2026', 'uiuc-ux-day-2026', 'canux-2025']),
+      '/speaking lists talks newest first',
+      indexOrder.join(' > '),
+    );
+
+    const homeOrder = await orderOf('/');
+    report.check(
+      JSON.stringify(homeOrder) === JSON.stringify(['ddd-europe-2026', 'uiuc-ux-day-2026']),
+      'homepage shows the two most recent talks, newest first',
+      homeOrder.join(' > '),
+    );
+    report.check(
+      homeText.includes('All speaking'),
+      'homepage keeps a link through to the full speaking list',
+    );
+
+    // Talks not shown on the homepage must still be reachable and named.
+    const speakingText = pageText['/speaking'];
+    for (const phrase of [
+      'When the Domain Is Fuzzy, the UI Pays the Price',
+      'What Enterprise UX Taught Me About Clarity',
+      'Infusing Enterprise Creativity with a Dose of Playfulness',
+    ]) {
+      report.check(speakingText.includes(phrase), `/speaking lists "${phrase}"`);
+    }
     report.check(
       pageText['/speaking/uiuc-ux-day-2026'].includes('Siebel Center for Design') &&
         pageText['/speaking/uiuc-ux-day-2026'].includes('University of Illinois Urbana-Champaign'),

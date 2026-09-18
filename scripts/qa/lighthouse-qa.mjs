@@ -17,7 +17,8 @@ import { join } from 'node:path';
 
 import { chromium } from 'playwright';
 
-import { QA_OUTPUT, Report, ensureDir, startPreview } from './lib.mjs';
+import { DECKS,
+  QA_OUTPUT, Report, ensureDir, startPreview } from './lib.mjs';
 
 const TARGETS = {
   performance: 90,
@@ -28,8 +29,7 @@ const TARGETS = {
 
 const PAGES = [
   { path: '/', name: 'home' },
-  { path: '/speaking/canux-2025', name: 'canux-2025' },
-  { path: '/speaking/uiuc-ux-day-2026', name: 'uiuc-ux-day-2026' },
+  ...DECKS.map((slug) => ({ path: `/speaking/${slug}`, name: slug })),
 ];
 
 /** Lighthouse needs a real Chrome with a remote debugging port. */

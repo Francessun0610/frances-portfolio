@@ -1,19 +1,29 @@
 /** Shared helpers for the QA scripts. */
 
 import { spawn } from 'node:child_process';
+import { existsSync, readdirSync } from 'node:fs';
 import { mkdir } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const REPO_ROOT = resolve(fileURLToPath(new URL('.', import.meta.url)), '..', '..');
 export const QA_OUTPUT = resolve(REPO_ROOT, 'qa-output');
 
+/**
+ * Every exported deck, read from disk rather than listed by hand, so adding a
+ * talk cannot quietly leave it untested.
+ */
+export const DECKS = readdirSync(join(REPO_ROOT, 'public', 'slides'), { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .filter((slug) => existsSync(join(REPO_ROOT, 'public', 'slides', slug, 'slides.json')))
+  .sort();
+
 export const ROUTES = [
   { path: '/', name: 'home' },
   { path: '/about', name: 'about' },
   { path: '/speaking', name: 'speaking' },
-  { path: '/speaking/canux-2025', name: 'canux-2025' },
-  { path: '/speaking/uiuc-ux-day-2026', name: 'uiuc-ux-day-2026' },
+  ...DECKS.map((slug) => ({ path: `/speaking/${slug}`, name: slug })),
   { path: '/previous-work', name: 'previous-work' },
 ];
 

@@ -13,7 +13,10 @@
 import AxeBuilder from '@axe-core/playwright';
 import { chromium } from 'playwright';
 
-import { ROUTES, Report, startPreview } from './lib.mjs';
+import { readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+
+import { DECKS, REPO_ROOT, ROUTES, Report, startPreview } from './lib.mjs';
 
 const WCAG_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'];
 
@@ -302,8 +305,12 @@ async function main() {
     }
     await mobile.close();
 
-    await checkViewerA11y(page, report, preview.base, 'canux-2025', 72);
-    await checkViewerA11y(page, report, preview.base, 'uiuc-ux-day-2026', 77);
+    for (const deck of DECKS) {
+      const manifest = JSON.parse(
+        await readFile(join(REPO_ROOT, 'public', 'slides', deck, 'slides.json'), 'utf8'),
+      );
+      await checkViewerA11y(page, report, preview.base, deck, manifest.length);
+    }
 
     // The overview dialog must trap focus and close on Escape.
     report.section('slide overview dialog');

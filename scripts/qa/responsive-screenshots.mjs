@@ -18,6 +18,7 @@ import { join } from 'node:path';
 import { chromium } from 'playwright';
 
 import {
+  DECKS,
   QA_OUTPUT,
   REPO_ROOT,
   ROUTES,
@@ -29,7 +30,6 @@ import {
   startPreview,
 } from './lib.mjs';
 
-const DECKS = ['canux-2025', 'uiuc-ux-day-2026'];
 const SHOTS = join(QA_OUTPUT, 'screenshots');
 
 /**

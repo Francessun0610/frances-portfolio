@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-18T04:09:37.965Z",
+  "generatedAt": "2026-09-18T04:56:53.490Z",
   "source": "https://francessun.carbonmade.com",
   "pagesCrawled": [
     {
@@ -84,22 +84,44 @@
   ],
   "projects": [
     {
-      "slug": "project-7231012",
-      "title": "",
+      "slug": "my-selected-work",
+      "title": "My selected work",
+      "client": "Lenovo",
+      "year": "",
+      "order": 1,
+      "imageCount": 15,
+      "captionedImages": 0,
+      "descriptionChars": 103,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/6983864"
+    },
+    {
+      "slug": "dell-works",
+      "title": "Dell Works",
       "client": "",
       "year": "2021",
-      "order": 1,
+      "order": 2,
       "imageCount": 35,
       "captionedImages": 0,
       "descriptionChars": 0,
       "sourceUrl": "https://francessun.carbonmade.com/projects/7231012"
     },
     {
+      "slug": "mfa-thesis-2020-taiwanese-smart-home",
+      "title": "MFA Thesis- 2020 Taiwanese Smart Home",
+      "client": "CCS MFA",
+      "year": "2011",
+      "order": 3,
+      "imageCount": 46,
+      "captionedImages": 0,
+      "descriptionChars": 52,
+      "sourceUrl": "https://francessun.carbonmade.com/projects/2881757"
+    },
+    {
       "slug": "reach4-0",
       "title": "Reach4.0",
       "client": "Lenovo Group",
       "year": "2016 April",
-      "order": 2,
+      "order": 4,
       "imageCount": 41,
       "captionedImages": 0,
       "descriptionChars": 882,
@@ -110,7 +132,7 @@
       "title": "Lenovo Support- Win8 Metro app",
       "client": "Lenovo group",
       "year": "2012",
-      "order": 3,
+      "order": 5,
       "imageCount": 17,
       "captionedImages": 1,
       "descriptionChars": 132,
@@ -121,7 +143,7 @@
       "title": "Smart home related project",
       "client": "Advantech taiwan",
       "year": "~2007",
-      "order": 4,
+      "order": 6,
       "imageCount": 17,
       "captionedImages": 1,
       "descriptionChars": 40,
@@ -132,7 +154,7 @@
       "title": "Voter Atlas User Experience",
       "client": "Erehwon Atlas",
       "year": "2021",
-      "order": 5,
+      "order": 7,
       "imageCount": 14,
       "captionedImages": 0,
       "descriptionChars": 0,
@@ -143,33 +165,11 @@
       "title": "Lenovo ID single sign on",
       "client": "Lenovo",
       "year": "2017",
-      "order": 6,
+      "order": 8,
       "imageCount": 7,
       "captionedImages": 6,
       "descriptionChars": 281,
       "sourceUrl": "https://francessun.carbonmade.com/projects/6794490"
-    },
-    {
-      "slug": "mfa-thesis-2020-taiwanese-smart-home",
-      "title": "MFA Thesis- 2020 Taiwanese Smart Home",
-      "client": "CCS MFA",
-      "year": "2011",
-      "order": 7,
-      "imageCount": 46,
-      "captionedImages": 0,
-      "descriptionChars": 52,
-      "sourceUrl": "https://francessun.carbonmade.com/projects/2881757"
-    },
-    {
-      "slug": "my-selected-work",
-      "title": "My selected work",
-      "client": "Lenovo",
-      "year": "",
-      "order": 8,
-      "imageCount": 15,
-      "captionedImages": 0,
-      "descriptionChars": 103,
-      "sourceUrl": "https://francessun.carbonmade.com/projects/6983864"
     },
     {
       "slug": "connect2",
@@ -264,7 +264,7 @@
   "warnings": [
     {
       "url": "https://francessun.carbonmade.com/projects/7231012",
-      "issue": "Untitled on Carbonmade (empty <title>, no og:title, no heading, index card shows only \"VIEW PROJECT\"). Imported and kept, but held back from the published grid until a title is supplied."
+      "issue": "Untitled on Carbonmade; titled \"Dell Works\" from MANUAL_TITLES."
     },
     {
       "url": "https://francessun.carbonmade.com/projects/7231012",

@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SpeakingCard from '../../components/SpeakingCard.astro';
-import { talks } from '../../data/site';
+import { talksNewestFirst } from '../../data/site';
 
 const title = 'Speaking | Frances Sun — Enterprise UX Talks';
 const description =
-  'Talks by Frances Sun, Lead UX Designer, on enterprise UX, systems thinking, complex workflows, and designing for clarity — including CanUX 2025 and UIUC UX Day 2026.';
+  'Talks by Frances Sun, Lead UX Designer, on enterprise UX, systems thinking, complex workflows, and designing for clarity, including DDD Europe 2026, UIUC UX Day 2026 and CanUX 2025.';
 ---
 
 <BaseLayout title={title} description={description} path="/speaking">
@@ -15,15 +15,14 @@ const description =
         <p class="eyebrow">Speaking</p>
         <h1>Talks on enterprise UX</h1>
         <p class="lede measure">
-          Conference and university talks about working in complex enterprise products: business
-          context, breaking down complexity, listening past the surface request, and designing for
-          clarity.
+          I speak about enterprise UX, systems thinking, product design, and what it takes to make
+          complicated work easier to understand.
         </p>
       </header>
 
       <div class="speaking-index__grid">
         {
-          talks.map((talk, index) => (
+          talksNewestFirst.map((talk, index) => (
             <SpeakingCard talk={talk} priority={index === 0} headingLevel={2} />
           ))
         }
