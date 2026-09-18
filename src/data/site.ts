@@ -60,6 +60,14 @@ export type Project = {
   imageAlt: string;
   /** True when `image` is an abstract stand-in rather than a product capture. */
   imageIsPlaceholder: boolean;
+  /**
+   * What Frances personally did, and what the public representation actually
+   * is. Each project words this for its own situation: the products are real
+   * client work, but what can be shown publicly differs from one to the next.
+   * Keep it factual and specific. If an asset is ever swapped, update the note
+   * with it.
+   */
+  portfolioNote?: string;
   cta?: { label: string; href: string; external: boolean };
 };
 
@@ -77,6 +85,8 @@ export const projects: Project[] = [
     imageAlt:
       'Rate Card Manager prototype showing the All Rate Cards list with search, filters, and draft and published states.',
     imageIsPlaceholder: false,
+    portfolioNote:
+      'I designed and built this interactive portfolio prototype. All data shown is synthetic and created for demonstration purposes.',
     cta: { label: 'Live demo', href: links.rateCardDemo, external: true },
   },
   {
@@ -88,6 +98,8 @@ export const projects: Project[] = [
     image: '/images/projects/atlas.webp',
     imageAlt: 'Abstract graphic of concentric rings and access points representing identity and access management.',
     imageIsPlaceholder: true,
+    portfolioNote:
+      'I designed the administration experience and interaction patterns represented here. The visual shown is an abstract portfolio placeholder, not a production screenshot.',
   },
   {
     slug: 'simba',
@@ -98,6 +110,8 @@ export const projects: Project[] = [
     image: '/images/projects/simba.webp',
     imageAlt: 'Abstract graphic of stacked ledger rules representing connected financial workflows.',
     imageIsPlaceholder: true,
+    portfolioNote:
+      'I designed the workflow, navigation, and interaction concepts represented in this portfolio entry. No production financial data is shown, and the visual above is an abstract portfolio placeholder rather than a product screenshot.',
   },
   {
     slug: 'linear',
@@ -108,6 +122,8 @@ export const projects: Project[] = [
     image: '/images/projects/linear.webp',
     imageAlt: 'Abstract graphic of parallel tracks converging, representing advertising operations handoffs.',
     imageIsPlaceholder: true,
+    portfolioNote:
+      'I designed the workflow and interaction patterns represented in this portfolio entry. The visual above is an abstract portfolio placeholder rather than a product screenshot, and nothing shown here exposes production data.',
   },
 ];
 

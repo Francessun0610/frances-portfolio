@@ -29,14 +29,10 @@ const headingId = `project-${project.slug}`;
     <h3 class="card__title" id={headingId}>{project.title}</h3>
     <p class="card__description">{project.description}</p>
 
-    {
-      project.imageIsPlaceholder && (
-        <p class="card__note">
-          Screens for this product are not public. The image above is an abstract placeholder, not a
-          product screenshot.
-        </p>
-      )
-    }
+    {/* Quiet context: what Frances built, and what the visual actually is.
+        The wording belongs to each project in src/data/site.ts, so nothing
+        here is conditional on which project is being rendered. */}
+    {project.portfolioNote && <p class="card__note">{project.portfolioNote}</p>}
 
     {
       project.cta && (
