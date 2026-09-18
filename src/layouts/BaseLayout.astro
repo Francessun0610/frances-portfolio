@@ -1,0 +1,111 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { person, links } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute or root-relative path used for the canonical URL. */
+  path?: string;
+  /** Root-relative image used for Open Graph / Twitter cards. */
+  ogImage?: string;
+  ogImageAlt?: string;
+  ogType?: 'website' | 'article';
+  /** Extra JSON-LD objects to embed alongside the site-wide Person graph. */
+  structuredData?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description,
+  path = Astro.url.pathname,
+  ogImage = '/images/og/frances-sun-portfolio.png',
+  ogImageAlt = 'Frances Sun — Lead UX Designer, enterprise product design portfolio.',
+  ogType = 'website',
+  structuredData = [],
+} = Astro.props;
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const canonical = new URL(path, site).href.replace(/\/$/, '') || site.href;
+const ogImageUrl = new URL(ogImage, site).href;
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: person.name,
+  jobTitle: person.role,
+  description: person.statement,
+  url: site.href,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: person.locality,
+    addressRegion: person.region,
+    addressCountry: person.country,
+  },
+  knowsAbout: [
+    'Enterprise UX',
+    'Enterprise product design',
+    'Design systems',
+    'Systems thinking',
+    'Interaction design',
+    'Interactive prototyping',
+    'Complex workflow design',
+    'Advertising technology UX',
+  ],
+  sameAs: [links.linkedin, links.instagram],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta name="author" content={person.name} />
+    <meta name="theme-color" content="#0b0d12" />
+    <meta name="color-scheme" content="dark" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={`${person.name} — ${person.role}`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    {
+      structuredData.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))
+    }
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

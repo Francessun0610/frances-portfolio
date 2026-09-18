@@ -1,0 +1,128 @@
+---
+import type { Project } from '../data/site';
+
+interface Props {
+  project: Project;
+  /** First cards render eagerly; the rest lazy-load. */
+  priority?: boolean;
+}
+
+const { project, priority = false } = Astro.props;
+const headingId = `project-${project.slug}`;
+---
+
+<article class="card" aria-labelledby={headingId}>
+  <div class="card__media">
+    <img
+      src={project.image}
+      alt={project.imageAlt}
+      width="1280"
+      height="800"
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding="async"
+    />
+  </div>
+
+  <div class="card__body">
+    <p class="card__category">{project.category}</p>
+    <h3 class="card__title" id={headingId}>{project.title}</h3>
+    <p class="card__description">{project.description}</p>
+
+    {
+      project.imageIsPlaceholder && (
+        <p class="card__note">
+          Screens for this product are not public. The image above is an abstract placeholder, not a
+          product screenshot.
+        </p>
+      )
+    }
+
+    {
+      project.cta && (
+        <p class="card__cta">
+          <a
+            class="text-link"
+            href={project.cta.href}
+            {...(project.cta.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
+            {project.cta.label}
+            <span aria-hidden="true">↗</span>
+            {project.cta.external && <span class="visually-hidden">(opens in a new tab)</span>}
+          </a>
+        </p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--bg-raised) 100%);
+    transition: border-color 200ms var(--ease);
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+  }
+
+  .card__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #05070a;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.85rem);
+  }
+
+  .card__category {
+    font-size: 0.8125rem;
+    letter-spacing: 0.02em;
+    color: var(--text-tertiary);
+  }
+
+  .card__title {
+    font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.4375rem);
+  }
+
+  .card__description {
+    font-size: var(--step-small);
+    line-height: 1.62;
+    color: var(--text-secondary);
+  }
+
+  .card__note {
+    padding-top: 0.35rem;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--text-tertiary);
+    border-top: 1px solid var(--border);
+    margin-top: 0.35rem;
+  }
+
+  .card__cta {
+    margin-top: 0.35rem;
+  }
+
+  .card__cta .text-link {
+    min-height: 44px;
+    align-items: center;
+  }
+</style>

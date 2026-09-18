@@ -1,0 +1,301 @@
+---
+import { person, nav, social } from '../data/site';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+function isCurrent(href: string) {
+  if (href.startsWith('http') || href.endsWith('.pdf')) return false;
+  const target = href.split('#')[0].replace(/\/$/, '') || '/';
+  if (target === '/') return currentPath === '/';
+  return currentPath === target || currentPath.startsWith(`${target}/`);
+}
+---
+
+<header class="masthead">
+  <div class="shell masthead__inner">
+    <a class="brand" href="/">
+      <span class="brand__mark" aria-hidden="true">{person.initials}</span>
+      <span class="brand__name">{person.name}</span>
+    </a>
+
+    <button
+      class="menu-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      data-menu-toggle
+    >
+      <span class="menu-toggle__label" data-menu-label>Menu</span>
+      <span class="menu-toggle__glyph" aria-hidden="true"></span>
+    </button>
+
+    <nav class="site-nav" id="site-menu" aria-label="Primary" data-menu>
+      <ul class="site-nav__list">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                {...(item.href.endsWith('.pdf') ? { target: '_blank', rel: 'noopener' } : {})}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <ul class="site-nav__list site-nav__list--social">
+        {
+          social.map((item) => (
+            <li>
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
+                {item.label}
+                <span aria-hidden="true"> ↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .masthead {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .masthead__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 68px;
+    padding-block: 0.75rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .brand__mark {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    font-size: 0.8125rem;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .brand__name {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .site-nav__list {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .site-nav__list a {
+    display: inline-block;
+    padding-block: 0.35rem;
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 150ms var(--ease);
+  }
+
+  .site-nav__list a:hover,
+  .site-nav__list a[aria-current='page'] {
+    color: var(--text);
+  }
+
+  .site-nav__list--social {
+    gap: 1.25rem;
+    padding-left: 2rem;
+    border-left: 1px solid var(--border);
+  }
+
+  .site-nav__list--social a {
+    color: var(--text-tertiary);
+  }
+
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 44px;
+    padding: 0.4rem 0.9rem 0.4rem 1rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: transparent;
+    font-size: 0.9375rem;
+    cursor: pointer;
+  }
+
+  .menu-toggle__glyph {
+    position: relative;
+    width: 15px;
+    height: 9px;
+  }
+
+  .menu-toggle__glyph::before,
+  .menu-toggle__glyph::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: currentColor;
+    transition: transform 180ms var(--ease), top 180ms var(--ease);
+  }
+
+  .menu-toggle__glyph::before {
+    top: 0;
+  }
+
+  .menu-toggle__glyph::after {
+    top: 7.5px;
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-toggle__glyph::before {
+    top: 3.75px;
+    transform: rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] .menu-toggle__glyph::after {
+    top: 3.75px;
+    transform: rotate(-45deg);
+  }
+
+  /* Laptop: drop the social links to keep the bar from crowding. */
+  @media (max-width: 1099px) {
+    .site-nav {
+      gap: 1.25rem;
+    }
+
+    .site-nav__list {
+      gap: 1.15rem;
+    }
+
+    .site-nav__list--social {
+      display: none;
+    }
+  }
+
+  @media (max-width: 899px) {
+    .menu-toggle {
+      display: inline-flex;
+    }
+
+    .site-nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding: 0.5rem var(--gutter) 1.5rem;
+      background: var(--bg-raised);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-nav[data-open] {
+      display: flex;
+    }
+
+    .site-nav__list {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+
+    .site-nav__list a {
+      display: block;
+      /* 48px touch target. */
+      padding-block: 0.875rem;
+      font-size: 1.0625rem;
+      color: var(--text);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .site-nav__list--social {
+      display: flex;
+      padding-left: 0;
+      border-left: 0;
+    }
+
+    .site-nav__list--social a {
+      color: var(--text-secondary);
+    }
+
+    .site-nav__list--social li:last-child a {
+      border-bottom: 0;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const label = document.querySelector<HTMLElement>('[data-menu-label]');
+
+  if (toggle && menu && label) {
+    const setOpen = (open: boolean) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.toggleAttribute('data-open', open);
+      label.textContent = open ? 'Close' : 'Menu';
+    };
+
+    toggle.addEventListener('click', () => {
+      setOpen(toggle.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // Escape closes the menu and returns focus to the button that opened it.
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+
+    // Reset state when the layout crosses back to the desktop bar.
+    const desktop = window.matchMedia('(min-width: 900px)');
+    desktop.addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
+</script>

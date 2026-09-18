@@ -1,0 +1,917 @@
+---
+import type { Slide } from '../lib/slides';
+
+interface Props {
+  slides: Slide[];
+  /** Deck folder under public/slides/, also used to scope the viewer. */
+  deck: string;
+  /** Talk title, used in the viewer's accessible name. */
+  talkTitle: string;
+}
+
+const { slides, deck, talkTitle } = Astro.props;
+const total = slides.length;
+const first = slides[0];
+
+/** Alt text names the slide; it never dumps the whole slide's text. */
+function altFor(slide: Slide) {
+  return slide.title
+    ? `Slide ${slide.index} of ${total}: ${slide.title}`
+    : `Slide ${slide.index} of ${total}`;
+}
+
+// Only what the client needs in order to swap the main image. The visible slide
+// text stays in the DOM so it is crawlable, and thumbnails are already <img>.
+const clientSlides = slides.map((slide) => ({ src: slide.image, title: slide.title }));
+---
+
+{
+  total === 0 ? (
+    <div class="viewer-missing">
+      <h3>Slides have not been exported yet</h3>
+      <p>
+        The viewer is in place, but <code>public/slides/{deck}/slides.json</code> is missing. Export
+        the deck from its PowerPoint source and rebuild:
+      </p>
+      <pre tabindex="0" role="group" aria-label="Slide export commands"><code>npm run slides -- --deck {deck}
+npm run slides:verify</code></pre>
+      <p class="viewer-missing__note">
+        Nothing is shown in place of the real slides on purpose — no placeholder slide images are
+        generated.
+      </p>
+    </div>
+  ) : (
+    <section
+      class="viewer"
+      data-viewer
+      data-deck={deck}
+      data-total={total}
+      aria-label={`Slide viewer: ${talkTitle}`}
+    >
+      <div class="viewer__stage" data-stage>
+        <div class="viewer__frame">
+          <img
+            data-slide
+            src={first.image}
+            alt={altFor(first)}
+            width={first.width}
+            height={first.height}
+            fetchpriority="high"
+            decoding="async"
+          />
+        </div>
+      </div>
+
+      <div class="viewer__bar">
+        <button class="viewer__nav" type="button" data-prev aria-label="Previous slide">
+          <span aria-hidden="true">←</span>
+          <span class="viewer__nav-text">Previous</span>
+        </button>
+
+        <p class="viewer__counter">
+          <span class="visually-hidden">Slide </span>
+          <span data-current>1</span>
+          <span class="viewer__counter-sep" aria-hidden="true">/</span>
+          <span class="visually-hidden">of </span>
+          <span>{total}</span>
+        </p>
+
+        <button class="viewer__nav" type="button" data-next aria-label="Next slide">
+          <span class="viewer__nav-text">Next</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+
+      <div class="viewer__utils">
+        <button class="viewer__util" type="button" data-overview aria-haspopup="dialog" hidden>
+          View slide overview
+        </button>
+        <button
+          class="viewer__util"
+          type="button"
+          data-fullscreen
+          aria-label="Enter fullscreen"
+          hidden
+        >
+          <span data-fullscreen-label>Fullscreen</span>
+        </button>
+      </div>
+
+      <div class="rail" data-rail>
+        <ul class="rail__list">
+          {slides.map((slide) => (
+            <li>
+              <button
+                class="rail__item"
+                type="button"
+                data-thumb={slide.index}
+                aria-label={
+                  slide.title
+                    ? `Go to slide ${slide.index}: ${slide.title}`
+                    : `Go to slide ${slide.index}`
+                }
+                aria-current={slide.index === 1 ? 'true' : undefined}
+              >
+                <img
+                  src={slide.thumbnail}
+                  alt=""
+                  width="320"
+                  height="180"
+                  loading={slide.index <= 8 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+                <span class="rail__number" aria-hidden="true">
+                  {slide.index}
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <details class="slide-text">
+        <summary>
+          <span>Slide text</span>
+          <span class="slide-text__hint">visible text from the current slide</span>
+        </summary>
+        <div class="slide-text__body">
+          {slides.map((slide) => (
+            <div data-text-for={slide.index} hidden={slide.index !== 1}>
+              {slide.visibleText
+                .split('\n')
+                .filter(Boolean)
+                .map((line) => (
+                  <p>{line}</p>
+                ))}
+            </div>
+          ))}
+        </div>
+      </details>
+
+      <p class="visually-hidden" role="status" aria-live="polite" data-live />
+
+      <script
+        type="application/json"
+        data-viewer-slides
+        set:html={JSON.stringify(clientSlides)}
+      />
+    </section>
+  )
+}
+
+{
+  total > 0 && (
+    <script is:inline define:vars={{ deck, total }}>
+      // Runs before the deferred module script so a deep link never renders
+      // slide 1 first. Malformed or out-of-range values fall through to slide 1.
+      (function () {
+        var root = document.querySelector('[data-viewer][data-deck="' + deck + '"]');
+        if (!root) return;
+        var value = new URLSearchParams(window.location.search).get('slide');
+        var index = parseInt(value || '', 10);
+        if (!isFinite(index) || String(index) !== String(value).trim() || index < 1 || index > total) {
+          return;
+        }
+        if (index === 1) return;
+        root.setAttribute('data-initial', String(index));
+        var image = root.querySelector('[data-slide]');
+        if (image) {
+          image.setAttribute(
+            'src',
+            '/slides/' + deck + '/slide-' + String(index).padStart(3, '0') + '.webp'
+          );
+        }
+        var counter = root.querySelector('[data-current]');
+        if (counter) counter.textContent = String(index);
+      })();
+    </script>
+  )
+}
+
+<style>
+  /* ---------- Stage ---------- */
+
+  .viewer {
+    --rail-height: 74px;
+    margin-top: 2rem;
+  }
+
+  .viewer__stage {
+    max-width: 1120px;
+    margin-inline: auto;
+  }
+
+  .viewer__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #05070a;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+  }
+
+  .viewer__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* ---------- Controls ---------- */
+
+  .viewer__bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(1rem, 4vw, 2.5rem);
+    max-width: 1120px;
+    margin: 1.25rem auto 0;
+  }
+
+  .viewer__nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 46px;
+    min-width: 46px;
+    padding: 0.5rem 1.15rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: transparent;
+    font-size: 0.9375rem;
+    font-weight: 550;
+    cursor: pointer;
+    transition: border-color 150ms var(--ease), background-color 150ms var(--ease);
+  }
+
+  .viewer__nav:hover:not(:disabled) {
+    border-color: var(--text-tertiary);
+    background: rgba(242, 239, 233, 0.04);
+  }
+
+  .viewer__nav:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .viewer__counter {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    min-width: 6.5ch;
+    font-size: 0.9375rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+    justify-content: center;
+  }
+
+  .viewer__counter [data-current] {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .viewer__counter-sep {
+    color: var(--text-tertiary);
+  }
+
+  .viewer__utils {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.25rem;
+    max-width: 1120px;
+    margin: 0.85rem auto 0;
+  }
+
+  .viewer__util {
+    min-height: 44px;
+    padding: 0.4rem 0.2rem;
+    border: 0;
+    background: none;
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+    cursor: pointer;
+    transition: color 150ms var(--ease);
+  }
+
+  .viewer__util:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  /* ---------- Thumbnail rail ---------- */
+
+  .rail {
+    max-width: 1120px;
+    margin: 1.5rem auto 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+
+  .rail__list {
+    display: flex;
+    gap: 0.6rem;
+    margin: 0;
+    padding: 0 0 0.75rem;
+    list-style: none;
+  }
+
+  .rail__item {
+    position: relative;
+    display: block;
+    flex: 0 0 auto;
+    width: 116px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #05070a;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 150ms var(--ease), border-color 150ms var(--ease);
+  }
+
+  .rail__item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .rail__item:hover {
+    opacity: 0.85;
+  }
+
+  .rail__item[aria-current='true'] {
+    opacity: 1;
+    border-color: var(--cobalt);
+    box-shadow: 0 0 0 1px var(--cobalt);
+  }
+
+  .rail__number {
+    position: absolute;
+    left: 4px;
+    bottom: 4px;
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+    background: rgba(5, 7, 10, 0.78);
+    font-size: 0.6875rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-secondary);
+  }
+
+  /* ---------- Slide text ---------- */
+
+  .slide-text {
+    max-width: 1120px;
+    margin: 1.25rem auto 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .slide-text summary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+    min-height: 44px;
+    padding-block: 0.85rem;
+    font-size: var(--step-small);
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  .slide-text summary::marker {
+    color: var(--text-tertiary);
+  }
+
+  .slide-text__hint {
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+  }
+
+  .slide-text__body {
+    max-width: 68ch;
+    padding-bottom: 1.25rem;
+  }
+
+  .slide-text__body p {
+    font-size: var(--step-small);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .slide-text__body p + p {
+    margin-top: 0.35rem;
+  }
+
+  /* ---------- Overview dialog (built on demand) ---------- */
+
+  :global(.overview) {
+    width: min(1100px, 92vw);
+    max-height: 86vh;
+    padding: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--bg-raised);
+    color: var(--text);
+  }
+
+  :global(.overview::backdrop) {
+    background: rgba(4, 5, 8, 0.78);
+  }
+
+  :global(.overview__head) {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.35rem;
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--border);
+  }
+
+  :global(.overview__title) {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  :global(.overview__close) {
+    min-height: 44px;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--border-strong);
+    border-radius: 8px;
+    background: none;
+    font-size: var(--step-small);
+    cursor: pointer;
+  }
+
+  :global(.overview__grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 1.35rem;
+    list-style: none;
+  }
+
+  :global(.overview__item) {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #05070a;
+    cursor: pointer;
+  }
+
+  :global(.overview__item img) {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  :global(.overview__item[aria-current='true']) {
+    border-color: var(--cobalt);
+    box-shadow: 0 0 0 1px var(--cobalt);
+  }
+
+  /* ---------- Fullscreen ---------- */
+
+  .viewer:fullscreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 1.5rem clamp(1rem, 4vw, 3rem);
+    background: var(--bg);
+  }
+
+  .viewer:fullscreen .viewer__stage {
+    max-width: min(100%, calc((100vh - 9rem) * 16 / 9));
+  }
+
+  .viewer:fullscreen .rail,
+  .viewer:fullscreen .slide-text {
+    display: none;
+  }
+
+  /* ---------- Missing-export state ---------- */
+
+  .viewer-missing {
+    max-width: 68ch;
+    margin-top: 2rem;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  .viewer-missing h3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .viewer-missing p {
+    color: var(--text-secondary);
+    font-size: var(--step-small);
+  }
+
+  .viewer-missing pre {
+    overflow-x: auto;
+    margin: 1rem 0;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    font-size: 0.8125rem;
+  }
+
+  .viewer-missing__note {
+    color: var(--text-tertiary);
+  }
+
+  /* ---------- Responsive ---------- */
+
+  /* Tablet: controls stay below the slide, rail stays scrollable. */
+  @media (max-width: 1023px) {
+    .viewer__bar {
+      gap: 1rem;
+      justify-content: space-between;
+    }
+
+    .rail__item {
+      width: 104px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .viewer {
+      margin-top: 1.5rem;
+    }
+
+    .viewer__frame {
+      border-radius: 10px;
+    }
+
+    .viewer__bar {
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    /* Full word labels, not shrunken icons; 48px targets. */
+    .viewer__nav {
+      flex: 1 1 auto;
+      justify-content: center;
+      min-height: 48px;
+      padding-inline: 0.75rem;
+      font-size: 0.9375rem;
+    }
+
+    .viewer__counter {
+      flex: 0 0 auto;
+      padding-inline: 0.25rem;
+    }
+
+    .viewer__utils {
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
+    .rail {
+      margin-top: 1rem;
+    }
+
+    .rail__item {
+      width: 88px;
+    }
+
+    .rail__number {
+      font-size: 0.625rem;
+    }
+  }
+</style>
+
+<script>
+  type ClientSlide = { src: string; title: string };
+
+  class SlideViewer {
+    root: HTMLElement;
+    slides: ClientSlide[];
+    total: number;
+    deck: string;
+    current = 1;
+
+    image: HTMLImageElement;
+    counter: HTMLElement;
+    live: HTMLElement;
+    prevButton: HTMLButtonElement;
+    nextButton: HTMLButtonElement;
+    rail: HTMLElement;
+    thumbs: HTMLButtonElement[];
+    textPanels: Map<number, HTMLElement>;
+    fullscreenButton: HTMLButtonElement | null;
+    fullscreenLabel: HTMLElement | null;
+    overviewButton: HTMLButtonElement | null;
+    overview: HTMLDialogElement | null = null;
+
+    reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    constructor(root: HTMLElement) {
+      this.root = root;
+      this.deck = root.dataset.deck ?? '';
+      this.total = Number(root.dataset.total ?? 0);
+
+      const data = root.querySelector<HTMLScriptElement>('[data-viewer-slides]');
+      this.slides = data ? (JSON.parse(data.textContent ?? '[]') as ClientSlide[]) : [];
+
+      this.image = root.querySelector('[data-slide]')!;
+      this.counter = root.querySelector('[data-current]')!;
+      this.live = root.querySelector('[data-live]')!;
+      this.prevButton = root.querySelector('[data-prev]')!;
+      this.nextButton = root.querySelector('[data-next]')!;
+      this.rail = root.querySelector('[data-rail]')!;
+      this.thumbs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-thumb]'));
+      this.fullscreenButton = root.querySelector('[data-fullscreen]');
+      this.fullscreenLabel = root.querySelector('[data-fullscreen-label]');
+      this.overviewButton = root.querySelector('[data-overview]');
+
+      this.textPanels = new Map();
+      root.querySelectorAll<HTMLElement>('[data-text-for]').forEach((panel) => {
+        this.textPanels.set(Number(panel.dataset.textFor), panel);
+      });
+
+      this.bind();
+
+      const initial = Number(root.dataset.initial ?? 1);
+      this.go(Number.isFinite(initial) ? initial : 1, { updateUrl: false, announce: false });
+    }
+
+    bind() {
+      this.prevButton.addEventListener('click', () => this.go(this.current - 1));
+      this.nextButton.addEventListener('click', () => this.go(this.current + 1));
+
+      this.thumbs.forEach((thumb) => {
+        thumb.addEventListener('click', () => this.go(Number(thumb.dataset.thumb)));
+      });
+
+      document.addEventListener('keydown', (event) => this.onKeydown(event));
+      this.bindSwipe();
+
+      // Progressive enhancement: only offer these when the browser supports them.
+      // The typeof check is a runtime feature test; the DOM types claim
+      // requestFullscreen always exists, which is not true everywhere.
+      if (this.fullscreenButton && typeof this.root.requestFullscreen === 'function') {
+        this.fullscreenButton.hidden = false;
+        this.fullscreenButton.addEventListener('click', () => this.toggleFullscreen());
+        document.addEventListener('fullscreenchange', () => this.syncFullscreenLabel());
+      }
+
+      if (this.overviewButton && typeof HTMLDialogElement !== 'undefined') {
+        this.overviewButton.hidden = false;
+        this.overviewButton.addEventListener('click', () => this.openOverview());
+      }
+    }
+
+    /** Arrow keys work when focus is inside the viewer, or when the viewer is
+     *  on screen and focus is not in another control. */
+    onKeydown(event: KeyboardEvent) {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+
+      const target = event.target as HTMLElement | null;
+      const insideViewer = !!target && this.root.contains(target);
+      const onBody = !target || target === document.body;
+      if (!insideViewer && !onBody) return;
+      if (document.fullscreenElement && document.fullscreenElement !== this.root) return;
+
+      if (!insideViewer && !this.isOnScreen()) return;
+
+      let next: number | null = null;
+      if (event.key === 'ArrowLeft') next = this.current - 1;
+      else if (event.key === 'ArrowRight') next = this.current + 1;
+      else if (event.key === 'Home') next = 1;
+      else if (event.key === 'End') next = this.total;
+      if (next === null) return;
+
+      const clamped = Math.min(Math.max(next, 1), this.total);
+      if (clamped !== this.current) {
+        event.preventDefault();
+        this.go(clamped);
+      } else if (event.key === 'Home' || event.key === 'End') {
+        event.preventDefault();
+      }
+    }
+
+    isOnScreen() {
+      const box = this.root.getBoundingClientRect();
+      return box.bottom > 0 && box.top < window.innerHeight * 0.9;
+    }
+
+    bindSwipe() {
+      let startX = 0;
+      let startY = 0;
+      let tracking = false;
+
+      const stage = this.root.querySelector<HTMLElement>('[data-stage]');
+      if (!stage) return;
+
+      stage.addEventListener(
+        'touchstart',
+        (event) => {
+          if (event.touches.length !== 1) return;
+          tracking = true;
+          startX = event.touches[0].clientX;
+          startY = event.touches[0].clientY;
+        },
+        { passive: true },
+      );
+
+      stage.addEventListener(
+        'touchend',
+        (event) => {
+          if (!tracking) return;
+          tracking = false;
+          const touch = event.changedTouches[0];
+          const dx = touch.clientX - startX;
+          const dy = touch.clientY - startY;
+          // Horizontal intent only, so vertical page scrolling still works.
+          if (Math.abs(dx) < 45 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+          this.go(dx < 0 ? this.current + 1 : this.current - 1);
+        },
+        { passive: true },
+      );
+    }
+
+    go(index: number, options: { updateUrl?: boolean; announce?: boolean } = {}) {
+      const { updateUrl = true, announce = true } = options;
+      const target = Math.min(Math.max(Math.round(index) || 1, 1), this.total);
+      const slide = this.slides[target - 1];
+      if (!slide) return;
+
+      this.current = target;
+
+      if (this.image.getAttribute('src') !== slide.src) {
+        this.image.setAttribute('src', slide.src);
+      }
+      this.image.alt = slide.title
+        ? `Slide ${target} of ${this.total}: ${slide.title}`
+        : `Slide ${target} of ${this.total}`;
+
+      this.counter.textContent = String(target);
+      this.prevButton.disabled = target === 1;
+      this.nextButton.disabled = target === this.total;
+
+      this.thumbs.forEach((thumb) => {
+        const isCurrent = Number(thumb.dataset.thumb) === target;
+        if (isCurrent) thumb.setAttribute('aria-current', 'true');
+        else thumb.removeAttribute('aria-current');
+      });
+
+      this.textPanels.forEach((panel, key) => {
+        panel.hidden = key !== target;
+      });
+
+      this.scrollRailToCurrent();
+      this.preloadNeighbours(target);
+      this.syncOverview();
+
+      if (updateUrl) this.updateUrl(target);
+      if (announce) {
+        this.live.textContent = slide.title
+          ? `Slide ${target} of ${this.total}: ${slide.title}`
+          : `Slide ${target} of ${this.total}`;
+      }
+    }
+
+    /** Only the neighbours are prefetched — never the whole deck. */
+    preloadNeighbours(target: number) {
+      [target - 1, target + 1].forEach((index) => {
+        const slide = this.slides[index - 1];
+        if (!slide) return;
+        const image = new Image();
+        image.decoding = 'async';
+        image.src = slide.src;
+      });
+    }
+
+    scrollRailToCurrent() {
+      const thumb = this.thumbs[this.current - 1];
+      if (!thumb) return;
+      // Computed rather than scrollIntoView, so the page never jumps vertically.
+      const left = thumb.offsetLeft - (this.rail.clientWidth - thumb.clientWidth) / 2;
+      this.rail.scrollTo({
+        left: Math.max(0, left),
+        behavior: this.reduceMotion.matches ? 'auto' : 'smooth',
+      });
+    }
+
+    updateUrl(target: number) {
+      const url = new URL(window.location.href);
+      if (target === 1) url.searchParams.delete('slide');
+      else url.searchParams.set('slide', String(target));
+      // replaceState, so clicking through 70 slides does not bury the Back button.
+      window.history.replaceState({}, '', url);
+    }
+
+    toggleFullscreen() {
+      if (document.fullscreenElement === this.root) document.exitFullscreen?.();
+      else this.root.requestFullscreen?.().catch(() => undefined);
+    }
+
+    syncFullscreenLabel() {
+      if (!this.fullscreenButton || !this.fullscreenLabel) return;
+      const active = document.fullscreenElement === this.root;
+      this.fullscreenLabel.textContent = active ? 'Exit fullscreen' : 'Fullscreen';
+      this.fullscreenButton.setAttribute(
+        'aria-label',
+        active ? 'Exit fullscreen' : 'Enter fullscreen',
+      );
+    }
+
+    openOverview() {
+      if (!this.overview) this.overview = this.buildOverview();
+      this.syncOverview();
+      this.overview.showModal();
+      this.overview
+        .querySelector<HTMLElement>('[aria-current="true"]')
+        ?.scrollIntoView({ block: 'center' });
+    }
+
+    buildOverview() {
+      const dialog = document.createElement('dialog');
+      dialog.className = 'overview';
+      dialog.setAttribute('aria-label', `All ${this.total} slides`);
+
+      const head = document.createElement('div');
+      head.className = 'overview__head';
+      const title = document.createElement('p');
+      title.className = 'overview__title';
+      title.textContent = `All slides (${this.total})`;
+      const close = document.createElement('button');
+      close.className = 'overview__close';
+      close.type = 'button';
+      close.textContent = 'Close';
+      close.addEventListener('click', () => dialog.close());
+      head.append(title, close);
+
+      const grid = document.createElement('ul');
+      grid.className = 'overview__grid';
+
+      this.thumbs.forEach((thumb, position) => {
+        const index = position + 1;
+        const source = thumb.querySelector('img')?.getAttribute('src') ?? '';
+        const item = document.createElement('li');
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'overview__item';
+        button.dataset.overviewIndex = String(index);
+        button.setAttribute('aria-label', thumb.getAttribute('aria-label') ?? `Go to slide ${index}`);
+
+        const image = document.createElement('img');
+        image.src = source;
+        image.alt = '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.width = 320;
+        image.height = 180;
+
+        const number = document.createElement('span');
+        number.className = 'rail__number';
+        number.setAttribute('aria-hidden', 'true');
+        number.textContent = String(index);
+
+        button.append(image, number);
+        button.addEventListener('click', () => {
+          this.go(index);
+          dialog.close();
+        });
+        item.append(button);
+        grid.append(item);
+      });
+
+      dialog.append(head, grid);
+      dialog.addEventListener('close', () => this.overviewButton?.focus());
+      document.body.append(dialog);
+      return dialog;
+    }
+
+    syncOverview() {
+      if (!this.overview) return;
+      this.overview.querySelectorAll<HTMLElement>('[data-overview-index]').forEach((item) => {
+        if (Number(item.dataset.overviewIndex) === this.current) {
+          item.setAttribute('aria-current', 'true');
+        } else {
+          item.removeAttribute('aria-current');
+        }
+      });
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-viewer]').forEach((root) => new SlideViewer(root));
+</script>

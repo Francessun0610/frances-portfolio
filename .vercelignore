@@ -1,0 +1,5 @@
+# Never upload PowerPoint sources to the deployment platform.
+# They contain speaker notes and document metadata that must stay private.
+content/speaking/source/
+scripts/process-presentations/.render-cache/
+qa-output/

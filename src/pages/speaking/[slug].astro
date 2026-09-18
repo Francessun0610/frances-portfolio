@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PresentationViewer from '../../components/PresentationViewer.astro';
+import { person, links, talks } from '../../data/site';
+import { loadDeck } from '../../lib/slides';
+
+export function getStaticPaths() {
+  return talks.map((talk) => ({ params: { slug: talk.slug }, props: { talk } }));
+}
+
+const { talk } = Astro.props;
+const slides = loadDeck(talk.deck);
+
+const site = Astro.site ?? new URL('http://localhost:4321');
+const talkUrl = new URL(`/speaking/${talk.slug}`, site).href;
+
+// Described as a presentation document. No event date is asserted, because none
+// was supplied — only the event name, location and year Frances confirmed.
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'PresentationDigitalDocument',
+    name: talk.title,
+    headline: talk.title,
+    description: talk.intro,
+    url: talkUrl,
+    inLanguage: 'en',
+    copyrightYear: talk.year,
+    numberOfPages: slides.length || undefined,
+    image: new URL(talk.image, site).href,
+    author: {
+      '@type': 'Person',
+      name: person.name,
+      jobTitle: person.role,
+      sameAs: [links.linkedin, links.instagram],
+    },
+    about: [
+      'Enterprise UX',
+      'Enterprise product design',
+      'Systems thinking',
+      'Complex workflow design',
+      'Design systems',
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.href },
+      { '@type': 'ListItem', position: 2, name: 'Speaking', item: new URL('/speaking', site).href },
+      { '@type': 'ListItem', position: 3, name: talk.title, item: talkUrl },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={talk.seoTitle}
+  description={talk.seoDescription}
+  path={`/speaking/${talk.slug}`}
+  ogImage={talk.image}
+  ogImageAlt={talk.imageAlt}
+  ogType="article"
+  structuredData={structuredData}
+>
+  <article class="talk">
+    <div class="shell">
+      <p class="talk__back">
+        <a class="text-link" href="/speaking">
+          <span aria-hidden="true">←</span> Back to Speaking
+        </a>
+      </p>
+
+      <div class="talk__head">
+        <div class="talk__intro">
+          <p class="eyebrow">
+            {talk.event} · {talk.year}
+          </p>
+          <h1>{talk.title}</h1>
+          <p class="lede talk__lede">{talk.intro}</p>
+
+          <dl class="talk__meta">
+            <div>
+              <dt>Event</dt>
+              <dd>
+                {talk.event}
+                {talk.organization?.map((line) => <span class="talk__meta-line">{line}</span>)}
+              </dd>
+            </div>
+            <div>
+              <dt>Location</dt>
+              <dd>{talk.location}</dd>
+            </div>
+            <div>
+              <dt>Year</dt>
+              <dd>{talk.year}</dd>
+            </div>
+            {
+              slides.length > 0 && (
+                <div>
+                  <dt>Slides</dt>
+                  <dd>{slides.length}</dd>
+                </div>
+              )
+            }
+          </dl>
+        </div>
+
+        <figure class="talk__figure">
+          <img
+            src={talk.image}
+            alt={talk.imageAlt}
+            width="1600"
+            height="1000"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </figure>
+      </div>
+    </div>
+
+    <section class="section section--tight" aria-labelledby="browse-heading">
+      <div class="shell">
+        <h2 id="browse-heading">Browse the talk</h2>
+        <p class="talk__browse-note">
+          The full deck, one slide at a time. Use the arrows, your keyboard, or the thumbnails
+          below — nothing advances on its own.
+        </p>
+
+        <PresentationViewer slides={slides} deck={talk.deck} talkTitle={talk.title} />
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .talk__back {
+    padding-top: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  .talk__head {
+    display: grid;
+    gap: clamp(1.75rem, 1.2rem + 2.5vw, 3rem);
+    padding-block: clamp(1.75rem, 1.2rem + 2.5vw, 3rem) 0;
+  }
+
+  .talk__intro h1 {
+    margin-bottom: 1.25rem;
+  }
+
+  .talk__lede {
+    max-width: 62ch;
+  }
+
+  .talk__meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9rem, max-content));
+    gap: 1.25rem 2.5rem;
+    margin: 2rem 0 0;
+  }
+
+  .talk__meta dt {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .talk__meta dd {
+    margin: 0.35rem 0 0;
+    font-size: var(--step-small);
+    color: var(--text);
+  }
+
+  .talk__meta-line {
+    display: block;
+    color: var(--text-secondary);
+  }
+
+  .talk__figure {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: #05070a;
+  }
+
+  .talk__figure img {
+    width: 100%;
+    height: auto;
+  }
+
+  .talk__browse-note {
+    max-width: 58ch;
+    margin-top: 0.85rem;
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+  }
+
+  @media (min-width: 1024px) {
+    .talk__head {
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      align-items: start;
+    }
+
+    .talk__figure {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+</style>

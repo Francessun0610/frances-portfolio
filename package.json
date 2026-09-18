@@ -1,0 +1,38 @@
+{
+  "name": "frances-sun-portfolio",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Portfolio of Frances Sun, Lead UX Designer — enterprise product design.",
+  "engines": {
+    "node": ">=20.3.0"
+  },
+  "scripts": {
+    "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "start": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
+    "build": "ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "astro": "ASTRO_TELEMETRY_DISABLED=1 astro",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro check",
+    "slides": "python3 scripts/process-presentations/process_presentations.py",
+    "slides:verify": "python3 scripts/process-presentations/verify_presentations.py",
+    "capture:ratecard": "node scripts/capture-rate-card.mjs",
+    "import:carbonmade": "node scripts/import-carbonmade.mjs",
+    "qa:screenshots": "node scripts/qa/responsive-screenshots.mjs",
+    "qa:functional": "node scripts/qa/functional-qa.mjs",
+    "qa:a11y": "node scripts/qa/a11y-qa.mjs",
+    "qa:lighthouse": "node scripts/qa/lighthouse-qa.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.1",
+    "astro": "^5.1.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.10.1",
+    "lighthouse": "^13.4.1",
+    "playwright": "^1.49.1",
+    "sharp": "^0.33.5",
+    "typescript": "^5.7.2"
+  }
+}

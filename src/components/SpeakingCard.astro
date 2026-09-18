@@ -1,0 +1,144 @@
+---
+import type { Talk } from '../data/site';
+
+interface Props {
+  talk: Talk;
+  priority?: boolean;
+  /** Must sit one level below the surrounding section heading. */
+  headingLevel?: 2 | 3;
+}
+
+const { talk, priority = false, headingLevel = 3 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const headingId = `talk-${talk.slug}`;
+---
+
+<article class="talk-card" aria-labelledby={headingId}>
+  <a class="talk-card__link" href={`/speaking/${talk.slug}`}>
+    <span class="visually-hidden">View talk: {talk.title}</span>
+  </a>
+
+  <div class="talk-card__media">
+    <img
+      src={talk.image}
+      alt={talk.imageAlt}
+      width="1600"
+      height="1000"
+      loading={priority ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+  </div>
+
+  <div class="talk-card__body">
+    <p class="talk-card__event">
+      <span class="talk-card__event-name">{talk.event}</span>
+      {
+        /* The host organisation already identifies the place, so the separate
+           location line is only shown when there is no organisation. */
+        talk.organization?.length ? (
+          talk.organization.map((line) => <span class="talk-card__org">{line}</span>)
+        ) : (
+          <span class="talk-card__location">{talk.location}</span>
+        )
+      }
+    </p>
+
+    <Heading class="talk-card__title" id={headingId}>{talk.title}</Heading>
+    <p class="talk-card__description">{talk.cardDescription}</p>
+
+    <p class="talk-card__cta" aria-hidden="true">
+      View talk <span>→</span>
+    </p>
+  </div>
+</article>
+
+<style>
+  .talk-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: linear-gradient(180deg, var(--surface) 0%, var(--bg-raised) 100%);
+    transition: border-color 200ms var(--ease);
+  }
+
+  /* Whole-card target, without nesting interactive elements. */
+  .talk-card__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .talk-card:hover {
+    border-color: var(--border-strong);
+  }
+
+  .talk-card:focus-within {
+    border-color: var(--cobalt);
+  }
+
+  .talk-card__link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -4px;
+    border-radius: var(--radius-lg);
+  }
+
+  .talk-card__media {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: #05070a;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .talk-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .talk-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 1.85rem);
+  }
+
+  .talk-card__event {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-size: 0.8125rem;
+    color: var(--text-tertiary);
+  }
+
+  .talk-card__event-name {
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .talk-card__title {
+    font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+    line-height: 1.25;
+  }
+
+  .talk-card__description {
+    font-size: var(--step-small);
+    line-height: 1.62;
+    color: var(--text-secondary);
+  }
+
+  .talk-card__cta {
+    margin-top: 0.35rem;
+    font-size: var(--step-small);
+    font-weight: 550;
+    color: var(--cobalt-bright);
+  }
+
+  .talk-card:hover .talk-card__cta span {
+    display: inline-block;
+    transform: translateX(3px);
+    transition: transform 160ms var(--ease);
+  }
+</style>

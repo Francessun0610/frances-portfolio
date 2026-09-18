@@ -1,0 +1,650 @@
+[
+  {
+    "index": 1,
+    "image": "/slides/canux-2025/slide-001.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-001.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Infusing Enterprise Creativity",
+    "visibleText": "Infusing Enterprise Creativity\nwith a Dose of Playfulness\nFrances Sun"
+  },
+  {
+    "index": 2,
+    "image": "/slides/canux-2025/slide-002.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-002.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "You are currently thinking…",
+    "visibleText": "You are currently thinking…"
+  },
+  {
+    "index": 3,
+    "image": "/slides/canux-2025/slide-003.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-003.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Raleigh, NC",
+    "visibleText": "Raleigh, NC\nAdvisory UX Designer\nMy career journey\nUI Designer\nTaipei, Taiwan"
+  },
+  {
+    "index": 4,
+    "image": "/slides/canux-2025/slide-004.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-004.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Principal Designer",
+    "visibleText": "Principal Designer\nRound Rock, TX\nRemote\nLead Designer - Ads\nMy career journey"
+  },
+  {
+    "index": 5,
+    "image": "/slides/canux-2025/slide-005.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-005.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "From consumer to enterprise",
+    "visibleText": "From consumer to enterprise\nSmart home\nPreload software"
+  },
+  {
+    "index": 6,
+    "image": "/slides/canux-2025/slide-006.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-006.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Server config tools",
+    "visibleText": "Server config tools\nAds tools\nFrom consumer to enterprise"
+  },
+  {
+    "index": 7,
+    "image": "/slides/canux-2025/slide-007.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-007.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The castle is cute. The enterprise is real.",
+    "visibleText": "The castle is cute. The enterprise is real."
+  },
+  {
+    "index": 8,
+    "image": "/slides/canux-2025/slide-008.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-008.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Consumer → Fun, snackable, short bursts",
+    "visibleText": "Consumer → Fun, snackable, short bursts\nConsumer design ≠ Enterprise design\nEnterprise → Daily, 8-hour main course"
+  },
+  {
+    "index": 9,
+    "image": "/slides/canux-2025/slide-009.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-009.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Consumer Products:",
+    "visibleText": "Consumer Products:\nWhere Work Gets Seen"
+  },
+  {
+    "index": 10,
+    "image": "/slides/canux-2025/slide-010.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-010.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Enterprise Tools:",
+    "visibleText": "Enterprise Tools:\nWhere Work Gets Done"
+  },
+  {
+    "index": 11,
+    "image": "/slides/canux-2025/slide-011.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-011.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "This transition taught me a few lessons",
+    "visibleText": "This transition taught me a few lessons"
+  },
+  {
+    "index": 12,
+    "image": "/slides/canux-2025/slide-012.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-012.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Give it context",
+    "visibleText": "Give it context\nListen for real needs\nBreak it down\nLessons I’ve picked up over time\nUnderstand the business\nUse the metaphor"
+  },
+  {
+    "index": 13,
+    "image": "/slides/canux-2025/slide-013.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-013.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Understand the business",
+    "visibleText": "Understand the business\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 14,
+    "image": "/slides/canux-2025/slide-014.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-014.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "If you can’t explain it simply,",
+    "visibleText": "If you can’t explain it simply,\nyou don’t understand it well enough\nAlbert Einstein"
+  },
+  {
+    "index": 15,
+    "image": "/slides/canux-2025/slide-015.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-015.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "My first enterprise project:",
+    "visibleText": "My first enterprise project:\nServer Configuration tool update"
+  },
+  {
+    "index": 16,
+    "image": "/slides/canux-2025/slide-016.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-016.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Design requests:",
+    "visibleText": "Design requests: \n1. Inconsistent and unclear navigation\n2. Users wanted configuration details, not pricing"
+  },
+  {
+    "index": 17,
+    "image": "/slides/canux-2025/slide-017.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-017.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Like everyone else:",
+    "visibleText": "Like everyone else:\nI started with the problem"
+  },
+  {
+    "index": 18,
+    "image": "/slides/canux-2025/slide-018.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-018.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Start with the problem:",
+    "visibleText": "Start with the problem:\nInconsistent and unclear navigation"
+  },
+  {
+    "index": 19,
+    "image": "/slides/canux-2025/slide-019.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-019.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Start with the problem:",
+    "visibleText": "Start with the problem:\nUsers wanted configuration, not pricing"
+  },
+  {
+    "index": 20,
+    "image": "/slides/canux-2025/slide-020.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-020.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "First Proposal",
+    "visibleText": "First Proposal"
+  },
+  {
+    "index": 21,
+    "image": "/slides/canux-2025/slide-021.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-021.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "1. Nav still unclear",
+    "visibleText": "1. Nav still unclear\n2. Users preferred old design over weak changes\nThe brutal first review"
+  },
+  {
+    "index": 22,
+    "image": "/slides/canux-2025/slide-022.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-022.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Learning the hard way:",
+    "visibleText": "Learning the hard way:\nReading the business."
+  },
+  {
+    "index": 23,
+    "image": "/slides/canux-2025/slide-023.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-023.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Learning was easy. Explaining was hard",
+    "visibleText": "Learning was easy. Explaining was hard\nIf I had to learn it, everyone needed too\nUh oh"
+  },
+  {
+    "index": 24,
+    "image": "/slides/canux-2025/slide-024.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-024.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "What I learned:",
+    "visibleText": "What I learned:\nEvery product has its own recipe"
+  },
+  {
+    "index": 25,
+    "image": "/slides/canux-2025/slide-025.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-025.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "New flow:",
+    "visibleText": "New flow:\nClear steps + Always-visible config"
+  },
+  {
+    "index": 26,
+    "image": "/slides/canux-2025/slide-026.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-026.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Good UX knows users.",
+    "visibleText": "Good UX knows users.\nGreat UX knows the business.\nRecap: understand the business"
+  },
+  {
+    "index": 27,
+    "image": "/slides/canux-2025/slide-027.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-027.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Break it down",
+    "visibleText": "Break it down\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 28,
+    "image": "/slides/canux-2025/slide-028.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-028.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Breaking it down means =",
+    "visibleText": "Breaking it down means =\nMaking complexity simple\nPM\nDesigner"
+  },
+  {
+    "index": 29,
+    "image": "/slides/canux-2025/slide-029.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-029.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Earlier example:",
+    "visibleText": "Earlier example:\nBreaking down complexity into steps"
+  },
+  {
+    "index": 30,
+    "image": "/slides/canux-2025/slide-030.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-030.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Product",
+    "visibleText": "Product\nBreaking it down looks like magic.\nThe trick? Teamwork"
+  },
+  {
+    "index": 31,
+    "image": "/slides/canux-2025/slide-031.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-031.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Another project :",
+    "visibleText": "Another project :\nThis time, selling servers"
+  },
+  {
+    "index": 32,
+    "image": "/slides/canux-2025/slide-032.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-032.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "From Complexity to Clarity",
+    "visibleText": "From Complexity to Clarity\nThe process was hidden - I just showed it"
+  },
+  {
+    "index": 33,
+    "image": "/slides/canux-2025/slide-033.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-033.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Visualizing the Chaos",
+    "visibleText": "Visualizing the Chaos"
+  },
+  {
+    "index": 34,
+    "image": "/slides/canux-2025/slide-034.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-034.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "From 24 Tools → 1 Workflow",
+    "visibleText": "From 24 Tools → 1 Workflow"
+  },
+  {
+    "index": 35,
+    "image": "/slides/canux-2025/slide-035.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-035.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Recap: Break it down",
+    "visibleText": "Recap: Break it down\nMake complexity visible\nShow the steps"
+  },
+  {
+    "index": 36,
+    "image": "/slides/canux-2025/slide-036.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-036.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Listen for real needs",
+    "visibleText": "Listen for real needs\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 37,
+    "image": "/slides/canux-2025/slide-037.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-037.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "“Users don’t want it.”",
+    "visibleText": "“Users don’t want it.”\n“They’re impossible to talk with”\n“We’ve tried everything.”\n“We’re burning resources.”\nUh oh\nWhen PMs struggle with users"
+  },
+  {
+    "index": 38,
+    "image": "/slides/canux-2025/slide-038.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-038.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "“I want EVERYTHING pink. 💖”",
+    "visibleText": "“I want EVERYTHING pink. 💖”\nIN OUR SOFTWARE\nUh oh\nUh oh\nTHIS IS A DIRECT QUOTE\nAnd then the user said…"
+  },
+  {
+    "index": 39,
+    "image": "/slides/canux-2025/slide-039.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-039.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "So,",
+    "visibleText": "So,\nI made it pink\nJust kidding"
+  },
+  {
+    "index": 40,
+    "image": "/slides/canux-2025/slide-040.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-040.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Uncovering the real user workflow.",
+    "visibleText": "Uncovering the real user workflow.\nDesign Detective Mode"
+  },
+  {
+    "index": 41,
+    "image": "/slides/canux-2025/slide-041.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-041.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "PM",
+    "visibleText": "PM\nMe\nIt’s Restriction team\nThey log in.\nThey set restrictions.\nThey repeat.\nWhat my users do everyday"
+  },
+  {
+    "index": 42,
+    "image": "/slides/canux-2025/slide-042.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-042.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Real problem: hidden function",
+    "visibleText": "Real problem: hidden function"
+  },
+  {
+    "index": 43,
+    "image": "/slides/canux-2025/slide-043.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-043.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "It wasn’t pink. It was pain.",
+    "visibleText": "It wasn’t pink. It was pain."
+  },
+  {
+    "index": 44,
+    "image": "/slides/canux-2025/slide-044.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-044.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Real needs hide under surface.",
+    "visibleText": "Real needs hide under surface.\nListen like your job depends on it. Because it does.\nRecap: Listen for real needs"
+  },
+  {
+    "index": 45,
+    "image": "/slides/canux-2025/slide-045.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-045.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Give it context",
+    "visibleText": "Give it context\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 46,
+    "image": "/slides/canux-2025/slide-046.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-046.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Me in enterprise: presenting.",
+    "visibleText": "Me in enterprise: presenting.\nEveryone else: WA WA WAA\nLive image from my team"
+  },
+  {
+    "index": 47,
+    "image": "/slides/canux-2025/slide-047.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-047.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Too into design. Nobody understands me.",
+    "visibleText": "Too into design. Nobody understands me."
+  },
+  {
+    "index": 48,
+    "image": "/slides/canux-2025/slide-048.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-048.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "5W’s turn screens into stories.",
+    "visibleText": "5W’s turn screens into stories.\nSteal from MBA: 5w’s"
+  },
+  {
+    "index": 49,
+    "image": "/slides/canux-2025/slide-049.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-049.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Flows show the “how” context explains the “why”",
+    "visibleText": "Flows show the “how” context explains the “why”\nRecap: Give it Context\nJust show screens\nAdd context first"
+  },
+  {
+    "index": 50,
+    "image": "/slides/canux-2025/slide-050.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-050.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Use the metaphor",
+    "visibleText": "Use the metaphor\nLessons I’ve picked up over time"
+  },
+  {
+    "index": 51,
+    "image": "/slides/canux-2025/slide-051.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-051.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "My first week: a whole suite of ad tools. Each with its own ‘user journey.",
+    "visibleText": "My first week: a whole suite of ad tools. Each with its own ‘user journey.\nWhen Breaking it down isn’t enough"
+  },
+  {
+    "index": 52,
+    "image": "/slides/canux-2025/slide-052.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-052.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Not just complex tools",
+    "visibleText": "Not just complex tools\nbut siloed teams too"
+  },
+  {
+    "index": 53,
+    "image": "/slides/canux-2025/slide-053.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-053.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "So how to connect it all ?",
+    "visibleText": "So how to connect it all ?"
+  },
+  {
+    "index": 54,
+    "image": "/slides/canux-2025/slide-054.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-054.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "With references we all know",
+    "visibleText": "With references we all know\nFirst step: Connect the dots"
+  },
+  {
+    "index": 55,
+    "image": "/slides/canux-2025/slide-055.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-055.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Our team’s conclusion:",
+    "visibleText": "Our team’s conclusion:\nCandyLand."
+  },
+  {
+    "index": 56,
+    "image": "/slides/canux-2025/slide-056.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-056.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Let’s imagine an Ad as candy",
+    "visibleText": "Let’s imagine an Ad as candy"
+  },
+  {
+    "index": 57,
+    "image": "/slides/canux-2025/slide-057.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-057.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "All the TV channels are like candy stores",
+    "visibleText": "All the TV channels are like candy stores"
+  },
+  {
+    "index": 58,
+    "image": "/slides/canux-2025/slide-058.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-058.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Magic won’t restock the candy",
+    "visibleText": "Magic won’t restock the candy"
+  },
+  {
+    "index": 59,
+    "image": "/slides/canux-2025/slide-059.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-059.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "The advertisers provide their candy to us",
+    "visibleText": "The advertisers provide their candy to us"
+  },
+  {
+    "index": 60,
+    "image": "/slides/canux-2025/slide-060.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-060.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "It takes a village to build a store",
+    "visibleText": "It takes a village to build a store"
+  },
+  {
+    "index": 61,
+    "image": "/slides/canux-2025/slide-061.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-061.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "How we put the “candy” on the shelves",
+    "visibleText": "How we put the “candy” on the shelves"
+  },
+  {
+    "index": 62,
+    "image": "/slides/canux-2025/slide-062.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-062.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "11:35 PM",
+    "visibleText": "11:35 PM\n2 AM\nVersus\nRate card"
+  },
+  {
+    "index": 63,
+    "image": "/slides/canux-2025/slide-063.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-063.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Which channels?",
+    "visibleText": "Which channels?\nWho to reach?\nWhat time?\nincludes\nProposal"
+  },
+  {
+    "index": 64,
+    "image": "/slides/canux-2025/slide-064.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-064.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "New Shoe",
+    "visibleText": "New Shoe\nDeal Management"
+  },
+  {
+    "index": 65,
+    "image": "/slides/canux-2025/slide-065.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-065.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Get actual media",
+    "visibleText": "Get actual media\nTake media through airing\nMedia Management"
+  },
+  {
+    "index": 66,
+    "image": "/slides/canux-2025/slide-066.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-066.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Stop the wrong content",
+    "visibleText": "Stop the wrong content\nBlock same-type ads in a row.\nContent Restrictor"
+  },
+  {
+    "index": 67,
+    "image": "/slides/canux-2025/slide-067.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-067.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Check for errors before launch.",
+    "visibleText": "Check for errors before launch.\nLog Management"
+  },
+  {
+    "index": 68,
+    "image": "/slides/canux-2025/slide-068.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-068.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Finally put the candy on the shelves",
+    "visibleText": "Finally put the candy on the shelves\nLog Scheduling"
+  },
+  {
+    "index": 69,
+    "image": "/slides/canux-2025/slide-069.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-069.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Candyland: unify apps + teams.",
+    "visibleText": "Candyland: unify apps + teams."
+  },
+  {
+    "index": 70,
+    "image": "/slides/canux-2025/slide-070.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-070.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Recap: Use the reference",
+    "visibleText": "Recap: Use the reference\nComplex systems need simple stories."
+  },
+  {
+    "index": 71,
+    "image": "/slides/canux-2025/slide-071.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-071.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Surviving enterprise UX with playfulness",
+    "visibleText": "Surviving enterprise UX with playfulness\nGive it context\nListen for real needs\nBreak it down\nUnderstand the business\nUse the metaphor"
+  },
+  {
+    "index": 72,
+    "image": "/slides/canux-2025/slide-072.webp",
+    "thumbnail": "/slides/canux-2025/thumbs/slide-072.webp",
+    "width": 1440,
+    "height": 810,
+    "title": "Thank you",
+    "visibleText": "Thank you\nFrances Sun\nhttps://www.linkedin.com/in/sun0610/\nTurning enterprise design from ‘uh oh’ → ‘ahh, got it.’"
+  }
+]

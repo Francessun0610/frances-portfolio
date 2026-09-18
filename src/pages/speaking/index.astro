@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SpeakingCard from '../../components/SpeakingCard.astro';
+import { talks } from '../../data/site';
+
+const title = 'Speaking | Frances Sun — Enterprise UX Talks';
+const description =
+  'Talks by Frances Sun, Lead UX Designer, on enterprise UX, systems thinking, complex workflows, and designing for clarity — including CanUX 2025 and UIUC UX Day 2026.';
+---
+
+<BaseLayout title={title} description={description} path="/speaking">
+  <section class="speaking-index">
+    <div class="shell">
+      <header class="speaking-index__head">
+        <p class="eyebrow">Speaking</p>
+        <h1>Talks on enterprise UX</h1>
+        <p class="lede measure">
+          Conference and university talks about working in complex enterprise products: business
+          context, breaking down complexity, listening past the surface request, and designing for
+          clarity.
+        </p>
+      </header>
+
+      <div class="speaking-index__grid">
+        {
+          talks.map((talk, index) => (
+            <SpeakingCard talk={talk} priority={index === 0} headingLevel={2} />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .speaking-index {
+    padding-block: clamp(2.5rem, 2rem + 4vw, 5rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+  }
+
+  .speaking-index__head {
+    margin-bottom: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+  }
+
+  .speaking-index__head h1 {
+    margin-bottom: 1.25rem;
+  }
+
+  .speaking-index__grid {
+    display: grid;
+    gap: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  }
+
+  @media (min-width: 900px) {
+    .speaking-index__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

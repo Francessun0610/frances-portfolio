@@ -1,0 +1,4 @@
+# Slide rasterisation and image optimisation for the presentation pipeline.
+# Install with: python3 -m pip install --user -r scripts/process-presentations/requirements.txt
+pypdfium2>=4.30.0
+Pillow>=10.0.0

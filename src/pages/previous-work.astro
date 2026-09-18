@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import previousWork from '../data/previousWork.json';
+import { previousWorkIntro } from '../data/site';
+
+type PreviousWorkItem = {
+  slug: string;
+  title: string;
+  description: string;
+  category?: string;
+  image?: string | null;
+  images?: string[];
+};
+
+const items = previousWork as PreviousWorkItem[];
+
+const title = 'Previous Work | Frances Sun — Consumer, Mobile & Interaction Design';
+const description =
+  'An archive of earlier work by Frances Sun across consumer products, mobile experiences, interaction design, and enterprise software.';
+---
+
+<BaseLayout title={title} description={description} path="/previous-work">
+  <section class="previous-page">
+    <div class="shell">
+      <header class="previous-page__head">
+        <p class="eyebrow">Archive</p>
+        <h1>Previous Work</h1>
+        <p class="lede measure">{previousWorkIntro.copy}</p>
+      </header>
+
+      {
+        items.length > 0 ? (
+          <ul class="archive">
+            {items.map((item, index) => (
+              <li class="archive__item">
+                {item.image && (
+                  <div class="archive__media">
+                    <img
+                      src={item.image}
+                      alt={`${item.title} — project image`}
+                      loading={index < 2 ? 'eager' : 'lazy'}
+                      decoding="async"
+                    />
+                  </div>
+                )}
+                <div class="archive__body">
+                  {item.category && <p class="archive__category">{item.category}</p>}
+                  <h2 class="archive__title">{item.title}</h2>
+                  {item.description && <p class="archive__description">{item.description}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="archive-empty">
+            <h2>The archive has not been imported yet</h2>
+            <p>
+              This page is built from <code>src/data/previousWork.json</code>, which is currently
+              empty. Run the importer against a Carbonmade export to fill it:
+            </p>
+            <pre tabindex="0" role="group" aria-label="Carbonmade import commands"><code>node scripts/import-carbonmade.mjs --source /path/to/carbonmade-export --dry-run
+node scripts/import-carbonmade.mjs --source /path/to/carbonmade-export</code></pre>
+            <p>
+              The importer copies images into <code>public/images/previous-work/</code> and writes
+              the project list locally. Nothing is embedded from or linked back to Carbonmade.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .previous-page {
+    padding-block: clamp(2.5rem, 2rem + 4vw, 5rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+  }
+
+  .previous-page__head {
+    margin-bottom: clamp(2rem, 1.5rem + 2.5vw, 3.25rem);
+  }
+
+  .previous-page__head h1 {
+    margin-bottom: 1.25rem;
+  }
+
+  .archive {
+    display: grid;
+    gap: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .archive {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .archive {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .archive__item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--bg-raised);
+  }
+
+  .archive__media {
+    aspect-ratio: 16 / 10;
+    background: #05070a;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .archive__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .archive__body {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.15rem 1.25rem 1.4rem;
+  }
+
+  .archive__category {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+    color: var(--text-tertiary);
+  }
+
+  .archive__title {
+    font-size: 1.125rem;
+  }
+
+  .archive__description {
+    font-size: var(--step-small);
+    color: var(--text-secondary);
+  }
+
+  .archive-empty {
+    max-width: 68ch;
+    padding: clamp(1.5rem, 1rem + 2vw, 2.25rem);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+  }
+
+  .archive-empty h2 {
+    margin-bottom: 0.85rem;
+    font-size: var(--step-h3);
+  }
+
+  .archive-empty p {
+    font-size: var(--step-small);
+    color: var(--text-secondary);
+  }
+
+  .archive-empty pre {
+    overflow-x: auto;
+    margin: 1rem 0;
+    padding: 0.9rem 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    font-size: 0.8125rem;
+  }
+</style>

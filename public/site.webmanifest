@@ -1,0 +1,14 @@
+{
+  "name": "Frances Sun — Lead UX Designer",
+  "short_name": "Frances Sun",
+  "description": "Portfolio of Frances Sun, a Lead UX Designer specialising in enterprise product design.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0d12",
+  "theme_color": "#0b0d12",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

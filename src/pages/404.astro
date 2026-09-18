@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page not found | Frances Sun"
+  description="That page does not exist on Frances Sun's portfolio."
+  path="/404"
+>
+  <section class="notfound">
+    <div class="shell">
+      <p class="eyebrow">404</p>
+      <h1>That page doesn’t exist</h1>
+      <p class="lede measure">
+        The link may be out of date. Try the selected work, the talks, or start from the top.
+      </p>
+      <p class="notfound__links">
+        <a class="text-link" href="/">Home <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/#work">Selected work <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/speaking">Speaking <span aria-hidden="true">→</span></a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    padding-block: clamp(3rem, 2.5rem + 5vw, 7rem);
+  }
+
+  .notfound h1 {
+    margin-bottom: 1.25rem;
+  }
+
+  .notfound__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+</style>

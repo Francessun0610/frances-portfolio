@@ -1,0 +1,28 @@
+# build output
+dist/
+.astro/
+.vercel/
+
+# dependencies
+node_modules/
+
+# generated QA artifacts
+qa-output/
+
+# macOS
+.DS_Store
+
+# environment
+.env
+.env.production
+
+# PowerPoint sources.
+# These are large binary inputs to the slide pipeline, and they contain speaker
+# notes that must never be published. They live in content/speaking/source/ and
+# are deliberately kept out of version control and out of any deployment.
+content/speaking/source/*.pptx
+content/speaking/source/*.ppt
+content/speaking/source/*.key
+
+# intermediate render artifacts from the slide pipeline
+scripts/process-presentations/.render-cache/

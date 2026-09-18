@@ -1,0 +1,102 @@
+---
+import { person, nav, social } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="shell footer__inner">
+    <div class="footer__identity">
+      <p class="footer__name">{person.name}</p>
+      <p class="footer__role">{person.role} · {person.locality}, {person.region}</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Footer">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                {...(item.href.endsWith('.pdf') ? { target: '_blank', rel: 'noopener' } : {})}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        {
+          social.map((item) => (
+            <li>
+              <a href={item.href} target="_blank" rel="noopener noreferrer">
+                {item.label}
+                <span aria-hidden="true"> ↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <p class="footer__legal">© {year} {person.name}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    margin-top: clamp(3rem, 2rem + 4vw, 6rem);
+  }
+
+  .footer__inner {
+    display: grid;
+    gap: 2rem;
+    padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  }
+
+  .footer__name {
+    font-size: 1.0625rem;
+    font-weight: 600;
+  }
+
+  .footer__role,
+  .footer__legal {
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+  }
+
+  .footer__nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .footer__nav a {
+    display: inline-block;
+    padding-block: 0.4rem;
+    font-size: var(--step-small);
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .footer__nav a:hover {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+  }
+
+  @media (min-width: 900px) {
+    .footer__inner {
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 2rem 3rem;
+    }
+
+    .footer__legal {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

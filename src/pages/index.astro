@@ -1,0 +1,305 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import SpeakingCard from '../components/SpeakingCard.astro';
+import { person, links, projects, talks, about, previousWorkIntro } from '../data/site';
+
+const title = 'Frances Sun | Lead UX Designer — Enterprise Product Design';
+const description =
+  'Portfolio of Frances Sun, an Austin-based Lead UX Designer with 18+ years of experience designing enterprise software, complex workflows, design systems, and interactive prototypes.';
+---
+
+<BaseLayout title={title} description={description} path="/">
+  <section class="hero">
+    <div class="shell hero__inner">
+      <div class="hero__copy">
+        <h1 class="hero__name">{person.name}</h1>
+        <p class="hero__role">{person.role}</p>
+        <p class="hero__statement">{person.statement}</p>
+        <p class="hero__supporting">{person.supporting}</p>
+        <p class="hero__location">{person.location}</p>
+
+        <div class="hero__actions">
+          <a class="button button--primary" href="#work">View selected work</a>
+          <a
+            class="button button--ghost"
+            href={links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn <span aria-hidden="true">↗</span>
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__field"></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="work" aria-labelledby="work-heading">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="work-heading">Selected Work</h2>
+        <p class="section-head__aside">
+          Enterprise product design across pricing, identity, finance, and advertising operations.
+        </p>
+      </div>
+
+      <div class="work-grid">
+        {projects.map((project, index) => <ProjectCard project={project} priority={index === 0} />)}
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="speaking" aria-labelledby="speaking-heading">
+    <div class="shell">
+      <div class="section-head">
+        <h2 id="speaking-heading">Speaking</h2>
+        <p class="section-head__aside">
+          Conference and university talks on enterprise UX, systems thinking, and clarity in complex
+          products.
+        </p>
+      </div>
+
+      <div class="speaking-grid">
+        {talks.map((talk) => <SpeakingCard talk={talk} />)}
+      </div>
+
+      <p class="speaking-more">
+        <a class="text-link" href="/speaking">All speaking <span aria-hidden="true">→</span></a>
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section section--tight" id="previous-work" aria-labelledby="previous-heading">
+    <div class="shell previous">
+      <h2 id="previous-heading" class="previous__heading">Previous Work</h2>
+      <div class="previous__body">
+        <p class="previous__copy">{previousWorkIntro.copy}</p>
+        <p>
+          <a class="text-link" href={previousWorkIntro.href}>
+            {previousWorkIntro.cta} <span aria-hidden="true">→</span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <section class="section" id="about" aria-labelledby="about-heading">
+    <div class="shell about">
+      <h2 id="about-heading">About</h2>
+      <div class="about__body">
+        <p class="lede">{about.homepage}</p>
+        <p class="about__links">
+          <a class="text-link" href="/about">More about Frances <span aria-hidden="true">→</span></a>
+          <a class="text-link" href={links.resume} target="_blank" rel="noopener">
+            Resume <span aria-hidden="true">↗</span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------- Hero ---------- */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    padding-block: clamp(3.5rem, 2.5rem + 6vw, 7.5rem) clamp(3rem, 2rem + 5vw, 6rem);
+  }
+
+  .hero__copy {
+    max-width: 44rem;
+  }
+
+  .hero__name {
+    margin-bottom: 0.9rem;
+  }
+
+  .hero__role {
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+    font-weight: 550;
+    color: var(--cobalt-bright);
+    letter-spacing: -0.008em;
+  }
+
+  .hero__statement {
+    margin-top: 1.5rem;
+    font-size: clamp(1.125rem, 1.02rem + 0.5vw, 1.375rem);
+    line-height: 1.5;
+    color: var(--text);
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+
+  .hero__supporting {
+    margin-top: 1.15rem;
+    max-width: 58ch;
+    color: var(--text-secondary);
+  }
+
+  .hero__location {
+    margin-top: 1.15rem;
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  /* Decorative only: a soft cobalt/coral field, no imagery, no parallax. */
+  .hero__visual {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .hero__visual {
+      display: block;
+      position: relative;
+      aspect-ratio: 1 / 1;
+      max-height: 30rem;
+    }
+
+    .hero__field {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background:
+        radial-gradient(
+          42% 42% at 62% 34%,
+          rgba(61, 123, 255, 0.5) 0%,
+          rgba(61, 123, 255, 0) 70%
+        ),
+        radial-gradient(
+          34% 34% at 34% 68%,
+          rgba(232, 120, 95, 0.26) 0%,
+          rgba(232, 120, 95, 0) 72%
+        ),
+        radial-gradient(
+          58% 58% at 50% 50%,
+          rgba(20, 24, 34, 0.9) 0%,
+          rgba(11, 13, 18, 0) 78%
+        );
+      filter: blur(6px);
+    }
+
+    .hero__visual::after {
+      content: '';
+      position: absolute;
+      inset: 12%;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+    }
+  }
+
+  /* ---------- Sections ---------- */
+
+  .section-head__aside {
+    max-width: 44ch;
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+  }
+
+  .work-grid,
+  .speaking-grid {
+    display: grid;
+    gap: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  }
+
+  @media (min-width: 900px) {
+    .work-grid,
+    .speaking-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .speaking-more {
+    margin-top: 1.75rem;
+  }
+
+  /* ---------- Previous work: deliberately quieter ---------- */
+
+  .previous {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .previous__heading {
+    font-size: clamp(1.375rem, 1.25rem + 0.6vw, 1.75rem);
+  }
+
+  .previous__body {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .previous__copy {
+    max-width: 58ch;
+    font-size: var(--step-small);
+    color: var(--text-secondary);
+  }
+
+  @media (min-width: 900px) {
+    .previous {
+      grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+  }
+
+  /* ---------- About ---------- */
+
+  .about {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .about__body {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 68ch;
+  }
+
+  .about__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 900px) {
+    .about {
+      grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+      gap: 2.5rem;
+      align-items: start;
+    }
+  }
+</style>
