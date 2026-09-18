@@ -3,9 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SpeakingCard from '../../components/SpeakingCard.astro';
 import { talksNewestFirst } from '../../data/site';
 
-const title = 'Speaking | Frances Sun — Enterprise UX Talks';
+const title = 'Frances Sun | Enterprise UX Speaker';
 const description =
-  'Talks by Frances Sun, Lead UX Designer, on enterprise UX, systems thinking, complex workflows, and designing for clarity, including DDD Europe 2026, UIUC UX Day 2026 and CanUX 2025.';
+  'Talks by Frances Sun on enterprise UX, domain complexity, systems thinking, complex workflows, product clarity, and the practical work of designing enterprise software.';
 ---
 
 <BaseLayout title={title} description={description} path="/speaking">
@@ -13,10 +13,14 @@ const description =
     <div class="shell">
       <header class="speaking-index__head">
         <p class="eyebrow">Speaking</p>
-        <h1>Talks on enterprise UX</h1>
+        <h1>Speaking</h1>
         <p class="lede measure">
-          I speak about enterprise UX, systems thinking, product design, and what it takes to make
-          complicated work easier to understand.
+          I speak about enterprise UX, domain complexity, systems thinking, and the practical work
+          of making complicated products easier to understand and use.
+        </p>
+        <p class="measure speaking-index__note">
+          My talks draw from hands-on experience designing enterprise software, operational
+          workflows, design systems, and connected product ecosystems.
         </p>
       </header>
 
@@ -42,6 +46,12 @@ const description =
 
   .speaking-index__head h1 {
     margin-bottom: 1.25rem;
+  }
+
+  /* Second intro line sits a step quieter than the lede. */
+  .speaking-index__note {
+    margin-top: 0.85rem;
+    color: var(--text-secondary);
   }
 
   .speaking-index__grid {

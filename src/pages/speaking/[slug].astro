@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PresentationViewer from '../../components/PresentationViewer.astro';
-import { person, links, talks } from '../../data/site';
+import { talks, PERSON_ID } from '../../data/site';
 import { loadDeck } from '../../lib/slides';
 
 export function getStaticPaths() {
@@ -28,12 +28,9 @@ const structuredData = [
     copyrightYear: talk.year,
     numberOfPages: slides.length || undefined,
     image: new URL(talk.image, site).href,
-    author: {
-      '@type': 'Person',
-      name: person.name,
-      jobTitle: person.role,
-      sameAs: [links.linkedin, links.instagram],
-    },
+    // Reference the site-wide Person node rather than minting a new,
+    // unidentified one for every talk.
+    author: { '@id': PERSON_ID },
     about: [
       'Enterprise UX',
       'Enterprise product design',
@@ -124,7 +121,7 @@ const structuredData = [
         <h2 id="browse-heading">Browse the talk</h2>
         <p class="talk__browse-note">
           The full deck, one slide at a time. Use the arrows, your keyboard, or the thumbnails
-          below — nothing advances on its own.
+          below. Nothing advances on its own.
         </p>
 
         <PresentationViewer slides={slides} deck={talk.deck} talkTitle={talk.title} />

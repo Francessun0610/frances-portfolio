@@ -5,13 +5,24 @@
  * marketing flair, and do not add metrics or outcomes that were not supplied.
  */
 
+import { SITE_URL } from '../config/site.mjs';
+
+/**
+ * Stable schema.org identifier for Frances.
+ *
+ * Every structured-data node that refers to her points at this @id instead of
+ * repeating an anonymous Person object, so the whole site describes one
+ * identity rather than one per page.
+ */
+export const PERSON_ID = `${SITE_URL}/#frances-sun`;
+
 export const person = {
   name: 'Frances Sun',
   initials: 'FS',
   role: 'Lead UX Designer',
-  statement: '18+ years designing complex enterprise products and operational systems.',
+  statement: '18+ years designing enterprise software, complex workflows, and operational systems.',
   supporting:
-    'I turn ambiguous requirements and fragmented workflows into clear, scalable product experiences through systems thinking, interaction design, and hands-on prototyping.',
+    'I turn complex business rules and fragmented workflows into clear, scalable product experiences through systems thinking, interaction design, and hands-on prototyping.',
   location: 'Based in Austin, Texas.',
   relocation: 'Open to relocation for the right opportunity.',
   locality: 'Austin',
@@ -136,15 +147,15 @@ export const talks: Talk[] = [
     year: '2025',
     sortOrder: 1,
     cardDescription:
-      'Lessons from moving between consumer and enterprise UX—and using business context, metaphors, and playfulness to make complex systems easier to understand.',
+      'Lessons from moving between consumer and enterprise UX, using business context, metaphors, and playfulness to make complex systems easier to understand.',
     intro:
-      'A talk about lessons learned moving from consumer products into enterprise UX—and how understanding the business, breaking down complexity, listening for real needs, adding context, and using familiar metaphors can make complex systems easier to understand.',
+      'A talk about lessons learned moving from consumer products into enterprise UX, and how understanding the business, breaking down complexity, listening for real needs, adding context, and using familiar metaphors can make complex systems easier to understand.',
     image: '/images/speaking/canux-2025.jpg',
     imageAlt:
       'CanUX 2025 speaker card for Frances Sun, Lead Designer, Austin, Texas, for Canada’s premier experience design event in Ottawa.',
     seoTitle: 'Frances Sun at CanUX 2025 | Enterprise UX & Playfulness',
     seoDescription:
-      'Frances Sun presents lessons from enterprise UX on understanding complex systems, clarifying workflows, listening to users, and using playfulness and metaphor in product design.',
+      'Frances Sun presents “Infusing Enterprise Creativity with a Dose of Playfulness” at CanUX 2025 in Ottawa, exploring creativity, metaphor, and playfulness in enterprise UX.',
   },
   {
     slug: 'uiuc-ux-day-2026',
@@ -156,15 +167,15 @@ export const talks: Talk[] = [
     year: '2026',
     sortOrder: 2,
     cardDescription:
-      'A practical look at what clarity really takes in enterprise UX: understanding the business, breaking down complexity, listening for real needs, and giving design the right context.',
+      'A practical look at clarity in enterprise UX: understanding the business, breaking down complexity, listening for real needs, and giving design the right context.',
     intro:
-      'A practical look at what clarity actually requires in enterprise UX: understanding the business, breaking down complexity, listening beyond surface requests, giving design the right context, and using simple stories to connect complex systems.',
+      'A practical look at what clarity requires in enterprise UX: understanding the business, breaking down complexity, listening beyond surface requests, giving design the right context, and using simple stories to connect complex systems.',
     image: '/images/speaking/uiuc-ux-day-2026.jpg',
     imageAlt:
       'Frances Sun speaking to students in a design studio classroom at the Siebel Center for Design.',
-    seoTitle: 'Frances Sun at UX Day 2026 | What Enterprise UX Taught Me About Clarity',
+    seoTitle: 'Frances Sun at UX Day 2026 | Enterprise UX & Clarity',
     seoDescription:
-      'Frances Sun shares practical lessons on enterprise UX, systems thinking, business context, complex workflows, and designing for clarity at UIUC UX Day 2026.',
+      'Frances Sun presents “What Enterprise UX Taught Me About Clarity” at UX Day 2026, sharing practical lessons from designing complex enterprise products and workflows.',
   },
   {
     slug: 'ddd-europe-2026',
@@ -175,16 +186,15 @@ export const talks: Talk[] = [
     year: '2026',
     sortOrder: 1,
     cardDescription:
-      'How unclear domain understanding ends up showing in the interface, and how workflow clarity and better collaboration lead to better enterprise UX.',
+      'How unclear domain understanding shows up in the interface, and how workflow clarity and better collaboration can lead to better enterprise UX.',
     intro:
       'When teams do not understand the domain clearly, that uncertainty eventually shows up in the interface. This talk looks at how domain understanding, workflow clarity, and better collaboration can lead to better enterprise UX.',
     image: '/images/speaking/ddd-europe-2026.jpg',
     imageAlt:
       'DDD Europe 2026 speaker card for Frances Sun, showing the Domain Driven Design Europe logo, her portrait, and the talk title.',
-    seoTitle:
-      'Frances Sun at DDD Europe 2026 | When the Domain Is Fuzzy, the UI Pays the Price',
+    seoTitle: 'Frances Sun at DDD Europe 2026 | Enterprise UX',
     seoDescription:
-      'Frances Sun speaks at DDD Europe 2026 in Antwerp about domain understanding, enterprise UX, complex workflows, and how unclear domain models can lead to unclear interfaces.',
+      'Frances Sun presents “When the Domain Is Fuzzy, the UI Pays the Price” at DDD Europe 2026 in Antwerp, exploring domain understanding, workflow clarity, and enterprise UX.',
   },
 ];
 
@@ -207,7 +217,7 @@ export function getTalk(slug: string): Talk {
 
 export const about = {
   homepage:
-    'I’m a UX designer focused on complex enterprise products and operational systems. Over nearly two decades, I’ve worked across consumer technology, infrastructure, advertising platforms, and enterprise software—turning complex workflows into clear, usable experiences.',
+    'I’m a Lead UX Designer focused on complex enterprise software and operational systems. Over nearly two decades, I’ve worked across consumer technology, infrastructure, advertising platforms, and enterprise software, turning complex workflows into clear, usable experiences.',
 } as const;
 
 export const previousWorkIntro = {

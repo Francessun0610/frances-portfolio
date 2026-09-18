@@ -2,7 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { person, links } from '../data/site';
+import { person, links, PERSON_ID } from '../data/site';
 
 interface Props {
   title: string;
@@ -22,7 +22,7 @@ const {
   description,
   path = Astro.url.pathname,
   ogImage = '/images/og/frances-sun-portfolio.png',
-  ogImageAlt = 'Frances Sun — Lead UX Designer, enterprise product design portfolio.',
+  ogImageAlt = 'Frances Sun, Lead UX Designer, enterprise product design portfolio.',
   ogType = 'website',
   structuredData = [],
 } = Astro.props;
@@ -31,9 +31,13 @@ const site = Astro.site ?? new URL('http://localhost:4321');
 const canonical = new URL(path, site).href.replace(/\/$/, '') || site.href;
 const ogImageUrl = new URL(ogImage, site).href;
 
+// One Person node for the whole site. Everything that needs to refer to
+// Frances points at this @id rather than repeating an anonymous Person, so
+// search engines see a single identity instead of one per page.
 const personSchema = {
   '@context': 'https://schema.org',
   '@type': 'Person',
+  '@id': PERSON_ID,
   name: person.name,
   jobTitle: person.role,
   description: person.statement,
@@ -47,12 +51,13 @@ const personSchema = {
   knowsAbout: [
     'Enterprise UX',
     'Enterprise product design',
-    'Design systems',
+    'Enterprise software',
+    'Complex workflow design',
     'Systems thinking',
     'Interaction design',
+    'Information architecture',
+    'Design systems',
     'Interactive prototyping',
-    'Complex workflow design',
-    'Advertising technology UX',
   ],
   sameAs: [links.linkedin, links.instagram],
 };
@@ -78,7 +83,7 @@ const personSchema = {
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content={ogType} />
-    <meta property="og:site_name" content={`${person.name} — ${person.role}`} />
+    <meta property="og:site_name" content={person.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

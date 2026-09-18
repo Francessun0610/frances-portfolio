@@ -13,6 +13,7 @@ import { chromium } from 'playwright';
 import { DECKS,
   REPO_ROOT, ROUTES, Report, makeSink, startPreview, watchForProblems } from './lib.mjs';
 
+const SITE_ORIGIN = 'https://francessun.design';
 const RATE_CARD_URL = 'https://rate-card-demo.vercel.app/?section=atlas&slide=1';
 
 /**
@@ -409,12 +410,14 @@ async function main() {
     const homeMust = [
       'Frances Sun',
       'Lead UX Designer',
-      '18+ years designing complex enterprise products and operational systems.',
+      '18+ years designing enterprise software, complex workflows, and operational systems.',
       'Based in Austin, Texas.',
       'Rate Card Manager',
       'Atlas — Identity & Access Management',
       'SIMBA — Financial Systems 2.0',
       'Linear Advertising Workflows',
+      'Open to relocation for the right opportunity.',
+      'I turn complex business rules and fragmented workflows into clear, scalable product experiences',
       // The homepage carries the two most recent talks; the rest live on
       // /speaking, which is checked separately.
       'When the Domain Is Fuzzy, the UI Pays the Price',
@@ -466,7 +469,7 @@ async function main() {
       homeOrder.join(' > '),
     );
     report.check(
-      homeText.includes('All speaking'),
+      homeText.includes('View all speaking'),
       'homepage keeps a link through to the full speaking list',
     );
 
@@ -498,6 +501,10 @@ async function main() {
           jsonLd: Array.from(document.querySelectorAll('script[type="application/ld+json"]')).map(
             (node) => JSON.parse(node.textContent)['@type'],
           ),
+          personIds: Array.from(document.querySelectorAll('script[type="application/ld+json"]'))
+            .map((node) => JSON.parse(node.textContent))
+            .filter((node) => node['@type'] === 'Person')
+            .map((node) => node['@id']),
         })),
       );
     }
@@ -514,13 +521,37 @@ async function main() {
       'every page has a canonical URL and an OG image',
     );
     report.check(
-      metadata[0].title === 'Frances Sun | Lead UX Designer — Enterprise Product Design',
+      metadata[0].title === 'Frances Sun | Lead UX Designer for Enterprise Software',
       'homepage title matches the brief',
       metadata[0].title,
     );
     report.check(
       metadata.every((m) => m.jsonLd.includes('Person')),
       'every page embeds the Person JSON-LD',
+    );
+    report.check(
+      metadata.every(
+        (m) => m.personIds.length === 1 && m.personIds[0] === `${SITE_ORIGIN}/#frances-sun`,
+      ),
+      'every page carries exactly one Person node, under the stable @id',
+      [...new Set(metadata.flatMap((m) => m.personIds))].join(', '),
+    );
+
+    // Portfolio-written copy uses no em dashes. The two product names are
+    // Frances's own and are excluded deliberately.
+    const emDashPages = Object.entries(pageText)
+      .map(([route, text]) => [
+        route,
+        text
+          .split('\n')
+          .filter((line) => line.includes('\u2014'))
+          .filter((line) => !line.includes('Atlas') && !line.includes('SIMBA')),
+      ])
+      .filter(([, lines]) => lines.length);
+    report.check(
+      emDashPages.length === 0,
+      'no em dashes in public copy (product names excluded)',
+      emDashPages.map(([r, l]) => `${r}: ${l[0]}`).join(' | '),
     );
 
     const sitemap = await page.request.get(`${preview.base}/sitemap-index.xml`);

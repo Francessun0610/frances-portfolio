@@ -2,14 +2,37 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import SpeakingCard from '../components/SpeakingCard.astro';
-import { person, links, projects, talksNewestFirst, about, previousWorkIntro } from '../data/site';
+import {
+  person,
+  links,
+  projects,
+  talksNewestFirst,
+  about,
+  previousWorkIntro,
+  PERSON_ID,
+} from '../data/site';
+import { SITE_URL } from '../config/site.mjs';
 
-const title = 'Frances Sun | Lead UX Designer — Enterprise Product Design';
+const title = 'Frances Sun | Lead UX Designer for Enterprise Software';
 const description =
-  'Portfolio of Frances Sun, an Austin-based Lead UX Designer with 18+ years of experience designing enterprise software, complex workflows, design systems, and interactive prototypes.';
+  'Frances Sun is an Austin-based Lead UX Designer with 18+ years of experience designing enterprise software, complex workflows, operational systems, design systems, and interactive prototypes.';
+
+// The site itself, attributed to the one Person node defined in BaseLayout.
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    name: person.name,
+    url: `${SITE_URL}/`,
+    inLanguage: 'en',
+    publisher: { '@id': PERSON_ID },
+    author: { '@id': PERSON_ID },
+  },
+];
 ---
 
-<BaseLayout title={title} description={description} path="/">
+<BaseLayout title={title} description={description} path="/" structuredData={structuredData}>
   <section class="hero">
     <div class="shell hero__inner">
       <div class="hero__copy">
@@ -66,7 +89,7 @@ const description =
       <div class="section-head">
         <h2 id="speaking-heading">Speaking</h2>
         <p class="section-head__aside">
-          Conference and university talks on enterprise UX, systems thinking, and clarity in complex
+          Talks on enterprise UX, domain complexity, systems thinking, and clarity in complex
           products.
         </p>
       </div>
@@ -79,7 +102,7 @@ const description =
       </div>
 
       <p class="speaking-more">
-        <a class="text-link" href="/speaking">All speaking <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="/speaking">View all speaking <span aria-hidden="true">→</span></a>
       </p>
     </div>
   </section>
