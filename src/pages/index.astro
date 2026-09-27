@@ -51,51 +51,162 @@ const structuredData = [
         </div>
       </div>
 
-      {/* Decorative. A sunrise behind one horizon arc. The arc's body is the
-          page color, so it reads as an edge of light, not a drawn planet. */}
+      {/* Decorative. A sunrise over the edge of a very large planet. The
+          planet is one ellipse, mostly off-canvas. The sun and its light are
+          drawn through a mask of the sky, so they pass behind the horizon
+          as they rise. Nothing here is focusable or announced. */}
       <div class="hero__visual" aria-hidden="true">
-        <div class="hero__dawn">
-          <div class="hero__sun">
-            <span class="hero__sun-haze"></span>
-            <span class="hero__sun-bloom"></span>
-            <span class="hero__sun-core"></span>
-          </div>
-          <svg class="hero__arc" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
-            <defs>
-              <linearGradient id="hero-horizon" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#9bb0c8" stop-opacity="0" />
-                <stop offset="22%" stop-color="#a9bfd4" stop-opacity="0.22" />
-                <stop offset="42%" stop-color="#d7e2ee" stop-opacity="0.45" />
-                <stop offset="50%" stop-color="#ffe4a0" stop-opacity="0.95" />
-                <stop offset="58%" stop-color="#d7e2ee" stop-opacity="0.45" />
-                <stop offset="78%" stop-color="#a9bfd4" stop-opacity="0.22" />
-                <stop offset="100%" stop-color="#9bb0c8" stop-opacity="0" />
-              </linearGradient>
-              <filter id="hero-horizon-glow" x="-20%" y="-20%" width="140%" height="140%">
-                <feGaussianBlur stdDeviation="1.6" />
-              </filter>
-            </defs>
-            <ellipse cx="210" cy="408" rx="460" ry="156" fill="#0b0d12" />
+        <svg
+          class="hero__dawn"
+          viewBox="0 0 400 400"
+          preserveAspectRatio="xMidYMid slice"
+          focusable="false"
+        >
+          <defs>
+            {/* Sky: everything above the planet. */}
+            <mask id="hs-sky" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="400">
+              <rect width="400" height="400" fill="#fff" />
+              <ellipse cx="215" cy="432" rx="540" ry="220" fill="#000" />
+            </mask>
+
+            {/* The disc: a warm white core that cools to gold at a soft,
+                translucent edge. No offset highlight, so no sphere. */}
+            <radialGradient id="hs-disc">
+              <stop offset="0" stop-color="#FFF9E6" />
+              <stop offset="0.5" stop-color="#FFEDB8" />
+              <stop offset="0.82" stop-color="#FFD97E" stop-opacity="0.95" />
+              <stop offset="1" stop-color="#FFC966" stop-opacity="0.45" />
+            </radialGradient>
+            <radialGradient id="hs-edge">
+              <stop offset="0.6" stop-color="#FFD978" stop-opacity="0.5" />
+              <stop offset="1" stop-color="#FFC45E" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="hs-glow">
+              <stop offset="0" stop-color="#FFEBB4" stop-opacity="0.6" />
+              <stop offset="0.4" stop-color="#FFC966" stop-opacity="0.2" />
+              <stop offset="1" stop-color="#F6AD45" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="hs-bloom">
+              <stop offset="0" stop-color="#F8B84E" stop-opacity="0.3" />
+              <stop offset="0.5" stop-color="#F6AD45" stop-opacity="0.09" />
+              <stop offset="1" stop-color="#F6AD45" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="hs-haze">
+              <stop offset="0" stop-color="#FFD978" stop-opacity="0.15" />
+              <stop offset="0.55" stop-color="#F6AD45" stop-opacity="0.04" />
+              <stop offset="1" stop-color="#F6AD45" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="hs-spread">
+              <stop offset="0" stop-color="#FFF0BB" stop-opacity="0.34" />
+              <stop offset="0.5" stop-color="#FFD978" stop-opacity="0.1" />
+              <stop offset="1" stop-color="#FFD978" stop-opacity="0" />
+            </radialGradient>
+            {/* Planet body. Page colour almost at once, so the box that
+                clips this drawing never shows. Only a whisper of darkness
+                sits right under the rim. */}
+            <linearGradient id="hs-planet" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#07090d" />
+              <stop offset="0.09" stop-color="#0b0d12" />
+            </linearGradient>
+            <linearGradient id="hs-rim" gradientUnits="userSpaceOnUse" x1="-10" y1="0" x2="420" y2="0">
+              <stop offset="0" stop-color="#31465F" stop-opacity="0" />
+              <stop offset="0.14" stop-color="#526C8B" stop-opacity="0.45" />
+              <stop offset="0.6" stop-color="#7EA4C7" stop-opacity="0.7" />
+              <stop offset="0.9" stop-color="#526C8B" stop-opacity="0.4" />
+              <stop offset="1" stop-color="#31465F" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="hs-air" gradientUnits="userSpaceOnUse" x1="-10" y1="0" x2="420" y2="0">
+              <stop offset="0" stop-color="#526C8B" stop-opacity="0" />
+              <stop offset="0.18" stop-color="#526C8B" stop-opacity="0.3" />
+              <stop offset="0.6" stop-color="#7EA4C7" stop-opacity="0.34" />
+              <stop offset="0.88" stop-color="#526C8B" stop-opacity="0.26" />
+              <stop offset="1" stop-color="#526C8B" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="hs-sunline" gradientUnits="userSpaceOnUse" x1="128" y1="0" x2="368" y2="0">
+              <stop offset="0" stop-color="#FFC45E" stop-opacity="0" />
+              <stop offset="0.36" stop-color="#FFD978" stop-opacity="0.65" />
+              <stop offset="0.5" stop-color="#FFF0BB" stop-opacity="1" />
+              <stop offset="0.64" stop-color="#FFD978" stop-opacity="0.65" />
+              <stop offset="1" stop-color="#FFC45E" stop-opacity="0" />
+            </linearGradient>
+
+            <filter id="hs-soft" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="0.9" />
+            </filter>
+            <filter id="hs-disc-soft" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="1.7" />
+            </filter>
+            <filter id="hs-blur" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="2.4" />
+            </filter>
+            <filter id="hs-wide" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="5.5" />
+            </filter>
+          </defs>
+
+          {/* Sky light, occluded by the planet. */}
+          <g mask="url(#hs-sky)">
+            <g class="hs-haze">
+              <ellipse cx="248" cy="192" rx="200" ry="122" fill="url(#hs-haze)" />
+            </g>
+            <g class="hs-spread">
+              <ellipse cx="248" cy="212" rx="150" ry="8" fill="url(#hs-spread)" filter="url(#hs-blur)" />
+            </g>
+            <g class="hs-sun">
+              <ellipse class="hs-light" cx="248" cy="178" rx="126" ry="86" fill="url(#hs-bloom)" />
+              <ellipse class="hs-light" cx="248" cy="178" rx="76" ry="60" fill="url(#hs-glow)" />
+              <circle cx="248" cy="176" r="42" fill="url(#hs-edge)" filter="url(#hs-blur)" />
+              <circle cx="248" cy="176" r="28" fill="url(#hs-disc)" filter="url(#hs-disc-soft)" />
+            </g>
+          </g>
+
+          {/* The planet. */}
+          <ellipse cx="215" cy="432" rx="540" ry="220" fill="url(#hs-planet)" />
+
+          {/* Atmosphere above the rim, and the sunlight on it. */}
+          <g mask="url(#hs-sky)">
             <ellipse
-              cx="210"
-              cy="408"
-              rx="460"
-              ry="156"
+              cx="215"
+              cy="432"
+              rx="540"
+              ry="220"
               fill="none"
-              stroke="#7f9bb8"
-              stroke-width="7"
-              stroke-opacity="0.16"
-              filter="url(#hero-horizon-glow)"></ellipse>
+              stroke="url(#hs-air)"
+              stroke-width="6"
+              filter="url(#hs-blur)"></ellipse>
             <ellipse
-              cx="210"
-              cy="408"
-              rx="460"
-              ry="156"
+              class="hs-light"
+              cx="215"
+              cy="432"
+              rx="540"
+              ry="220"
               fill="none"
-              stroke="url(#hero-horizon)"
-              stroke-width="1.15"></ellipse>
-          </svg>
-        </div>
+              stroke="url(#hs-sunline)"
+              stroke-width="10"
+              stroke-opacity="0.45"
+              filter="url(#hs-wide)"></ellipse>
+          </g>
+          <ellipse
+            cx="215"
+            cy="432"
+            rx="542"
+            ry="224"
+            fill="none"
+            stroke="url(#hs-rim)"
+            stroke-width="0.6"
+            stroke-opacity="0.2"></ellipse>
+          <ellipse cx="215" cy="432" rx="540" ry="220" fill="none" stroke="url(#hs-rim)" stroke-width="1"></ellipse>
+          <ellipse
+            class="hs-light"
+            cx="215"
+            cy="432"
+            rx="540"
+            ry="220"
+            fill="none"
+            stroke="url(#hs-sunline)"
+            stroke-width="1.4"
+            filter="url(#hs-soft)"></ellipse>
+        </svg>
       </div>
     </div>
   </section>
@@ -256,10 +367,38 @@ const structuredData = [
     margin-top: 2rem;
   }
 
-  /* Decorative only: layered light, no imagery, no parallax. Below the
-     two-column breakpoint the copy carries the hero on its own. */
+  /* Decorative only. Below the two-column breakpoint it is a short band
+     under the copy. The drawing keeps its own square size inside the band,
+     right-aligned and cropped top and bottom, so it stays a small fragment
+     rather than scaling to the page width. */
   .hero__visual {
-    display: none;
+    position: relative;
+    width: 100%;
+    height: clamp(6rem, 24vw, 9rem);
+    overflow: hidden;
+  }
+
+  .hero__dawn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(64%, 28rem);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    /* Lifts the square so the band opens on sky, then sun, then rim. */
+    transform: translateY(-25%);
+    display: block;
+    /* The band crops the square, so the cut left and top edges fade out. */
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0%, #000 34%),
+      linear-gradient(180deg, transparent 25%, #000 37%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(90deg, transparent 0%, #000 34%),
+      linear-gradient(180deg, transparent 25%, #000 37%);
+    mask-composite: intersect;
+    /* Slow start, a little momentum, long settle. */
+    --ease-rise: cubic-bezier(0.4, 0.02, 0.12, 1);
   }
 
   /* Clears the sticky header when the hero link jumps here. Resting
@@ -278,12 +417,21 @@ const structuredData = [
     }
 
     .hero__visual {
-      display: block;
-      position: relative;
       justify-self: end;
       width: min(100%, 17.5rem);
+      height: auto;
       aspect-ratio: 1 / 1;
-      overflow: hidden;
+    }
+
+    .hero__dawn {
+      top: 0;
+      right: auto;
+      width: 100%;
+      height: 100%;
+      aspect-ratio: auto;
+      transform: none;
+      -webkit-mask-image: none;
+      mask-image: none;
     }
   }
 
@@ -299,107 +447,84 @@ const structuredData = [
     }
   }
 
-  /* The light sits behind the arc. It rises once, then only the outer
-     haze keeps breathing. The visual box clips it, so it cannot reach
-     the copy. */
-  .hero__dawn {
-    position: absolute;
-    inset: 0;
+  /* The sun starts 58 user units lower, which leaves a 6 unit crescent
+     (about 10% of the 56 unit disc) above the horizon, and rises once. The
+     declared values below are the finished frame, so a reduced-motion
+     visitor gets the ending with no animation at all. Only transform and
+     opacity move. The blurs are static. */
+  .hs-sun {
+    transform: translateY(0);
+    animation: hs-rise 4s var(--ease-rise) both;
   }
 
-  .hero__sun {
-    position: absolute;
-    left: 58%;
-    top: 4%;
-    width: 84%;
-    height: 64%;
-    transform: translate(-50%, 0);
-    animation: sunrise 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  .hs-light {
+    opacity: 1;
+    animation: hs-light 4s var(--ease-rise) both;
   }
 
-  .hero__sun-haze,
-  .hero__sun-bloom,
-  .hero__sun-core {
-    position: absolute;
-    display: block;
+  /* After the rise, the outer haze and the low horizontal spread keep a
+     faint 12 second breath. The sun itself never moves again. */
+  .hs-haze,
+  .hs-spread {
+    transform-box: fill-box;
+    transform-origin: center;
   }
 
-  .hero__sun-haze {
-    inset: 0 4% 0;
-    opacity: 0.8;
-    background: radial-gradient(
-      ellipse 70% 62% at 50% 78%,
-      rgba(255, 215, 106, 0.42) 0%,
-      rgba(248, 184, 78, 0.14) 36%,
-      rgba(248, 184, 78, 0) 70%
-    );
-    filter: blur(16px);
-    animation: dawn-breathe 10s var(--ease-breathe) 3s infinite;
+  .hs-haze {
+    animation: hs-breathe 12s var(--ease-breathe) 4s infinite;
   }
 
-  .hero__sun-bloom {
-    left: 8%;
-    right: 8%;
-    bottom: 8%;
-    height: 55%;
-    background: radial-gradient(
-      ellipse 70% 80% at 50% 88%,
-      rgba(255, 228, 160, 0.28) 0%,
-      rgba(248, 184, 78, 0.1) 46%,
-      rgba(248, 184, 78, 0) 76%
-    );
-    filter: blur(14px);
+  .hs-spread {
+    animation: hs-drift 12s var(--ease-breathe) 4s infinite;
   }
 
-  .hero__sun-core {
-    left: 28%;
-    width: 44%;
-    bottom: 10%;
-    height: 34%;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle at 50% 62%,
-      rgba(255, 236, 196, 0.32) 0%,
-      rgba(255, 215, 106, 0.1) 38%,
-      rgba(248, 184, 78, 0) 70%
-    );
-    filter: blur(6px);
-  }
-
-  .hero__arc {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-
-  /* The offset lives only in the first keyframe. With the animation off,
-     the declared transform above is the finished sunrise. */
-  @keyframes sunrise {
+  @keyframes hs-rise {
     from {
-      transform: translate(-50%, 0) translateY(22px);
+      transform: translateY(58px);
     }
     to {
-      transform: translate(-50%, 0);
+      transform: translateY(0);
     }
   }
 
-  @keyframes dawn-breathe {
+  @keyframes hs-light {
+    from {
+      opacity: 0.2;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hs-breathe {
     0%,
     100% {
-      opacity: 0.8;
+      opacity: 1;
       transform: scale(1);
     }
     50% {
-      opacity: 0.88;
-      transform: scale(1.02);
+      opacity: 0.93;
+      transform: scale(1.012);
+    }
+  }
+
+  @keyframes hs-drift {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+    50% {
+      opacity: 0.94;
+      transform: scaleX(1.03);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__sun,
-    .hero__sun-haze {
+    .hs-sun,
+    .hs-light,
+    .hs-haze,
+    .hs-spread {
       animation: none;
     }
   }
