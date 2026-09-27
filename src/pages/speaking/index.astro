@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SpeakingCard from '../../components/SpeakingCard.astro';
-import { talksNewestFirst } from '../../data/site';
+import { links, talksNewestFirst } from '../../data/site';
 
-const title = 'Frances Sun | Enterprise UX Speaker';
+const title = 'Enterprise UX Speaker | Frances Sun';
 const description =
-  'Talks by Frances Sun on enterprise UX, domain complexity, systems thinking, complex workflows, product clarity, and the practical work of designing enterprise software.';
+  'Conference and university talks by Frances Sun on enterprise UX, systems thinking, product clarity, complex workflows, and creativity in design.';
 ---
 
 <BaseLayout title={title} description={description} path="/speaking">
@@ -21,6 +21,15 @@ const description =
         <p class="measure speaking-index__note">
           My talks draw from hands-on experience designing enterprise software, operational
           workflows, design systems, and connected product ecosystems.
+        </p>
+        <p class="measure speaking-index__invite">
+          For conference, university, and UX community speaking inquiries, get in touch.
+        </p>
+        <p class="speaking-index__invite-action">
+          <a class="button button--ghost" href={links.linkedin} target="_blank" rel="noopener noreferrer">
+            Invite me to speak <span aria-hidden="true">↗</span>
+            <span class="visually-hidden">(opens in a new tab)</span>
+          </a>
         </p>
       </header>
 
@@ -52,6 +61,15 @@ const description =
   .speaking-index__note {
     margin-top: 0.85rem;
     color: var(--text-secondary);
+  }
+
+  .speaking-index__invite {
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+  }
+
+  .speaking-index__invite-action {
+    margin-top: 1rem;
   }
 
   .speaking-index__grid {

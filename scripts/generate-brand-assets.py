@@ -130,9 +130,9 @@ def build_og_card():
     meta_font = load_font(24, "regular")
 
     draw.text((left, 186), "Frances Sun", font=name_font, fill=TEXT)
-    draw.text((left, 300), "Lead UX Designer", font=role_font, fill=(111, 156, 255))
+    draw.text((left, 300), "Lead UX Designer · UX Speaker", font=role_font, fill=(111, 156, 255))
 
-    statement = "18+ years designing complex enterprise products and operational systems."
+    statement = "Product design across consumer electronics and complex enterprise systems."
     y = 364
     for line in wrap(draw, statement, statement_font, width - left * 2 - 40):
         draw.text((left, y), line, font=statement_font, fill=SECONDARY)

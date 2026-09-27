@@ -20,9 +20,14 @@ export const person = {
   name: 'Frances Sun',
   initials: 'FS',
   role: 'Lead UX Designer',
-  statement: '18+ years designing enterprise software, complex workflows, and operational systems.',
+  /** Homepage role line only. jobTitle and the About page stay on `role`. */
+  heroRole: 'Lead UX Designer · UX Speaker',
+  statement: 'Product design across consumer electronics and complex enterprise systems.',
+  /** Schema description. Design first, then speaking. Not the hero line. */
+  description:
+    'Lead UX Designer with experience across consumer electronics and enterprise software, and a UX speaker on complex workflows and systems thinking.',
   supporting:
-    'I turn complex business rules and fragmented workflows into clear, scalable product experiences through systems thinking, interaction design, and hands-on prototyping.',
+    'I turn complex products and workflows into clear, scalable experiences through systems thinking, interaction design, and hands-on prototyping.',
   location: 'Based in Austin, Texas.',
   relocation: 'Open to relocation for the right opportunity.',
   locality: 'Austin',

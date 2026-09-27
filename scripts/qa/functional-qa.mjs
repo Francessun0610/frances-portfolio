@@ -410,14 +410,14 @@ async function main() {
     const homeMust = [
       'Frances Sun',
       'Lead UX Designer',
-      '18+ years designing enterprise software, complex workflows, and operational systems.',
+      'Product design across consumer electronics and complex enterprise systems.',
       'Based in Austin, Texas.',
       'Rate Card Manager',
       'Atlas — Identity & Access Management',
       'SIMBA — Financial Systems 2.0',
       'Linear Advertising Workflows',
       'Open to relocation for the right opportunity.',
-      'I turn complex business rules and fragmented workflows into clear, scalable product experiences',
+      'I turn complex products and workflows into clear, scalable experiences',
       // The homepage carries the two most recent talks; the rest live on
       // /speaking, which is checked separately.
       'When the Domain Is Fuzzy, the UI Pays the Price',
@@ -469,8 +469,12 @@ async function main() {
       homeOrder.join(' > '),
     );
     report.check(
-      homeText.includes('View all speaking'),
+      homeText.includes('View talks'),
       'homepage keeps a link through to the full speaking list',
+    );
+    report.check(
+      homeText.includes('Invite me to speak'),
+      'homepage offers a speaking invitation',
     );
 
     // Talks not shown on the homepage must still be reachable and named.
@@ -521,7 +525,7 @@ async function main() {
       'every page has a canonical URL and an OG image',
     );
     report.check(
-      metadata[0].title === 'Frances Sun | Lead UX Designer for Enterprise Software',
+      metadata[0].title === 'Frances Sun | Lead UX Designer & UX Speaker',
       'homepage title matches the brief',
       metadata[0].title,
     );

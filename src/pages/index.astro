@@ -13,9 +13,9 @@ import {
 } from '../data/site';
 import { SITE_URL } from '../config/site.mjs';
 
-const title = 'Frances Sun | Lead UX Designer for Enterprise Software';
+const title = 'Frances Sun | Lead UX Designer & UX Speaker';
 const description =
-  'Frances Sun is an Austin-based Lead UX Designer with 18+ years of experience designing enterprise software, complex workflows, operational systems, design systems, and interactive prototypes.';
+  'Frances Sun is a Lead UX Designer and UX speaker with experience across consumer electronics and enterprise software, specializing in complex workflows, systems thinking, interaction design, and hands-on prototyping.';
 
 // The site itself, attributed to the one Person node defined in BaseLayout.
 const structuredData = [
@@ -37,7 +37,7 @@ const structuredData = [
     <div class="shell hero__inner">
       <div class="hero__copy">
         <h1 class="hero__name">{person.name}</h1>
-        <p class="hero__role">{person.role}</p>
+        <p class="hero__role">{person.heroRole}</p>
         <p class="hero__statement">{person.statement}</p>
         <p class="hero__supporting">{person.supporting}</p>
         <p class="hero__location">
@@ -47,20 +47,55 @@ const structuredData = [
 
         <div class="hero__actions">
           <a class="button button--primary" href="#work">View selected work</a>
-          <a
-            class="button button--ghost"
-            href={links.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn <span aria-hidden="true">↗</span>
-            <span class="visually-hidden">(opens in a new tab)</span>
-          </a>
+          <a class="button button--ghost" href="#speaking">Invite me to speak</a>
         </div>
       </div>
 
+      {/* Decorative. A sunrise behind one horizon arc. The arc's body is the
+          page color, so it reads as an edge of light, not a drawn planet. */}
       <div class="hero__visual" aria-hidden="true">
-        <div class="hero__field"></div>
+        <div class="hero__dawn">
+          <div class="hero__sun">
+            <span class="hero__sun-haze"></span>
+            <span class="hero__sun-bloom"></span>
+            <span class="hero__sun-core"></span>
+          </div>
+          <svg class="hero__arc" viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <linearGradient id="hero-horizon" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#9bb0c8" stop-opacity="0" />
+                <stop offset="22%" stop-color="#a9bfd4" stop-opacity="0.22" />
+                <stop offset="42%" stop-color="#d7e2ee" stop-opacity="0.45" />
+                <stop offset="50%" stop-color="#ffe4a0" stop-opacity="0.95" />
+                <stop offset="58%" stop-color="#d7e2ee" stop-opacity="0.45" />
+                <stop offset="78%" stop-color="#a9bfd4" stop-opacity="0.22" />
+                <stop offset="100%" stop-color="#9bb0c8" stop-opacity="0" />
+              </linearGradient>
+              <filter id="hero-horizon-glow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1.6" />
+              </filter>
+            </defs>
+            <ellipse cx="210" cy="408" rx="460" ry="156" fill="#0b0d12" />
+            <ellipse
+              cx="210"
+              cy="408"
+              rx="460"
+              ry="156"
+              fill="none"
+              stroke="#7f9bb8"
+              stroke-width="7"
+              stroke-opacity="0.16"
+              filter="url(#hero-horizon-glow)"></ellipse>
+            <ellipse
+              cx="210"
+              cy="408"
+              rx="460"
+              ry="156"
+              fill="none"
+              stroke="url(#hero-horizon)"
+              stroke-width="1.15"></ellipse>
+          </svg>
+        </div>
       </div>
     </div>
   </section>
@@ -69,12 +104,13 @@ const structuredData = [
 
   <section class="section" id="work" aria-labelledby="work-heading">
     <div class="shell">
-      <div class="section-head">
+      <header class="section-intro">
         <h2 id="work-heading">Selected Work</h2>
-        <p class="section-head__aside">
-          Enterprise product design across pricing, identity, finance, and advertising operations.
+        <p>
+          Product design across consumer electronics, enterprise software, and complex operational
+          workflows.
         </p>
-      </div>
+      </header>
 
       <div class="work-grid">
         {projects.map((project, index) => <ProjectCard project={project} priority={index === 0} />)}
@@ -86,13 +122,13 @@ const structuredData = [
 
   <section class="section" id="speaking" aria-labelledby="speaking-heading">
     <div class="shell">
-      <div class="section-head">
+      <header class="section-intro">
         <h2 id="speaking-heading">Speaking</h2>
-        <p class="section-head__aside">
-          Talks on enterprise UX, domain complexity, systems thinking, and clarity in complex
-          products.
+        <p>
+          Conference and university talks on enterprise UX, systems thinking, product clarity, and
+          creative problem solving.
         </p>
-      </div>
+      </header>
 
       <div class="speaking-grid">
         {/* The grid is two up, so it shows the two most recent talks rather
@@ -102,8 +138,16 @@ const structuredData = [
       </div>
 
       <p class="speaking-more">
-          <a class="text-link" href="/speaking">View all speaking <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/speaking">View talks <span aria-hidden="true">→</span></a>
       </p>
+      <div class="speaking-inquiry">
+        <p>For conference, university, and UX community speaking inquiries.</p>
+        <p>
+          <a class="text-link" href="mailto:francessun@gmail.com?subject=Speaking%20Inquiry%20for%20Frances%20Sun">
+            Speaking inquiry <span aria-hidden="true">→</span>
+          </a>
+        </p>
+      </div>
     </div>
   </section>
 
@@ -147,6 +191,8 @@ const structuredData = [
   .hero {
     position: relative;
     overflow: hidden;
+    /* Symmetric in and out, so the light has no discernible start or end. */
+    --ease-breathe: cubic-bezier(0.45, 0, 0.55, 1);
   }
 
   .hero__inner {
@@ -171,12 +217,17 @@ const structuredData = [
     letter-spacing: -0.008em;
   }
 
+  /* The positioning line, treated as a brand statement rather than body copy.
+     The measure is set so the sentence resolves to two balanced lines on every
+     desktop and laptop width; three lines is a layout failure, so the grid
+     below gives this column the room instead of trimming the type. */
   .hero__statement {
     margin-top: 1.5rem;
-    font-size: clamp(1.125rem, 1.02rem + 0.5vw, 1.375rem);
-    line-height: 1.5;
+    font-size: clamp(1.1875rem, 1.05rem + 0.62vw, 1.5rem);
+    line-height: 1.38;
+    letter-spacing: -0.014em;
     color: var(--text);
-    max-width: 30ch;
+    max-width: 46ch;
     text-wrap: balance;
   }
 
@@ -205,63 +256,167 @@ const structuredData = [
     margin-top: 2rem;
   }
 
-  /* Decorative only: a soft cobalt/coral field, no imagery, no parallax. */
+  /* Decorative only: layered light, no imagery, no parallax. Below the
+     two-column breakpoint the copy carries the hero on its own. */
   .hero__visual {
     display: none;
   }
 
+  /* Clears the sticky header when the hero link jumps here. Resting
+     spacing of the section is unchanged. */
+  #speaking {
+    scroll-margin-top: 5.5rem;
+  }
+
+  /* Two columns. The copy keeps the larger share at every width because the
+     statement's line count outranks the size of the visual. */
   @media (min-width: 900px) {
     .hero__inner {
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.55fr);
       align-items: center;
-      gap: 3rem;
+      gap: 2.75rem;
     }
 
     .hero__visual {
       display: block;
       position: relative;
+      justify-self: end;
+      width: min(100%, 17.5rem);
       aspect-ratio: 1 / 1;
-      max-height: 30rem;
+      overflow: hidden;
+    }
+  }
+
+  /* More room overall, so the field can take a little back. */
+  @media (min-width: 1200px) {
+    .hero__inner {
+      grid-template-columns: minmax(0, 1.32fr) minmax(0, 0.68fr);
+      gap: 4rem;
     }
 
-    .hero__field {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      background:
-        radial-gradient(
-          42% 42% at 62% 34%,
-          rgba(61, 123, 255, 0.5) 0%,
-          rgba(61, 123, 255, 0) 70%
-        ),
-        radial-gradient(
-          34% 34% at 34% 68%,
-          rgba(232, 120, 95, 0.26) 0%,
-          rgba(232, 120, 95, 0) 72%
-        ),
-        radial-gradient(
-          58% 58% at 50% 50%,
-          rgba(20, 24, 34, 0.9) 0%,
-          rgba(11, 13, 18, 0) 78%
-        );
-      filter: blur(6px);
+    .hero__visual {
+      width: min(100%, 22rem);
     }
+  }
 
-    .hero__visual::after {
-      content: '';
-      position: absolute;
-      inset: 12%;
-      border: 1px solid var(--border);
-      border-radius: 50%;
+  /* The light sits behind the arc. It rises once, then only the outer
+     haze keeps breathing. The visual box clips it, so it cannot reach
+     the copy. */
+  .hero__dawn {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__sun {
+    position: absolute;
+    left: 58%;
+    top: 4%;
+    width: 84%;
+    height: 64%;
+    transform: translate(-50%, 0);
+    animation: sunrise 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .hero__sun-haze,
+  .hero__sun-bloom,
+  .hero__sun-core {
+    position: absolute;
+    display: block;
+  }
+
+  .hero__sun-haze {
+    inset: 0 4% 0;
+    opacity: 0.8;
+    background: radial-gradient(
+      ellipse 70% 62% at 50% 78%,
+      rgba(255, 215, 106, 0.42) 0%,
+      rgba(248, 184, 78, 0.14) 36%,
+      rgba(248, 184, 78, 0) 70%
+    );
+    filter: blur(16px);
+    animation: dawn-breathe 10s var(--ease-breathe) 3s infinite;
+  }
+
+  .hero__sun-bloom {
+    left: 8%;
+    right: 8%;
+    bottom: 8%;
+    height: 55%;
+    background: radial-gradient(
+      ellipse 70% 80% at 50% 88%,
+      rgba(255, 228, 160, 0.28) 0%,
+      rgba(248, 184, 78, 0.1) 46%,
+      rgba(248, 184, 78, 0) 76%
+    );
+    filter: blur(14px);
+  }
+
+  .hero__sun-core {
+    left: 28%;
+    width: 44%;
+    bottom: 10%;
+    height: 34%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 62%,
+      rgba(255, 236, 196, 0.32) 0%,
+      rgba(255, 215, 106, 0.1) 38%,
+      rgba(248, 184, 78, 0) 70%
+    );
+    filter: blur(6px);
+  }
+
+  .hero__arc {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* The offset lives only in the first keyframe. With the animation off,
+     the declared transform above is the finished sunrise. */
+  @keyframes sunrise {
+    from {
+      transform: translate(-50%, 0) translateY(22px);
+    }
+    to {
+      transform: translate(-50%, 0);
+    }
+  }
+
+  @keyframes dawn-breathe {
+    0%,
+    100% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.88;
+      transform: scale(1.02);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__sun,
+    .hero__sun-haze {
+      animation: none;
     }
   }
 
   /* ---------- Sections ---------- */
 
-  .section-head__aside {
-    max-width: 44ch;
+  /* Title and subtitle read as one unit. The subtitle stays under the
+     heading at every width, never in a second column. */
+  .section-intro {
+    margin-bottom: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  }
+
+  .section-intro p {
+    margin: 0.6rem 0 0;
+    max-width: 42rem;
     font-size: var(--step-small);
-    color: var(--text-tertiary);
+    color: var(--text-secondary);
   }
 
   .work-grid,
@@ -278,7 +433,25 @@ const structuredData = [
   }
 
   .speaking-more {
-    margin-top: 1.75rem;
+    margin-top: 1.35rem;
+  }
+
+  .speaking-inquiry {
+    margin-top: clamp(2.5rem, 2rem + 1.5vw, 3.25rem);
+  }
+
+  .speaking-inquiry p {
+    margin: 0;
+  }
+
+  .speaking-inquiry p:first-child {
+    max-width: 42rem;
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+  }
+
+  .speaking-inquiry p + p {
+    margin-top: 0.55rem;
   }
 
   /* ---------- Previous work: deliberately quieter ---------- */
@@ -298,7 +471,7 @@ const structuredData = [
   }
 
   .previous__copy {
-    max-width: 58ch;
+    max-width: none;
     font-size: var(--step-small);
     color: var(--text-secondary);
   }
