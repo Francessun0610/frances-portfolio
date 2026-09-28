@@ -51,165 +51,440 @@ const structuredData = [
         </div>
       </div>
 
-      {/* Decorative. A sunrise over the edge of a very large planet. The
-          planet is one ellipse, mostly off-canvas. The sun and its light are
-          drawn through a mask of the sky, so they pass behind the horizon
-          as they rise. Nothing here is focusable or announced. */}
+      {/* Decorative. First light coming over the limb of a body far larger
+          than the frame: one circle of radius 4800 against an 840 unit view,
+          so only a 29 unit rise of its curvature is in shot and the horizon
+          reads as almost a straight line. The light is built as layers of
+          bloom rather than as a disc, and the whole sun group is drawn
+          through a mask of the sky, so it is genuinely occluded by the body
+          rather than faded in. Every gradient resolves to the page colour
+          before it reaches an edge. Nothing here is focusable or announced. */}
       <div class="hero__visual" aria-hidden="true">
         <svg
           class="hero__dawn"
-          viewBox="0 0 400 400"
+          data-dawn
+          viewBox="-140 0 840 500"
           preserveAspectRatio="xMidYMid slice"
           focusable="false"
         >
           <defs>
-            {/* Sky: everything above the planet. */}
-            <mask id="hs-sky" maskUnits="userSpaceOnUse" x="0" y="0" width="400" height="400">
-              <rect width="400" height="400" fill="#fff" />
-              <ellipse cx="215" cy="432" rx="540" ry="220" fill="#000" />
+            {/* Sky and body share one circle. Apex at x=220, y=358, which is
+                72% down the frame, so the weight sits low and the space above
+                stays open. */}
+            <mask id="hs-sky" maskUnits="userSpaceOnUse" x="-200" y="-80" width="1100" height="660">
+              <rect x="-200" y="-80" width="1100" height="660" fill="#fff" />
+              <circle cx="220" cy="5158" r="4800" fill="#000" />
             </mask>
+            <clipPath id="hs-body">
+              <circle cx="220" cy="5158" r="4800" />
+            </clipPath>
 
-            {/* The disc: a warm white core that cools to gold at a soft,
-                translucent edge. No offset highlight, so no sphere. */}
-            <radialGradient id="hs-disc">
-              <stop offset="0" stop-color="#FFF9E6" />
-              <stop offset="0.5" stop-color="#FFEDB8" />
-              <stop offset="0.82" stop-color="#FFD97E" stop-opacity="0.95" />
-              <stop offset="1" stop-color="#FFC966" stop-opacity="0.45" />
+            {/* Depth layer one: space. A cool lift where the light is, wider
+                than tall, so the frame reads as thin atmosphere rather than
+                flat black. */}
+            <radialGradient id="hs-void">
+              <stop offset="0" stop-color="#1B2C44" stop-opacity="0.42" />
+              <stop offset="0.4" stop-color="#141E2E" stop-opacity="0.2" />
+              <stop offset="0.74" stop-color="#0b0d12" stop-opacity="0" />
             </radialGradient>
-            <radialGradient id="hs-edge">
-              <stop offset="0.6" stop-color="#FFD978" stop-opacity="0.5" />
-              <stop offset="1" stop-color="#FFC45E" stop-opacity="0" />
+
+            {/* The star, built as light rather than as an object. The disc
+                fades to nothing at its own edge, so there is no circular
+                silhouette to read, and the white core over it blows the
+                centre out the way an exposed camera would. */}
+            <radialGradient id="hs-core">
+              <stop offset="0" stop-color="#FFFFFF" />
+              <stop offset="0.55" stop-color="#FFFFFF" stop-opacity="0.92" />
+              <stop offset="1" stop-color="#FFF6DD" stop-opacity="0" />
             </radialGradient>
-            <radialGradient id="hs-glow">
-              <stop offset="0" stop-color="#FFEBB4" stop-opacity="0.6" />
-              <stop offset="0.4" stop-color="#FFC966" stop-opacity="0.2" />
-              <stop offset="1" stop-color="#F6AD45" stop-opacity="0" />
+            {/* Pale gold inner bloom, wider than tall and drawn over the core
+                so any residual edge is lost in its own light. */}
+            <radialGradient id="hs-inner">
+              <stop offset="0" stop-color="#FFF6DD" stop-opacity="0.78" />
+              <stop offset="0.5" stop-color="#FFE5A6" stop-opacity="0.34" />
+              <stop offset="1" stop-color="#FFD277" stop-opacity="0" />
             </radialGradient>
-            <radialGradient id="hs-bloom">
-              <stop offset="0" stop-color="#F8B84E" stop-opacity="0.3" />
-              <stop offset="0.5" stop-color="#F6AD45" stop-opacity="0.09" />
-              <stop offset="1" stop-color="#F6AD45" stop-opacity="0" />
+            {/* Amber survives only here, where the opacity is high enough that
+                it still reads as gold rather than as tint. */}
+            <radialGradient id="hs-mid">
+              <stop offset="0" stop-color="#FFE5A6" stop-opacity="0.58" />
+              <stop offset="0.42" stop-color="#E9AE4C" stop-opacity="0.22" />
+              <stop offset="1" stop-color="#FFD277" stop-opacity="0" />
             </radialGradient>
-            <radialGradient id="hs-haze">
-              <stop offset="0" stop-color="#FFD978" stop-opacity="0.15" />
-              <stop offset="0.55" stop-color="#F6AD45" stop-opacity="0.04" />
-              <stop offset="1" stop-color="#F6AD45" stop-opacity="0" />
+            {/* Outer haze, as three offset masses at different sizes. No one
+                of them is centred on the light, so the falloff is uneven and
+                the result cannot read as a single radial gradient. */}
+            {/* Amber is deliberately absent from the broad haze. At the very low
+                opacities these bands run, #E9AE4C composited over the near-black
+                page lands around hue 25 with the blue channel barely lifted,
+                which renders as brown rather than atmosphere. Pale gold keeps
+                the same warmth in the gold band once it is this dim. */}
+            <radialGradient id="hs-corona">
+              <stop offset="0" stop-color="#FFF6DD" stop-opacity="0.26" />
+              <stop offset="0.5" stop-color="#FFE5A6" stop-opacity="0.11" />
+              <stop offset="1" stop-color="#FFE5A6" stop-opacity="0" />
             </radialGradient>
-            <radialGradient id="hs-spread">
-              <stop offset="0" stop-color="#FFF0BB" stop-opacity="0.34" />
-              <stop offset="0.5" stop-color="#FFD978" stop-opacity="0.1" />
-              <stop offset="1" stop-color="#FFD978" stop-opacity="0" />
+            <radialGradient id="hs-corona-b">
+              <stop offset="0" stop-color="#FFF6DD" stop-opacity="0.16" />
+              <stop offset="0.55" stop-color="#FFE5A6" stop-opacity="0.065" />
+              <stop offset="1" stop-color="#FFE5A6" stop-opacity="0" />
             </radialGradient>
-            {/* Planet body. Page colour almost at once, so the box that
-                clips this drawing never shows. Only a whisper of darkness
-                sits right under the rim. */}
+            <radialGradient id="hs-corona-c">
+              <stop offset="0" stop-color="#FFE5A6" stop-opacity="0.085" />
+              <stop offset="0.6" stop-color="#FFE5A6" stop-opacity="0.032" />
+              <stop offset="1" stop-color="#FFE5A6" stop-opacity="0" />
+            </radialGradient>
+            {/* One flat anamorphic spread through the star. Broad, faint and
+                blurred, so it reads as glass and air, not a flare prop. */}
+            <linearGradient id="hs-streak" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="700" y2="0">
+              <stop offset="0" stop-color="#FFD277" stop-opacity="0" />
+              <stop offset="0.22" stop-color="#FFE5A6" stop-opacity="0.1" />
+              <stop offset="0.31" stop-color="#FFF6DD" stop-opacity="0.3" />
+              <stop offset="0.54" stop-color="#FFE5A6" stop-opacity="0.1" />
+              <stop offset="1" stop-color="#FFD277" stop-opacity="0" />
+            </linearGradient>
+            {/* The horizontal spread, and the reason the sunrise reads big.
+                Both are linear along x rather than radial, so the shape is a
+                band of light across the horizon and never a round blob; the
+                vertical softness comes only from the blur. Warm white at the
+                centre, pale gold out, faint amber at the far edges, and the
+                falloff is longer to the right than the left. */}
+            <linearGradient id="hs-pool" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="700" y2="0">
+              <stop offset="0" stop-color="#E9AE4C" stop-opacity="0" />
+              <stop offset="0.08" stop-color="#FFD277" stop-opacity="0.14" />
+              <stop offset="0.18" stop-color="#FFE5A6" stop-opacity="0.34" />
+              <stop offset="0.27" stop-color="#FFF6DD" stop-opacity="0.62" />
+              <stop offset="0.31" stop-color="#FFF6DD" stop-opacity="0.94" />
+              <stop offset="0.48" stop-color="#FFF6DD" stop-opacity="0.52" />
+              <stop offset="0.66" stop-color="#FFE5A6" stop-opacity="0.2" />
+              <stop offset="0.86" stop-color="#E9AE4C" stop-opacity="0.07" />
+              <stop offset="1" stop-color="#E9AE4C" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="hs-pool-wide" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="700" y2="0">
+              <stop offset="0" stop-color="#FFD277" stop-opacity="0" />
+              <stop offset="0.12" stop-color="#FFE5A6" stop-opacity="0.12" />
+              <stop offset="0.31" stop-color="#FFF6DD" stop-opacity="0.4" />
+              <stop offset="0.62" stop-color="#FFE5A6" stop-opacity="0.14" />
+              <stop offset="0.86" stop-color="#FFE5A6" stop-opacity="0.04" />
+              <stop offset="1" stop-color="#FFD277" stop-opacity="0" />
+            </linearGradient>
+
+            {/* Depth layer three: the body in front. Offset 0 sits exactly on
+                the limb apex. A faint cool lift there, page colour a little
+                under it, then below the page colour deeper down, so the mass
+                reads as a solid body in front of the sky rather than as more
+                page. Without the darker foot the horizon is only a line. */}
             <linearGradient id="hs-planet" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stop-color="#07090d" />
-              <stop offset="0.09" stop-color="#0b0d12" />
+              <stop offset="0" stop-color="#0c1118" />
+              <stop offset="0.0047" stop-color="#080a10" />
+              <stop offset="0.0094" stop-color="#05070b" />
+              {/* Back to page colour by y=495, five units above the bottom of
+                  the frame. The darker foot has to resolve before the cut or
+                  the crop shows as a horizontal step. */}
+              <stop offset="0.0143" stop-color="#0b0d12" />
             </linearGradient>
-            <linearGradient id="hs-rim" gradientUnits="userSpaceOnUse" x1="-10" y1="0" x2="420" y2="0">
-              <stop offset="0" stop-color="#31465F" stop-opacity="0" />
-              <stop offset="0.14" stop-color="#526C8B" stop-opacity="0.45" />
-              <stop offset="0.6" stop-color="#7EA4C7" stop-opacity="0.7" />
-              <stop offset="0.9" stop-color="#526C8B" stop-opacity="0.4" />
-              <stop offset="1" stop-color="#31465F" stop-opacity="0" />
+            {/* Scattering carried just inside the limb, brightest under the
+                star, which is what gives the body its curvature. */}
+            <linearGradient id="hs-limb" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="700" y2="0">
+              <stop offset="0" stop-color="#31465F" stop-opacity="0.08" />
+              <stop offset="0.16" stop-color="#31465F" stop-opacity="0.2" />
+              <stop offset="0.31" stop-color="#7089A5" stop-opacity="0.28" />
+              <stop offset="0.68" stop-color="#31465F" stop-opacity="0.14" />
+              <stop offset="1" stop-color="#31465F" stop-opacity="0.04" />
             </linearGradient>
-            <linearGradient id="hs-air" gradientUnits="userSpaceOnUse" x1="-10" y1="0" x2="420" y2="0">
+            {/* The rim: a desaturated blue grey edge that lifts towards the
+                sunrise and drops away fast on either side, so the curve is
+                never evenly lit. */}
+            <linearGradient id="hs-rim" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="700" y2="0">
+              <stop offset="0" stop-color="#2A3340" stop-opacity="0.32" />
+              <stop offset="0.12" stop-color="#3A4554" stop-opacity="0.4" />
+              <stop offset="0.31" stop-color="#4A5564" stop-opacity="0.28" />
+              <stop offset="0.64" stop-color="#3A4554" stop-opacity="0.16" />
+              <stop offset="0.88" stop-color="#2A3340" stop-opacity="0.07" />
+              <stop offset="1" stop-color="#2A3340" stop-opacity="0" />
+            </linearGradient>
+            {/* Depth layer two: haze sitting above the limb. */}
+            <linearGradient id="hs-air" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="700" y2="0">
+              <stop offset="0" stop-color="#3A4554" stop-opacity="0.12" />
+              <stop offset="0.14" stop-color="#3A4554" stop-opacity="0.2" />
+              <stop offset="0.31" stop-color="#526C8B" stop-opacity="0.22" />
+              <stop offset="0.66" stop-color="#3A4554" stop-opacity="0.14" />
+              <stop offset="0.88" stop-color="#3A4554" stop-opacity="0.06" />
+              <stop offset="1" stop-color="#3A4554" stop-opacity="0" />
+            </linearGradient>
+            {/* The limb's response to the star: cool, to pale blue white, to
+                warm white, to pale gold exactly at the contact point, and
+                back down to cool. Peaks at x=120, where the star sits. */}
+            <linearGradient id="hs-sunline" gradientUnits="userSpaceOnUse" x1="-140" y1="0" x2="700" y2="0">
               <stop offset="0" stop-color="#526C8B" stop-opacity="0" />
-              <stop offset="0.18" stop-color="#526C8B" stop-opacity="0.3" />
-              <stop offset="0.6" stop-color="#7EA4C7" stop-opacity="0.34" />
-              <stop offset="0.88" stop-color="#526C8B" stop-opacity="0.26" />
+              <stop offset="0.12" stop-color="#7089A5" stop-opacity="0.16" />
+              <stop offset="0.2" stop-color="#7089A5" stop-opacity="0.4" />
+              <stop offset="0.26" stop-color="#FFF6DD" stop-opacity="0.82" />
+              <stop offset="0.31" stop-color="#FFF6DD" stop-opacity="1" />
+              <stop offset="0.44" stop-color="#FFF6DD" stop-opacity="0.7" />
+              <stop offset="0.58" stop-color="#7089A5" stop-opacity="0.26" />
+              <stop offset="0.8" stop-color="#7089A5" stop-opacity="0.1" />
               <stop offset="1" stop-color="#526C8B" stop-opacity="0" />
             </linearGradient>
-            <linearGradient id="hs-sunline" gradientUnits="userSpaceOnUse" x1="128" y1="0" x2="368" y2="0">
-              <stop offset="0" stop-color="#FFC45E" stop-opacity="0" />
-              <stop offset="0.36" stop-color="#FFD978" stop-opacity="0.65" />
-              <stop offset="0.5" stop-color="#FFF0BB" stop-opacity="1" />
-              <stop offset="0.64" stop-color="#FFD978" stop-opacity="0.65" />
-              <stop offset="1" stop-color="#FFC45E" stop-opacity="0" />
-            </linearGradient>
 
-            <filter id="hs-soft" x="-10%" y="-10%" width="120%" height="120%">
+            {/* Filter regions are sized per shape. The flat ones need a very
+                tall region or the blur is clipped into a hard band. */}
+            <filter id="hs-f-soft" x="-25%" y="-25%" width="150%" height="150%">
               <feGaussianBlur stdDeviation="0.9" />
             </filter>
-            <filter id="hs-disc-soft" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="1.7" />
+            <filter id="hs-f-core" x="-160%" y="-400%" width="420%" height="900%">
+              <feGaussianBlur stdDeviation="7" />
             </filter>
-            <filter id="hs-blur" x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation="2.4" />
+            <filter id="hs-f-mid" x="-55%" y="-400%" width="210%" height="900%">
+              <feGaussianBlur stdDeviation="6.5" />
             </filter>
-            <filter id="hs-wide" x="-10%" y="-10%" width="120%" height="120%">
-              <feGaussianBlur stdDeviation="5.5" />
+            <filter id="hs-f-wide" x="-35%" y="-35%" width="170%" height="170%">
+              <feGaussianBlur stdDeviation="9" />
+            </filter>
+            <filter id="hs-f-vast" x="-45%" y="-45%" width="190%" height="190%">
+              <feGaussianBlur stdDeviation="13" />
+            </filter>
+            <filter id="hs-f-streak" x="-15%" y="-2400%" width="130%" height="4900%">
+              <feGaussianBlur stdDeviation="5" />
+            </filter>
+            <filter id="hs-f-pool" x="-14%" y="-700%" width="128%" height="1500%">
+              <feGaussianBlur stdDeviation="9" />
+            </filter>
+            <filter id="hs-f-pool-wide" x="-10%" y="-1400%" width="120%" height="2900%">
+              <feGaussianBlur stdDeviation="7" />
+            </filter>
+            <filter id="hs-f-band" x="-12%" y="-280%" width="124%" height="660%">
+              <feGaussianBlur stdDeviation="14" />
             </filter>
           </defs>
 
-          {/* Sky light, occluded by the planet. */}
+          {/* Depth one. Thin atmosphere, wider than tall. Static: it is the
+              environment, not the event. */}
+          <ellipse cx="80" cy="330" rx="620" ry="220" fill="url(#hs-void)" />
+
+          {/* Everything the body can hide. */}
           <g mask="url(#hs-sky)">
-            <g class="hs-haze">
-              <ellipse cx="248" cy="192" rx="200" ry="122" fill="url(#hs-haze)" />
+            {/* Cool horizon shelf. Static environment, so the dim limb
+                occupies the field left of the light instead of leaving a
+                dead gap. */}
+            <ellipse
+              cx="-20"
+              cy="357"
+              rx="720"
+              ry="7"
+              fill="url(#hs-air)"
+              filter="url(#hs-f-pool)"
+              opacity="0.85" />
+
+            {/* Outer atmosphere. Flat bands, none concentric, so the glow
+                is a wide uneven wedge and never a dome. hs-haze-drift is
+                the slow atmospheric shift; hs-swell only scales with the
+                dawn, so the two transforms never fight. */}
+            <g class="hs-swell">
+              <g class="hs-haze-drift">
+                <g class="hs-haze">
+                  <ellipse
+                    class="hs-light"
+                    cx="140"
+                    cy="340"
+                    rx="580"
+                    ry="40"
+                    fill="url(#hs-corona)"
+                    filter="url(#hs-f-band)" />
+                  <ellipse
+                    class="hs-light"
+                    cx="70"
+                    cy="318"
+                    rx="520"
+                    ry="44"
+                    fill="url(#hs-corona-b)"
+                    filter="url(#hs-f-band)" />
+                  <g class="hs-far">
+                    <ellipse
+                      class="hs-light"
+                      cx="190"
+                      cy="292"
+                      rx="420"
+                      ry="42"
+                      fill="url(#hs-corona-c)"
+                      filter="url(#hs-f-band)" />
+                    <ellipse
+                      class="hs-light"
+                      cx="20"
+                      cy="268"
+                      rx="340"
+                      ry="38"
+                      fill="url(#hs-corona-c)"
+                      filter="url(#hs-f-band)" />
+                  </g>
+                </g>
+              </g>
             </g>
-            <g class="hs-spread">
-              <ellipse cx="248" cy="212" rx="150" ry="8" fill="url(#hs-spread)" filter="url(#hs-blur)" />
-            </g>
+
+            {/* Mid bloom sits on the limb and does not rise. It is atmosphere
+                leaking, not a solar body. */}
+            <ellipse class="hs-light" cx="120" cy="356" rx="480" ry="30" fill="url(#hs-mid)" />
+
+            {/* The only thing that rises. A flat overexposed core, already
+                half behind the limb, with pale bloom drawn over it so no
+                circumference can read. */}
             <g class="hs-sun">
-              <ellipse class="hs-light" cx="248" cy="178" rx="126" ry="86" fill="url(#hs-bloom)" />
-              <ellipse class="hs-light" cx="248" cy="178" rx="76" ry="60" fill="url(#hs-glow)" />
-              <circle cx="248" cy="176" r="42" fill="url(#hs-edge)" filter="url(#hs-blur)" />
-              <circle cx="248" cy="176" r="28" fill="url(#hs-disc)" filter="url(#hs-disc-soft)" />
+              <ellipse class="hs-core" cx="120" cy="356" rx="220" ry="18" fill="url(#hs-inner)" filter="url(#hs-f-mid)" />
+              <ellipse class="hs-core" cx="120" cy="357" rx="110" ry="5" fill="url(#hs-core)" filter="url(#hs-f-core)" />
+            </g>
+
+            {/* Horizontal light, the scale of the scene. hs-spread widens
+                through the dawn; hs-spread-drift is the living shift. */}
+            <g class="hs-spread">
+              <g class="hs-spread-drift">
+                <ellipse
+                  class="hs-ember"
+                  cx="130"
+                  cy="352"
+                  rx="600"
+                  ry="22"
+                  fill="url(#hs-pool-wide)"
+                  filter="url(#hs-f-band)" />
+                <ellipse
+                  class="hs-ember"
+                  cx="120"
+                  cy="358"
+                  rx="520"
+                  ry="14"
+                  fill="url(#hs-pool)"
+                  filter="url(#hs-f-pool)" />
+                <ellipse
+                  class="hs-shimmer"
+                  cx="120"
+                  cy="357"
+                  rx="300"
+                  ry="3"
+                  fill="url(#hs-streak)"
+                  filter="url(#hs-f-streak)" />
+                <g class="hs-far">
+                  <ellipse
+                    class="hs-ember"
+                    cx="160"
+                    cy="360"
+                    rx="700"
+                    ry="5"
+                    fill="url(#hs-pool-wide)"
+                    filter="url(#hs-f-pool-wide)" />
+                </g>
+              </g>
             </g>
           </g>
 
-          {/* The planet. */}
-          <ellipse cx="215" cy="432" rx="540" ry="220" fill="url(#hs-planet)" />
+          {/* Depth three. The body, in front of the light. */}
+          <circle cx="220" cy="5158" r="4800" fill="url(#hs-planet)" />
 
-          {/* Atmosphere above the rim, and the sunlight on it. */}
+          {/* Scattering on the body. A stroke on the limb, clipped to the
+              silhouette, so the band follows the curve instead of floating
+              as a shape of its own. */}
+          <g clip-path="url(#hs-body)">
+            <circle
+              cx="220"
+              cy="5158"
+              r="4800"
+              fill="none"
+              stroke="url(#hs-limb)"
+              stroke-width="46"
+              filter="url(#hs-f-vast)"></circle>
+          </g>
+
+          {/* Depth two. Haze above the limb: a wide cool scatter, a tighter
+              band, then the star's own contribution near the contact point.
+              Each stroke is centred on the limb, so the mask keeps only the
+              half that belongs to the sky. */}
           <g mask="url(#hs-sky)">
-            <ellipse
-              cx="215"
-              cy="432"
-              rx="540"
-              ry="220"
+            <circle
+              cx="220"
+              cy="5158"
+              r="4800"
               fill="none"
               stroke="url(#hs-air)"
-              stroke-width="6"
-              filter="url(#hs-blur)"></ellipse>
-            <ellipse
-              class="hs-light"
-              cx="215"
-              cy="432"
-              rx="540"
-              ry="220"
+              stroke-width="22"
+              stroke-opacity="0.28"
+              filter="url(#hs-f-vast)"></circle>
+            <circle
+              cx="220"
+              cy="5158"
+              r="4800"
+              fill="none"
+              stroke="url(#hs-air)"
+              stroke-width="7"
+              stroke-opacity="0.55"
+              filter="url(#hs-f-mid)"></circle>
+            <circle
+              class="hs-ember"
+              cx="220"
+              cy="5158"
+              r="4800"
               fill="none"
               stroke="url(#hs-sunline)"
-              stroke-width="10"
-              stroke-opacity="0.45"
-              filter="url(#hs-wide)"></ellipse>
+              stroke-width="22"
+              stroke-opacity="0.66"
+              filter="url(#hs-f-wide)"></circle>
           </g>
-          <ellipse
-            cx="215"
-            cy="432"
-            rx="542"
-            ry="224"
+
+          {/* The limb itself. One hairline. The cool edge is kept thin and
+              dim so it cannot read as Earth's atmosphere from orbit, which
+              is the stock-space look this drawing has to refuse. */}
+          <circle
+            cx="220"
+            cy="5158"
+            r="4800"
             fill="none"
             stroke="url(#hs-rim)"
-            stroke-width="0.6"
-            stroke-opacity="0.2"></ellipse>
-          <ellipse cx="215" cy="432" rx="540" ry="220" fill="none" stroke="url(#hs-rim)" stroke-width="1"></ellipse>
-          <ellipse
-            class="hs-light"
-            cx="215"
-            cy="432"
-            rx="540"
-            ry="220"
+            stroke-width="1.2"
+            stroke-opacity="0.7"></circle>
+          <circle
+            class="hs-ember"
+            cx="220"
+            cy="5158"
+            r="4800"
             fill="none"
             stroke="url(#hs-sunline)"
-            stroke-width="1.4"
-            filter="url(#hs-soft)"></ellipse>
+            stroke-width="1.6"
+            filter="url(#hs-f-soft)"></circle>
         </svg>
       </div>
     </div>
   </section>
+
+  {/* Plays the sunrise on load and again whenever the hero comes back into
+      view. Inline and immediately after the drawing, so the armed frame is
+      set before the first paint. Without it the scene rests, composed, in
+      its finished frame. */}
+  <script is:inline>
+    (() => {
+      const scene = document.querySelector('[data-dawn]');
+      if (!scene || !('IntersectionObserver' in window)) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const hero = scene.closest('.hero') || scene;
+      scene.dataset.dawn = 'hold';
+      let armed = true;
+
+      new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            // Rearm only once the hero has left completely. The 17s sequence
+            // must not restart from casual scroll jitter at the threshold.
+            if (entry.intersectionRatio === 0) {
+              armed = true;
+            } else if (armed && entry.intersectionRatio >= 0.25) {
+              armed = false;
+              scene.dataset.dawn = 'hold';
+              void scene.getBoundingClientRect();
+              scene.dataset.dawn = 'run';
+            }
+          }
+        },
+        { threshold: [0, 0.25] },
+      ).observe(hero);
+    })();
+  </script>
 
   <hr class="divider" />
 
@@ -382,23 +657,41 @@ const structuredData = [
     position: absolute;
     top: 0;
     right: 0;
-    width: min(64%, 28rem);
+    width: min(96%, 30rem);
     height: auto;
-    aspect-ratio: 1 / 1;
-    /* Lifts the square so the band opens on sky, then sun, then rim. */
-    transform: translateY(-25%);
+    aspect-ratio: 7 / 5;
+    /* Lifts the frame so the band opens on the sunrise and the limb. */
+    transform: translateY(-48%);
     display: block;
-    /* The band crops the square, so the cut left and top edges fade out. */
+    /* The band crops the frame, so the cut edges fade out. The trailing edge
+       fades too, on both layouts, because the dark mass and the cool band
+       under the limb would otherwise stop on a straight line and give the
+       rectangle away. */
+    /* The band crops the drawing well inside its own height, so both cut edges
+       have to dissolve. The lower one matters most: it falls across the darker
+       foot of the body, which is below page colour and would otherwise leave a
+       horizontal step along the bottom of the band. */
     -webkit-mask-image:
-      linear-gradient(90deg, transparent 0%, #000 34%),
-      linear-gradient(180deg, transparent 25%, #000 37%);
+      linear-gradient(90deg, transparent 0%, #000 22%, #000 95%, transparent 100%),
+      linear-gradient(180deg, transparent 50%, #000 63%, #000 80%, transparent 91%);
     -webkit-mask-composite: source-in;
     mask-image:
-      linear-gradient(90deg, transparent 0%, #000 34%),
-      linear-gradient(180deg, transparent 25%, #000 37%);
+      linear-gradient(90deg, transparent 0%, #000 22%, #000 95%, transparent 100%),
+      linear-gradient(180deg, transparent 50%, #000 63%, #000 80%, transparent 91%);
     mask-composite: intersect;
-    /* Slow start, a little momentum, long settle. */
-    --ease-rise: cubic-bezier(0.4, 0.02, 0.12, 1);
+    --dawn: 17s;
+    --ease-dawn: cubic-bezier(0.4, 0.04, 0.22, 1);
+  }
+
+  /* Below the two-column layout the drawing is a shallow band, so the faintest
+     outer haze and the widest lateral band have no room to read as atmosphere
+     and only muddy the crop. They are pulled back rather than rescaled, which
+     is what keeps the band a deliberate fragment instead of a shrunken
+     desktop composition. */
+  @media (max-width: 899px) {
+    .hs-far {
+      opacity: 0.3;
+    }
   }
 
   /* Clears the sticky header when the hero link jumps here. Resting
@@ -416,22 +709,47 @@ const structuredData = [
       gap: 2.75rem;
     }
 
+    /* The track still reserves the right column, and therefore still fixes the
+       width of the copy column, but it no longer carries a size the drawing
+       has to respect: the drawing is taken out of flow below and positions
+       against .hero instead. */
     .hero__visual {
       justify-self: end;
       width: min(100%, 17.5rem);
       height: auto;
-      aspect-ratio: 1 / 1;
+      aspect-ratio: 8 / 5;
+      position: static;
+      overflow: visible;
     }
 
+    /* One cinematic frame rather than a graphic box. It spans from a fixed
+       offset right of the copy to a little past the window, so the horizon is
+       cropped by the window rather than ending inside the page, and it grows
+       with the window instead of with the column. Because it is absolutely
+       positioned it contributes nothing to the grid, so the copy cannot move
+       however large this gets. Both offsets are in rem, so the frame tracks
+       the shell under zoom.
+
+       An SVG is a replaced element, so the width has to be stated: with width
+       auto the intrinsic size wins and the right offset is dropped. Because
+       the shell is centred, the left offset and vw width are paired so the
+       right edge always lands 1.5rem past the window. The width has to be in
+       vw, not %, or it would resolve against the shell and stop growing once
+       the shell hits its max. */
     .hero__dawn {
-      top: 0;
+      top: 50%;
+      left: calc(50% + 8.5rem);
       right: auto;
-      width: 100%;
-      height: 100%;
-      aspect-ratio: auto;
-      transform: none;
-      -webkit-mask-image: none;
-      mask-image: none;
+      width: calc(50vw - 7rem);
+      max-width: none;
+      height: auto;
+      aspect-ratio: 7 / 5;
+      transform: translateY(-50%);
+      /* Deep left fade: the dim horizon may enter the gap, but bright bloom
+         stays well clear of the copy. Long trailing fade so the window edge
+         does not cut the light. */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 16%, #000 84%, transparent 100%);
     }
   }
 
@@ -443,56 +761,205 @@ const structuredData = [
     }
 
     .hero__visual {
-      width: min(100%, 22rem);
+      width: min(100%, 23rem);
+    }
+
+    /* The copy column takes a smaller share above this width, so the frame
+       starts further left and is correspondingly wider. The right edge still
+       resolves to 100% + 1.5rem. */
+    .hero__dawn {
+      left: calc(50% + 2rem);
+      width: calc(50vw - 0.5rem);
     }
   }
 
-  /* The sun starts 58 user units lower, which leaves a 6 unit crescent
-     (about 10% of the 56 unit disc) above the horizon, and rises once. The
-     declared values below are the finished frame, so a reduced-motion
-     visitor gets the ending with no animation at all. Only transform and
-     opacity move. The blurs are static. */
-  .hs-sun {
-    transform: translateY(0);
-    animation: hs-rise 4s var(--ease-rise) both;
-  }
-
-  .hs-light {
-    opacity: 1;
-    animation: hs-light 4s var(--ease-rise) both;
-  }
-
-  /* After the rise, the outer haze and the low horizontal spread keep a
-     faint 12 second breath. The sun itself never moves again. */
+  /* The drawing rests in its finished frame. The inline script below the
+     hero sets data-dawn="hold" to arm the pre-rise frame and "run" to play
+     it, so a visitor with reduced motion, or with no JavaScript, simply
+     gets the composed shot. Only transform and opacity animate; every blur
+     is static. */
+  .hs-swell,
   .hs-haze,
-  .hs-spread {
+  .hs-haze-drift,
+  .hs-spread,
+  .hs-spread-drift {
     transform-box: fill-box;
     transform-origin: center;
   }
 
-  .hs-haze {
-    animation: hs-breathe 12s var(--ease-breathe) 4s infinite;
+  /* Armed. First light only: a seam on the limb. The core is still behind
+     it. Atmosphere is nearly out. Horizontal light is narrow. */
+  .hero__dawn[data-dawn='hold'] .hs-sun {
+    transform: translateY(26px);
   }
 
-  .hs-spread {
-    animation: hs-drift 12s var(--ease-breathe) 4s infinite;
+  .hero__dawn[data-dawn='hold'] .hs-core {
+    opacity: 0.02;
   }
 
+  .hero__dawn[data-dawn='hold'] .hs-light {
+    opacity: 0.03;
+  }
+
+  .hero__dawn[data-dawn='hold'] .hs-ember {
+    opacity: 0.1;
+  }
+
+  .hero__dawn[data-dawn='hold'] .hs-shimmer {
+    opacity: 0.06;
+  }
+
+  .hero__dawn[data-dawn='hold'] .hs-swell {
+    transform: scale(0.86);
+  }
+
+  .hero__dawn[data-dawn='hold'] .hs-spread {
+    transform: scaleX(0.18);
+  }
+
+  /* 17 seconds. Light arrives first. The source barely moves for 8 seconds,
+     then rises slowly, then settles. Atmospheric drift runs from the first
+     frame, on its own wrappers, so it never overwrites the dawn transforms. */
+  .hero__dawn[data-dawn='run'] .hs-sun {
+    animation: hs-rise var(--dawn) var(--ease-dawn) both;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-core {
+    animation: hs-core-in var(--dawn) var(--ease-dawn) both;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-light {
+    animation: hs-glow var(--dawn) var(--ease-dawn) both;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-ember {
+    animation: hs-ember var(--dawn) var(--ease-dawn) both;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-swell {
+    animation: hs-swell var(--dawn) var(--ease-dawn) both;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-spread {
+    animation: hs-widen var(--dawn) var(--ease-dawn) both;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-haze {
+    animation: hs-breathe 16s var(--ease-breathe) infinite;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-haze-drift {
+    animation: hs-haze-drift 27s ease-in-out infinite alternate;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-spread-drift {
+    animation: hs-drift-x 22s ease-in-out infinite alternate;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-shimmer {
+    animation:
+      hs-shimmer-in var(--dawn) var(--ease-dawn) both,
+      hs-shimmer 15s var(--ease-breathe) 17s infinite;
+  }
+
+  /* 0 / 4 / 8 / 14 / 17 seconds. Almost no rise until 8s. */
   @keyframes hs-rise {
-    from {
-      transform: translateY(58px);
+    0% {
+      transform: translateY(26px);
     }
-    to {
+    23.5% {
+      transform: translateY(24px);
+    }
+    47% {
+      transform: translateY(20px);
+    }
+    82% {
+      transform: translateY(3px);
+    }
+    100% {
       transform: translateY(0);
     }
   }
 
-  @keyframes hs-light {
-    from {
+  @keyframes hs-core-in {
+    0%,
+    23.5% {
+      opacity: 0.02;
+    }
+    47% {
+      opacity: 0.16;
+    }
+    82% {
+      opacity: 0.82;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hs-glow {
+    0% {
+      opacity: 0.03;
+    }
+    23.5% {
       opacity: 0.2;
     }
-    to {
+    47% {
+      opacity: 0.48;
+    }
+    82% {
+      opacity: 0.88;
+    }
+    100% {
       opacity: 1;
+    }
+  }
+
+  @keyframes hs-ember {
+    0% {
+      opacity: 0.1;
+    }
+    23.5% {
+      opacity: 0.28;
+    }
+    47% {
+      opacity: 0.55;
+    }
+    82% {
+      opacity: 0.88;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes hs-widen {
+    0% {
+      transform: scaleX(0.18);
+    }
+    23.5% {
+      transform: scaleX(0.42);
+    }
+    47% {
+      transform: scaleX(0.68);
+    }
+    82% {
+      transform: scaleX(0.93);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes hs-swell {
+    0% {
+      transform: scale(0.86);
+    }
+    47% {
+      transform: scale(0.94);
+    }
+    100% {
+      transform: scale(1);
     }
   }
 
@@ -503,29 +970,68 @@ const structuredData = [
       transform: scale(1);
     }
     50% {
-      opacity: 0.93;
-      transform: scale(1.012);
+      opacity: 0.97;
+      transform: scale(1.006);
     }
   }
 
-  @keyframes hs-drift {
+  @keyframes hs-haze-drift {
+    from {
+      transform: translate(0, 0);
+    }
+    to {
+      transform: translate(10px, -4px);
+    }
+  }
+
+  @keyframes hs-drift-x {
+    from {
+      transform: translateX(-6px);
+    }
+    to {
+      transform: translateX(8px);
+    }
+  }
+
+  @keyframes hs-shimmer-in {
+    0% {
+      opacity: 0.06;
+    }
+    23.5% {
+      opacity: 0.18;
+    }
+    47% {
+      opacity: 0.28;
+    }
+    100% {
+      opacity: 0.4;
+    }
+  }
+
+  @keyframes hs-shimmer {
     0%,
     100% {
-      opacity: 1;
-      transform: scaleX(1);
+      opacity: 0.4;
     }
     50% {
-      opacity: 0.94;
-      transform: scaleX(1.03);
+      opacity: 0.48;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hs-sun,
-    .hs-light,
-    .hs-haze,
-    .hs-spread {
+    .hero__dawn[data-dawn] .hs-sun,
+    .hero__dawn[data-dawn] .hs-core,
+    .hero__dawn[data-dawn] .hs-light,
+    .hero__dawn[data-dawn] .hs-ember,
+    .hero__dawn[data-dawn] .hs-swell,
+    .hero__dawn[data-dawn] .hs-haze,
+    .hero__dawn[data-dawn] .hs-haze-drift,
+    .hero__dawn[data-dawn] .hs-spread,
+    .hero__dawn[data-dawn] .hs-spread-drift,
+    .hero__dawn[data-dawn] .hs-shimmer {
       animation: none;
+      transform: none;
+      opacity: 1;
     }
   }
 
@@ -539,7 +1045,7 @@ const structuredData = [
 
   .section-intro p {
     margin: 0.6rem 0 0;
-    max-width: 42rem;
+    max-width: none;
     font-size: var(--step-small);
     color: var(--text-secondary);
   }

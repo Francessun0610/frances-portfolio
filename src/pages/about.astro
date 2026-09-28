@@ -1,11 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { person, links, about, PERSON_ID } from '../data/site';
+import { person, links, PERSON_ID } from '../data/site';
 import { SITE_URL } from '../config/site.mjs';
 
-const title = 'About Frances Sun | Lead UX Designer in Austin';
+const title = 'About Frances Sun | Lead UX Designer, Educator & Speaker';
 const description =
-  'Frances Sun is an Austin-based Lead UX Designer with 18+ years of experience across enterprise software, operational systems, interaction design, information architecture, design systems, and prototyping.';
+  'Frances Sun is an Austin-based Lead UX Designer, educator, and UX speaker with experience across consumer electronics, enterprise software, complex workflows, systems thinking, interaction design, and prototyping.';
 
 // The page is about Frances, so it points at the same Person node rather than
 // describing a second one.
@@ -34,28 +34,33 @@ const structuredData = [
       <header class="about-page__head">
         <p class="eyebrow">About</p>
         <h1>{person.name}</h1>
-        <p class="about-page__role">{person.role} · {person.locality}, {person.region}</p>
+        <p class="about-page__role">{person.role} · Educator · Speaker</p>
       </header>
 
       <div class="about-page__body prose">
-        <p class="lede">{about.homepage}</p>
-
         <p>
-          My work sits where business rules, operational reality, and product design meet. That
-          usually means untangling how a process actually runs before drawing a single screen:
-          modelling workflows, shaping information architecture, and building interactive prototypes
-          that let a team see and challenge a decision before it is built.
+          I’m a Lead UX Designer who designs complex products, teaches UX, and speaks about the
+          ideas behind the work. My experience spans consumer electronics and enterprise software,
+          from customer-facing product experiences to operational systems and complex workflows.
         </p>
 
         <p>
-          I work end to end, from discovery through implementation, alongside product, engineering,
-          finance, operations, and business stakeholders. Alongside design work, I teach, mentor
-          designers, and speak about enterprise UX at conferences and universities.
+          My work sits where business rules, operational reality, and product design meet. I start
+          by understanding how a process actually works, then shape workflows, information
+          architecture, interaction patterns, and prototypes that help teams see and challenge
+          decisions before they are built.
+        </p>
+
+        <p>
+          I work end to end with product, engineering, finance, operations, and business partners.
+          Alongside product design, I teach and mentor designers, and I speak at conferences and
+          universities about enterprise UX, systems thinking, product clarity, and creativity.
         </p>
 
         <h2 class="about-page__subhead">What I work on</h2>
         <ul class="about-page__list">
-          <li>Enterprise product design and complex workflow design</li>
+          <li>Product design for complex enterprise software and operational workflows</li>
+          <li>Consumer electronics and connected product experiences</li>
           <li>Information architecture and interaction design</li>
           <li>Design systems and reusable interaction patterns</li>
           <li>Interactive prototyping and implementation-ready specifications</li>
@@ -102,12 +107,11 @@ const structuredData = [
     gap: 1.35rem;
   }
 
-  .about-page__body p {
-    color: var(--text-secondary);
-  }
-
-  .about-page__body .lede {
-    color: var(--text);
+  /* One body color across the whole page. Hierarchy comes from headings and
+     spacing, never from alternating paragraph shades. */
+  .about-page__body p,
+  .about-page__list {
+    color: #c9ced6;
   }
 
   .about-page__subhead {
@@ -115,13 +119,13 @@ const structuredData = [
     font-size: var(--step-h3);
   }
 
+  /* Same reading size as the biography paragraphs above. The body sets
+     --step-body at 1.65 line height, and the list inherits both. */
   .about-page__list {
     display: grid;
     gap: 0.5rem;
     margin: 0;
     padding-left: 1.15rem;
-    color: var(--text-secondary);
-    font-size: var(--step-small);
   }
 
   .about-page__contact {
