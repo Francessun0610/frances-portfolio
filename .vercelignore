@@ -5,11 +5,15 @@ content/previous-work-source/
 content/linear/source/
 qa-output/
 
-# Local build and QA tooling. None of it is part of the site: `astro build`
-# only reads src/ and public/, and these scripts are run by hand on a Mac that
+# Local build and QA tooling. These scripts are run by hand on a Mac that
 # has LibreOffice, PowerPoint and Python available.
 #
-# Keeping the whole tree out of the upload also keeps
+# The leading slash anchors this to the repository root. A bare `scripts/`
+# pattern also matches `src/scripts/`, and the Linear viewer imports
+# `src/scripts/linearDeck.ts` at build time. Dropping that file makes
+# `npm run build` fail on Vercel while it still succeeds locally.
+#
+# Keeping the root tree out of the upload also keeps
 # scripts/process-presentations/requirements.txt away from Vercel. That file is
 # the only thing in the repository besides the root package.json that Vercel
 # can mistake for a deployable project, and excluding it means the root Astro
@@ -17,4 +21,4 @@ qa-output/
 #
 # It also keeps the render-only fonts off the platform. InspireTWDC is Disney
 # proprietary and must not leave this machine.
-scripts/
+/scripts/
