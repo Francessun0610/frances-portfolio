@@ -102,10 +102,10 @@ export const projects: Project[] = [
   },
   {
     slug: 'atlas',
-    title: 'Atlas — Identity & Access Management',
+    title: 'Identity & Access Management',
     description:
       'A consistent administration experience for managing users, roles, companies, and application access across a complex enterprise product ecosystem.',
-    category: 'Enterprise UX · Identity & Access · Design Systems',
+    category: 'Enterprise UX · Identity & Access · AI\u2011assisted Prototyping',
     image: '/images/projects/atlas.webp',
     imageAlt: 'Abstract graphic of concentric rings and access points representing identity and access management.',
     imageIsPlaceholder: true,
@@ -115,10 +115,10 @@ export const projects: Project[] = [
   },
   {
     slug: 'simba',
-    title: 'SIMBA — Financial Systems 2.0',
+    title: 'Financial Systems 2.0',
     description:
       'A next-generation financial platform designed to unify revenue recognition, billing, invoicing, and review workflows into one connected experience.',
-    category: 'Enterprise UX · Financial Systems · Complex Workflows',
+    category: 'Enterprise UX · Financial Systems · AI\u2011assisted Prototyping',
     image: '/images/projects/simba.webp',
     imageAlt: 'Abstract graphic of stacked ledger rules representing connected financial workflows.',
     imageIsPlaceholder: true,
