@@ -86,167 +86,69 @@ const structuredData = [
         >
           <defs>
             {/* Limb of a circle so large the visible edge is nearly flat.
-                Apex sits at y=358. Light above the limb uses a slightly
-                larger radius so it stays parallel to that edge. */}
-            <mask id="hs-sky" maskUnits="userSpaceOnUse" x="-200" y="-40" width="1100" height="480">
-              <rect x="-200" y="-40" width="1100" height="480" fill="#fff" />
+                Apex sits near y=358. Everything warm is painted above that
+                limb and then covered again by the foreground, so the source
+                stays behind the horizon. */}
+            <mask id="hs-sky" maskUnits="userSpaceOnUse" x="-220" y="-80" width="1200" height="520">
+              <rect x="-220" y="-80" width="1200" height="520" fill="#fff" />
               <circle cx="220" cy="7558" r="7200" fill="#000" />
             </mask>
 
-            {/* Soft window that opens from the origin. Object bounding box
-                so the feather scales with the window and never reads as an edge. */}
-            <mask id="hs-spread" maskUnits="userSpaceOnUse" x="-220" y="250" width="1100" height="180">
-              <rect x="-220" y="250" width="1100" height="180" fill="#000" />
-              <g class="hs-spread">
-                <ellipse cx="165" cy="352" rx="460" ry="78" fill="url(#hs-g-spread)" />
-              </g>
-            </mask>
-            <radialGradient id="hs-g-spread" gradientUnits="objectBoundingBox" cx="0.5" cy="0.5" r="0.5">
-              <stop offset="0" stop-color="#fff" />
-              <stop offset="0.42" stop-color="#fff" />
-              <stop offset="0.74" stop-color="#fff" stop-opacity="0.55" />
-              <stop offset="1" stop-color="#fff" stop-opacity="0" />
-            </radialGradient>
+            {/* One cool wash. No stroked horizon. */}
+            <linearGradient id="hs-g-cool" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="370">
+              <stop offset="0" stop-color="#0b0d12" stop-opacity="0" />
+              <stop offset="0.62" stop-color="#1a2838" stop-opacity="0.04" />
+              <stop offset="1" stop-color="#31465f" stop-opacity="0.14" />
+            </linearGradient>
 
-            {/* Peak at x=165, in the open field between the copy and the
-                right edge. Left falloff is shorter. Right tail is longer. */}
-            <linearGradient id="hs-g-contact" gradientUnits="userSpaceOnUse" x1="110" y1="0" x2="250" y2="0">
-              <stop offset="0" stop-color="#F7F4EE" stop-opacity="0" />
-              <stop offset="0.2" stop-color="#F6E4C4" stop-opacity="0.16" />
-              <stop offset="0.42" stop-color="#F8F6F1" stop-opacity="0.82" />
-              <stop offset="0.68" stop-color="#F3E0B4" stop-opacity="0.28" />
-              <stop offset="1" stop-color="#E8C99A" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="hs-g-inner" gradientUnits="userSpaceOnUse" x1="50" y1="0" x2="360" y2="0">
-              <stop offset="0" stop-color="#F3E6C8" stop-opacity="0" />
-              <stop offset="0.16" stop-color="#F3E0B4" stop-opacity="0.08" />
-              <stop offset="0.36" stop-color="#F7F1E4" stop-opacity="0.42" />
-              <stop offset="0.58" stop-color="#E8C99A" stop-opacity="0.2" />
-              <stop offset="0.82" stop-color="#D4B48A" stop-opacity="0.06" />
-              <stop offset="1" stop-color="#D4B48A" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="hs-g-outer" gradientUnits="userSpaceOnUse" x1="-20" y1="0" x2="540" y2="0">
-              <stop offset="0" stop-color="#E8C99A" stop-opacity="0" />
-              <stop offset="0.18" stop-color="#E8C99A" stop-opacity="0.05" />
-              <stop offset="0.34" stop-color="#F3E0B4" stop-opacity="0.26" />
-              <stop offset="0.55" stop-color="#E4C49A" stop-opacity="0.12" />
-              <stop offset="0.78" stop-color="#C4A27A" stop-opacity="0.08" />
-              <stop offset="1" stop-color="#C4A27A" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="hs-g-scatter" gradientUnits="userSpaceOnUse" x1="-10" y1="0" x2="560" y2="0">
-              <stop offset="0" stop-color="#E8D5B0" stop-opacity="0" />
-              <stop offset="0.22" stop-color="#F3E0B4" stop-opacity="0.06" />
-              <stop offset="0.36" stop-color="#F6E4C4" stop-opacity="0.24" />
-              <stop offset="0.6" stop-color="#E4C49A" stop-opacity="0.1" />
-              <stop offset="0.84" stop-color="#C4A27A" stop-opacity="0.04" />
-              <stop offset="1" stop-color="#C4A27A" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="hs-g-haze" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="600" y2="0">
-              <stop offset="0" stop-color="#C4A27A" stop-opacity="0" />
-              <stop offset="0.28" stop-color="#E8C99A" stop-opacity="0.05" />
-              <stop offset="0.4" stop-color="#F3E0B4" stop-opacity="0.16" />
-              <stop offset="0.68" stop-color="#C4A27A" stop-opacity="0.05" />
-              <stop offset="1" stop-color="#C4A27A" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="hs-g-cool" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="680" y2="0">
-              <stop offset="0" stop-color="#31465F" stop-opacity="0" />
-              <stop offset="0.2" stop-color="#526C8B" stop-opacity="0.05" />
-              <stop offset="0.5" stop-color="#7E94AA" stop-opacity="0.07" />
-              <stop offset="0.78" stop-color="#526C8B" stop-opacity="0.04" />
-              <stop offset="1" stop-color="#31465F" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="hs-g-sky" gradientUnits="userSpaceOnUse" x1="200" y1="370" x2="200" y2="40">
-              <stop offset="0" stop-color="#31465F" stop-opacity="0.08" />
-              <stop offset="0.6" stop-color="#1a2433" stop-opacity="0.02" />
+            {/* Broad sky. Focal point is the origin; the circle is shifted
+                right so the tail is longer than the left falloff. */}
+            <radialGradient id="hs-g-haze" gradientUnits="userSpaceOnUse" cx="480" cy="230" r="900" fx="250" fy="340">
+              <stop offset="0" stop-color="#f4e6cc" stop-opacity="0.12" />
+              <stop offset="0.14" stop-color="#e7d0ae" stop-opacity="0.07" />
+              <stop offset="0.32" stop-color="#9aafc0" stop-opacity="0.05" />
+              <stop offset="0.55" stop-color="#3a4e64" stop-opacity="0.04" />
+              <stop offset="0.78" stop-color="#1c2836" stop-opacity="0.025" />
               <stop offset="1" stop-color="#0b0d12" stop-opacity="0" />
-            </linearGradient>
-            <radialGradient id="hs-g-warmth" gradientUnits="userSpaceOnUse" cx="175" cy="290" r="260">
-              <stop offset="0" stop-color="#F0D4A4" stop-opacity="0.2" />
-              <stop offset="0.45" stop-color="#E4C49A" stop-opacity="0.07" />
-              <stop offset="1" stop-color="#E8C99A" stop-opacity="0" />
-            </radialGradient>
-            <radialGradient id="hs-g-bloom" gradientUnits="userSpaceOnUse" cx="188" cy="350" r="210">
-              <stop offset="0" stop-color="#F8F6F1" stop-opacity="0.22" />
-              <stop offset="0.4" stop-color="#F3E0B4" stop-opacity="0.1" />
-              <stop offset="1" stop-color="#E8C99A" stop-opacity="0" />
-            </radialGradient>
-            <radialGradient id="hs-g-core" gradientUnits="userSpaceOnUse" cx="165" cy="360.5" r="10">
-              <stop offset="0" stop-color="#F8F6F1" stop-opacity="1" />
-              <stop offset="0.42" stop-color="#F0D0A0" stop-opacity="0.7" />
-              <stop offset="1" stop-color="#E8C99A" stop-opacity="0" />
-            </radialGradient>
-            <radialGradient id="hs-g-leak" gradientUnits="userSpaceOnUse" cx="178" cy="366" r="28">
-              <stop offset="0" stop-color="#F7F4EE" stop-opacity="0.55" />
-              <stop offset="0.55" stop-color="#F3E6C8" stop-opacity="0.16" />
-              <stop offset="1" stop-color="#E8D5B0" stop-opacity="0" />
             </radialGradient>
 
-            <filter id="hs-f-core" filterUnits="userSpaceOnUse" x="140" y="340" width="55" height="40">
-              <feGaussianBlur stdDeviation="1.3 2" />
-            </filter>
-            <filter id="hs-f-leak" filterUnits="userSpaceOnUse" x="120" y="335" width="140" height="50">
-              <feGaussianBlur stdDeviation="6 2.6" />
-            </filter>
-            <filter id="hs-f-contact" filterUnits="userSpaceOnUse" x="90" y="330" width="170" height="50">
-              <feGaussianBlur stdDeviation="1.6 2.2" />
-            </filter>
-            <filter id="hs-f-inner" filterUnits="userSpaceOnUse" x="30" y="310" width="320" height="70">
-              <feGaussianBlur stdDeviation="2.8 3.4" />
-            </filter>
-            <filter id="hs-f-outer" filterUnits="userSpaceOnUse" x="-60" y="290" width="680" height="100">
-              <feGaussianBlur stdDeviation="4 4.2" />
-            </filter>
-            <filter id="hs-f-scatter" filterUnits="userSpaceOnUse" x="-40" y="270" width="620" height="130">
-              <feGaussianBlur stdDeviation="5 6" />
-            </filter>
-            <filter id="hs-f-haze" filterUnits="userSpaceOnUse" x="-80" y="200" width="760" height="200">
-              <feGaussianBlur stdDeviation="12 11" />
-            </filter>
-            <filter id="hs-f-cool" filterUnits="userSpaceOnUse" x="-220" y="280" width="1100" height="130">
-              <feGaussianBlur stdDeviation="7 5" />
-            </filter>
-            <filter id="hs-f-warmth" filterUnits="userSpaceOnUse" x="-20" y="80" width="460" height="300">
-              <feGaussianBlur stdDeviation="16 14" />
-            </filter>
-            <filter id="hs-f-bloom" filterUnits="userSpaceOnUse" x="-10" y="310" width="460" height="70">
-              <feGaussianBlur stdDeviation="9 2.2" />
+            {/* One dawn field. Brightest stop sits on the hidden origin.
+                The ellipse is wider to the right, so light travels farther
+                that way without a second source. */}
+            <radialGradient id="hs-g-main" gradientUnits="objectBoundingBox" cx="0.44" cy="0.7" r="0.95">
+              <stop offset="0" stop-color="#f8f6f1" stop-opacity="0.42" />
+              <stop offset="0.05" stop-color="#f6e6c8" stop-opacity="0.28" />
+              <stop offset="0.12" stop-color="#edd4b0" stop-opacity="0.15" />
+              <stop offset="0.22" stop-color="#e2c9a4" stop-opacity="0.08" />
+              <stop offset="0.36" stop-color="#cbb89a" stop-opacity="0.05" />
+              <stop offset="0.52" stop-color="#8ea4b8" stop-opacity="0.038" />
+              <stop offset="0.72" stop-color="#31465f" stop-opacity="0.022" />
+              <stop offset="1" stop-color="#0b0d12" stop-opacity="0" />
+            </radialGradient>
+
+            {/* Tiny leak, centered below the limb. Only the fringe crosses. */}
+            <radialGradient id="hs-g-contact" gradientUnits="userSpaceOnUse" cx="250" cy="364" r="16">
+              <stop offset="0" stop-color="#f8f6f1" stop-opacity="0.9" />
+              <stop offset="0.4" stop-color="#f3dcb4" stop-opacity="0.35" />
+              <stop offset="1" stop-color="#e8c99a" stop-opacity="0" />
+            </radialGradient>
+            <filter id="hs-f-contact" filterUnits="userSpaceOnUse" x="216" y="346" width="70" height="32">
+              <feGaussianBlur stdDeviation="1.2 0.9" />
             </filter>
           </defs>
 
           <g mask="url(#hs-sky)">
             <g class="hs-cool">
-              <rect x="-160" y="0" width="900" height="390" fill="url(#hs-g-sky)" />
-              <path d="M -180 357.1 A 7212 7212 0 0 1 700 361.99" fill="none" stroke="url(#hs-g-cool)" stroke-width="14" filter="url(#hs-f-cool)" />
-            </g>
-            <g class="hs-warmth">
-              <ellipse cx="175" cy="300" rx="210" ry="110" fill="url(#hs-g-warmth)" filter="url(#hs-f-warmth)" />
+              <rect x="-200" y="0" width="1040" height="400" fill="url(#hs-g-cool)" />
             </g>
             <g class="hs-haze">
-              <path d="M -40 294.65 A 7268 7268 0 0 1 560 297.96" fill="none" stroke="url(#hs-g-haze)" stroke-width="22" filter="url(#hs-f-haze)" />
+              <rect x="-200" y="-40" width="1040" height="440" fill="url(#hs-g-haze)" />
             </g>
-            <g mask="url(#hs-spread)">
-              <g class="hs-scatter">
-                <path d="M -10 327.66 A 7234 7234 0 0 1 500 329.42" fill="none" stroke="url(#hs-g-scatter)" stroke-width="18" filter="url(#hs-f-scatter)" />
-              </g>
-              <g class="hs-outer">
-                <path d="M -20 343.99 A 7218 7218 0 0 1 520 346.24" fill="none" stroke="url(#hs-g-outer)" stroke-width="12" filter="url(#hs-f-outer)" />
-              </g>
-              <g class="hs-inner">
-                <path d="M 55 351.89 A 7208 7208 0 0 1 340 351" fill="none" stroke="url(#hs-g-inner)" stroke-width="10" filter="url(#hs-f-inner)" />
-              </g>
-              <g class="hs-contact">
-                <path d="M 115 355.77 A 7203 7203 0 0 1 240 355.03" fill="none" stroke="url(#hs-g-contact)" stroke-width="7" filter="url(#hs-f-contact)" />
-              </g>
-              <g class="hs-bloom">
-                <ellipse cx="190" cy="348" rx="190" ry="8" fill="url(#hs-g-bloom)" filter="url(#hs-f-bloom)" />
-              </g>
+            <g class="hs-main">
+              <ellipse cx="340" cy="292" rx="700" ry="160" fill="url(#hs-g-main)" />
             </g>
-            {/* Buried below the limb. Only the upper fringe can cross. */}
-            <g class="hs-leak">
-              <ellipse cx="178" cy="366" rx="15" ry="3" fill="url(#hs-g-leak)" filter="url(#hs-f-leak)" />
-            </g>
-            <g class="hs-core">
-              <ellipse cx="165" cy="360.5" rx="5.2" ry="1.6" fill="url(#hs-g-core)" filter="url(#hs-f-core)" />
+            <g class="hs-contact">
+              <ellipse cx="250" cy="366" rx="18" ry="2" fill="url(#hs-g-contact)" filter="url(#hs-f-contact)" />
             </g>
           </g>
 
@@ -258,7 +160,7 @@ const structuredData = [
     </div>
   </section>
 
-  {/* One 22s entrance on load. It does not restart when the hero scrolls away.
+  {/* One 23s entrance on load. It does not restart when the hero scrolls away.
       After it settles, only the air drifts. */}
   <script is:inline>
     (() => {
@@ -406,26 +308,18 @@ const structuredData = [
       linear-gradient(
         90deg,
         var(--bg) 0%,
-        var(--bg) 38%,
-        rgba(11, 13, 18, 0.92) 52%,
-        rgba(11, 13, 18, 0.35) 68%,
-        rgba(11, 13, 18, 0) 82%
+        var(--bg) 36%,
+        rgba(11, 13, 18, 0.9) 50%,
+        rgba(11, 13, 18, 0.28) 70%,
+        rgba(11, 13, 18, 0) 92%
       ),
-      /* Cool night air that bridges the two sides. Dim enough to never
-         compete with the copy, wide enough that the hero reads as one field
-         rather than a text column next to a graphic. */
+      /* One cool field, wide enough to reach the right edge without a
+         second centre. The dawn in the drawing is the only warm source. */
       radial-gradient(
-        140% 90% at 62% 62%,
-        rgba(22, 34, 52, 0.42) 0%,
-        rgba(14, 20, 32, 0.22) 38%,
-        rgba(11, 13, 18, 0) 72%
-      ),
-      /* Sunrise-side lift. Brighter mass stays on the right. */
-      radial-gradient(
-        110% 75% at 78% 58%,
-        rgba(27, 44, 68, 0.55) 0%,
-        rgba(17, 24, 39, 0.28) 42%,
-        rgba(11, 13, 18, 0) 74%
+        180% 120% at 72% 72%,
+        rgba(24, 38, 56, 0.36) 0%,
+        rgba(14, 22, 34, 0.14) 52%,
+        rgba(11, 13, 18, 0) 88%
       );
   }
 
@@ -523,7 +417,7 @@ const structuredData = [
       linear-gradient(90deg, transparent 0%, #000 18%, #000 96%, transparent 100%),
       linear-gradient(180deg, transparent 8%, #000 28%, #000 78%, transparent 100%);
     mask-composite: intersect;
-    --dawn: 22s;
+    --dawn: 23s;
     --ease-dawn: linear;
   }
 
@@ -590,13 +484,10 @@ const structuredData = [
       height: auto;
       aspect-ratio: 7 / 5;
       transform: translateY(-50%);
-      /* Deep left fade: the dim horizon may reach back toward the copy, but the
-         warm light has to be off the text before the longest line ends. The
-         atmosphere layer behind the hero now carries the leftward continuity,
-         so this edge can stay conservative. Long trailing fade so the window
-         edge does not cut the light. */
-      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 26%, #000 84%, transparent 100%);
-      mask-image: linear-gradient(90deg, transparent 0%, #000 26%, #000 84%, transparent 100%);
+      /* Left fade keeps the warm light off the copy. The right edge stays open
+         so the dawn tail can reach the window instead of dying in a mask. */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 100%);
     }
   }
 
@@ -632,256 +523,125 @@ const structuredData = [
     }
   }
 
-  .hs-haze,
-  .hs-scatter,
-  .hs-outer,
-  .hs-inner,
-  .hs-contact,
-  .hs-bloom,
   .hs-cool,
-  .hs-warmth,
-  .hs-leak,
-  .hs-core,
-  .hs-spread {
+  .hs-haze,
+  .hs-main,
+  .hs-contact {
     transform-box: fill-box;
-    transform-origin: center center;
   }
 
-  /* The window starts shut so the finished dawn cannot flash before the run. */
-  .hs-spread {
-    transform: scaleX(0.04);
+  /* Opens from the hidden origin, which sits left of the ellipse's centre
+     so the right tail is the longer one. Shut until the run begins. */
+  .hs-main {
+    transform-origin: 44% 70%;
+    transform: scale(0.06, 0.18);
+    opacity: 0;
+  }
+
+  .hs-haze,
+  .hs-contact {
+    opacity: 0;
   }
 
   /* Opening frame. Near-black, faint cool separation, no warm light.
-     Reduced motion overrides this to the finished dawn, with the window open. */
+     Reduced motion overrides this to the finished dawn. */
   .hero__dawn[data-dawn='hold'] .hs-cool {
-    opacity: 0.22;
+    opacity: 0.26;
   }
 
-  .hero__dawn[data-dawn='hold'] .hs-haze {
-    opacity: 0;
-    transform: translateY(5px);
-  }
-
-  .hero__dawn[data-dawn='hold'] .hs-scatter,
-  .hero__dawn[data-dawn='hold'] .hs-outer,
-  .hero__dawn[data-dawn='hold'] .hs-inner,
-  .hero__dawn[data-dawn='hold'] .hs-contact,
-  .hero__dawn[data-dawn='hold'] .hs-bloom,
-  .hero__dawn[data-dawn='hold'] .hs-warmth,
-  .hero__dawn[data-dawn='hold'] .hs-leak,
-  .hero__dawn[data-dawn='hold'] .hs-core {
-    opacity: 0;
-  }
-
-  /* 3s 13.6% · 6s 27.3% · 10s 45.5% · 14s 63.6% · 18s 81.8% · 22s 100%
-     Point first. Then the horizon catches light from that point outward.
-     The air answers later. After 22s only the air drifts. */
-  .hero__dawn[data-dawn='run'] .hs-spread {
-    animation: hs-spread var(--dawn) var(--ease-dawn) forwards;
-  }
-
+  /* 4s 17.4% · 7s 30.4% · 11s 47.8% · 16s 69.6% · 21s 91.3% · 23s 100%
+     A point behind the horizon, then the field grows from that point.
+     After 23s only the broad air drifts. The source stays put. */
   .hero__dawn[data-dawn='run'] .hs-cool {
     animation: hs-cool var(--dawn) var(--ease-dawn) forwards;
-  }
-
-  .hero__dawn[data-dawn='run'] .hs-core {
-    animation: hs-core var(--dawn) var(--ease-dawn) forwards;
-  }
-
-  .hero__dawn[data-dawn='run'] .hs-leak {
-    animation: hs-leak var(--dawn) var(--ease-dawn) forwards;
   }
 
   .hero__dawn[data-dawn='run'] .hs-contact {
     animation: hs-contact var(--dawn) var(--ease-dawn) forwards;
   }
 
-  .hero__dawn[data-dawn='run'] .hs-inner {
-    animation: hs-inner var(--dawn) var(--ease-dawn) forwards;
-  }
-
-  .hero__dawn[data-dawn='run'] .hs-outer {
-    animation: hs-outer var(--dawn) var(--ease-dawn) forwards;
-  }
-
-  .hero__dawn[data-dawn='run'] .hs-bloom {
-    animation: hs-bloom var(--dawn) var(--ease-dawn) forwards;
-  }
-
-  .hero__dawn[data-dawn='run'] .hs-scatter {
-    animation:
-      hs-scatter var(--dawn) var(--ease-dawn) forwards,
-      hs-drift-scatter 19s ease-in-out 22s infinite alternate;
+  .hero__dawn[data-dawn='run'] .hs-main {
+    animation: hs-main var(--dawn) var(--ease-dawn) forwards;
   }
 
   .hero__dawn[data-dawn='run'] .hs-haze {
     animation:
       hs-haze var(--dawn) var(--ease-dawn) forwards,
-      hs-drift-haze 23s ease-in-out 22s infinite alternate;
-  }
-
-  .hero__dawn[data-dawn='run'] .hs-warmth {
-    animation:
-      hs-warmth var(--dawn) var(--ease-dawn) forwards,
-      hs-drift-warmth 29s ease-in-out 22s infinite alternate;
-  }
-
-  @keyframes hs-spread {
-    0% { transform: scaleX(0.04); }
-    13.6% { transform: scaleX(0.06); }
-    27.3% { transform: scaleX(0.16); }
-    45.5% { transform: scaleX(0.4); }
-    63.6% { transform: scaleX(0.64); }
-    81.8% { transform: scaleX(0.88); }
-    100% { transform: scaleX(1); }
+      hs-drift-haze 28s ease-in-out var(--dawn) infinite alternate;
   }
 
   @keyframes hs-cool {
-    0% { opacity: 0.22; }
-    13.6% { opacity: 0.26; }
-    27.3% { opacity: 0.32; }
-    45.5% { opacity: 0.42; }
-    63.6% { opacity: 0.52; }
-    81.8% { opacity: 0.64; }
-    100% { opacity: 0.78; }
-  }
-
-  @keyframes hs-core {
-    0% { opacity: 0; transform: translateY(0); }
-    13.6% { opacity: 0.04; transform: translateY(0); }
-    27.3% { opacity: 0.58; transform: translateY(0); }
-    45.5% { opacity: 0.74; transform: translateY(0); }
-    63.6% { opacity: 0.84; transform: translateY(0); }
-    81.8% { opacity: 0.92; transform: translateY(-0.6px); }
-    100% { opacity: 1; transform: translateY(-1.5px); }
-  }
-
-  @keyframes hs-leak {
-    0% { opacity: 0; transform: translateY(0); }
-    27.3% { opacity: 0.08; transform: translateY(0); }
-    45.5% { opacity: 0.4; transform: translateY(0); }
-    63.6% { opacity: 0.62; transform: translateY(0); }
-    81.8% { opacity: 0.84; transform: translateY(-0.6px); }
-    100% { opacity: 1; transform: translateY(-1.5px); }
+    0% { opacity: 0.26; }
+    17.4% { opacity: 0.3; }
+    30.4% { opacity: 0.36; }
+    47.8% { opacity: 0.46; }
+    69.6% { opacity: 0.58; }
+    91.3% { opacity: 0.68; }
+    100% { opacity: 0.72; }
   }
 
   @keyframes hs-contact {
     0% { opacity: 0; }
-    13.6% { opacity: 0; }
-    27.3% { opacity: 0.42; }
-    45.5% { opacity: 0.72; }
-    63.6% { opacity: 0.82; }
-    81.8% { opacity: 0.94; }
+    17.4% { opacity: 0; }
+    26% { opacity: 0.35; }
+    30.4% { opacity: 0.85; }
+    47.8% { opacity: 0.9; }
+    69.6% { opacity: 0.95; }
     100% { opacity: 1; }
   }
 
-  @keyframes hs-inner {
-    0% { opacity: 0; }
-    27.3% { opacity: 0.1; }
-    45.5% { opacity: 0.5; }
-    63.6% { opacity: 0.72; }
-    81.8% { opacity: 0.82; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes hs-outer {
-    0% { opacity: 0; }
-    45.5% { opacity: 0.16; }
-    63.6% { opacity: 0.5; }
-    81.8% { opacity: 0.78; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes hs-bloom {
-    0% { opacity: 0; }
-    45.5% { opacity: 0.08; }
-    63.6% { opacity: 0.4; }
-    81.8% { opacity: 0.72; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes hs-scatter {
-    0% { opacity: 0; }
-    45.5% { opacity: 0.06; }
-    63.6% { opacity: 0.34; }
-    81.8% { opacity: 0.68; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes hs-warmth {
-    0% { opacity: 0; }
-    63.6% { opacity: 0.28; }
-    81.8% { opacity: 0.66; }
-    100% { opacity: 1; }
+  @keyframes hs-main {
+    0% { opacity: 0; transform: scale(0.06, 0.18); }
+    17.4% { opacity: 0; transform: scale(0.07, 0.2); }
+    30.4% { opacity: 0.5; transform: scale(0.2, 0.32); }
+    47.8% { opacity: 0.74; transform: scale(0.46, 0.55); }
+    69.6% { opacity: 0.9; transform: scale(0.74, 0.78); }
+    91.3% { opacity: 0.98; transform: scale(0.94, 0.94); }
+    100% { opacity: 1; transform: scale(1, 1); }
   }
 
   @keyframes hs-haze {
-    0% { opacity: 0; transform: translateY(5px); }
-    45.5% { opacity: 0.08; transform: translateY(4px); }
-    63.6% { opacity: 0.4; transform: translateY(2px); }
-    81.8% { opacity: 0.62; transform: translateY(1px); }
-    100% { opacity: 1; transform: translateY(0); }
+    0% { opacity: 0; }
+    30.4% { opacity: 0; }
+    47.8% { opacity: 0.12; }
+    69.6% { opacity: 0.5; }
+    91.3% { opacity: 0.86; }
+    100% { opacity: 1; }
   }
 
   @keyframes hs-drift-haze {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0.96; transform: translateY(2px); }
-  }
-
-  @keyframes hs-drift-warmth {
-    from { opacity: 1; transform: translate(0, 0); }
-    to { opacity: 0.97; transform: translate(2px, -1px); }
-  }
-
-  @keyframes hs-drift-scatter {
-    from { opacity: 1; transform: translateX(0); }
-    to { opacity: 0.97; transform: translateX(-2px); }
+    from { opacity: 1; }
+    to { opacity: 0.97; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hs-spread {
-      transform: scaleX(1);
-    }
-
     .hero__dawn[data-dawn='hold'] .hs-cool,
     .hero__dawn[data-dawn='run'] .hs-cool,
     .hero__dawn[data-dawn='hold'] .hs-haze,
     .hero__dawn[data-dawn='run'] .hs-haze,
-    .hero__dawn[data-dawn='hold'] .hs-scatter,
-    .hero__dawn[data-dawn='run'] .hs-scatter,
-    .hero__dawn[data-dawn='hold'] .hs-outer,
-    .hero__dawn[data-dawn='run'] .hs-outer,
-    .hero__dawn[data-dawn='hold'] .hs-inner,
-    .hero__dawn[data-dawn='run'] .hs-inner,
     .hero__dawn[data-dawn='hold'] .hs-contact,
     .hero__dawn[data-dawn='run'] .hs-contact,
-    .hero__dawn[data-dawn='hold'] .hs-bloom,
-    .hero__dawn[data-dawn='run'] .hs-bloom,
-    .hero__dawn[data-dawn='hold'] .hs-warmth,
-    .hero__dawn[data-dawn='run'] .hs-warmth,
-    .hero__dawn[data-dawn='hold'] .hs-spread,
-    .hero__dawn[data-dawn='run'] .hs-spread {
+    .hero__dawn[data-dawn='hold'] .hs-main,
+    .hero__dawn[data-dawn='run'] .hs-main {
       animation: none;
-      opacity: 1;
+    }
+
+    .hero__dawn[data-dawn='hold'] .hs-cool,
+    .hero__dawn[data-dawn='run'] .hs-cool {
+      opacity: 0.72;
     }
 
     .hero__dawn[data-dawn='hold'] .hs-haze,
     .hero__dawn[data-dawn='run'] .hs-haze,
-    .hero__dawn[data-dawn='hold'] .hs-scatter,
-    .hero__dawn[data-dawn='run'] .hs-scatter,
-    .hero__dawn[data-dawn='hold'] .hs-warmth,
-    .hero__dawn[data-dawn='run'] .hs-warmth {
-      transform: none;
+    .hero__dawn[data-dawn='hold'] .hs-contact,
+    .hero__dawn[data-dawn='run'] .hs-contact {
+      opacity: 1;
     }
 
-    .hero__dawn[data-dawn='hold'] .hs-core,
-    .hero__dawn[data-dawn='run'] .hs-core,
-    .hero__dawn[data-dawn='hold'] .hs-leak,
-    .hero__dawn[data-dawn='run'] .hs-leak {
-      animation: none;
+    .hero__dawn[data-dawn='hold'] .hs-main,
+    .hero__dawn[data-dawn='run'] .hs-main {
       opacity: 1;
-      transform: translateY(-1.5px);
+      transform: scale(1, 1);
     }
   }
 
