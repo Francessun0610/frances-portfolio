@@ -22,9 +22,6 @@ export type LinearScreen = {
   /** Original Figma slide number, when this screen comes from the deck. */
   sourceSlide?: number;
   image?: string;
-  /** 2× asset, loaded only when Inspect opens. */
-  inspectImage?: string;
-  inspect: boolean;
   adaptation: string;
 };
 
@@ -62,11 +59,8 @@ function sourceTranscript(source: number, title: string): string {
   return `Continuation of the Linear Ad Platform story. The on-screen title and diagram explain this step. Product screens represent team work, not a claim that Frances designed every tool.`;
 }
 
+/** 3840×2160 export. The 1920 file is the same frame at half size and softens on retina and in full screen. */
 export function linearImage(sourceSlide: number): string {
-  return `/slides/linear/slide-${String(sourceSlide).padStart(2, '0')}.webp`;
-}
-
-export function linearInspectImage(sourceSlide: number): string {
   return `/slides/linear/hi/slide-${String(sourceSlide).padStart(2, '0')}.webp`;
 }
 
@@ -127,8 +121,6 @@ export function linearScreens(): LinearScreen[] {
           : title,
       sourceSlide: source,
       image: kind === 'image' ? linearImage(source) : undefined,
-      inspectImage: kind === 'image' ? linearInspectImage(source) : undefined,
-      inspect: kind === 'image',
       adaptation,
     });
   }

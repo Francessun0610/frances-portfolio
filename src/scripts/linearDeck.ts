@@ -12,8 +12,6 @@ type DeckScreen = {
   title: string;
   transcript: string;
   image?: string;
-  inspectImage?: string;
-  inspect: boolean;
 };
 
 const root = document.querySelector<HTMLElement>('[data-linear-deck]');
@@ -34,19 +32,10 @@ if (root && root.dataset.ready !== 'true') {
   const progress = root.querySelector<HTMLElement>('[data-progress]')!;
   const prev = root.querySelector<HTMLButtonElement>('[data-prev]')!;
   const next = root.querySelector<HTMLButtonElement>('[data-next]')!;
-  const inspectBtn = root.querySelector<HTMLButtonElement>('[data-inspect]')!;
   const fullBtn = root.querySelector<HTMLButtonElement>('[data-fullscreen]')!;
-  const inspect = root.querySelector<HTMLElement>('[data-inspect-layer]')!;
-  const inspectImg = root.querySelector<HTMLImageElement>('[data-inspect-img]')!;
-  const inspectClose = root.querySelector<HTMLButtonElement>('[data-inspect-close]')!;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   let current = Number(root.dataset.screen || '1');
-  let zoom = 1;
-  let panX = 0;
-  let panY = 0;
-  let dragging = false;
-  let lastPointer = { x: 0, y: 0 };
 
   const pad = (n: number) => String(n).padStart(2, '0');
   const screenAt = (n: number) => byN.get(n);
@@ -65,28 +54,6 @@ if (root && root.dataset.ready !== 'true') {
     }
   }
 
-  function applyZoom() {
-    inspectImg.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
-  }
-
-  function setInspect(open: boolean) {
-    if (open) {
-      const screen = screenAt(current);
-      if (!screen?.inspectImage && !screen?.image) return;
-      inspectImg.src = screen.inspectImage || screen.image || '';
-      inspectImg.alt = screen.transcript;
-      zoom = 1;
-      panX = 0;
-      panY = 0;
-      applyZoom();
-      inspect.hidden = false;
-      inspectClose.focus();
-    } else if (!inspect.hidden) {
-      inspect.hidden = true;
-      inspectBtn.focus();
-    }
-  }
-
   function render(n: number, announce: boolean, historyMode: 'push' | 'replace' | 'none') {
     const screen = screenAt(n);
     if (!screen) return;
@@ -102,7 +69,6 @@ if (root && root.dataset.ready !== 'true') {
     progress.textContent = `${pad(positionOf(n))} / ${pad(total)}`;
     prev.disabled = n <= first;
     next.disabled = n >= last;
-    inspectBtn.hidden = !screen.inspect;
     document.title = `${screen.title} · Linear Ad Platform`;
     if (announce) live.textContent = `${screen.title}. Screen ${positionOf(n)} of ${total}.`;
     const url = `/work/linear/${n}`;
@@ -113,7 +79,6 @@ if (root && root.dataset.ready !== 'true') {
   }
 
   function go(n: number) {
-    if (!inspect.hidden) return;
     if (n < first || n > last || n === current) return;
     if (reduced) {
       render(n, true, 'push');
@@ -132,43 +97,9 @@ if (root && root.dataset.ready !== 'true') {
   next.addEventListener('click', () => go(current + 1));
 
   root.querySelector<HTMLElement>('[data-stage]')?.addEventListener('click', (event) => {
-    if (!inspect.hidden || dragging) return;
     const target = event.target as Element | null;
     if (target?.closest('a, button, input, textarea, summary')) return;
     go(current + 1);
-  });
-
-  inspectBtn.addEventListener('click', () => setInspect(true));
-  inspectClose.addEventListener('click', () => setInspect(false));
-
-  inspect.addEventListener('wheel', (event) => {
-    event.preventDefault();
-    const nextZoom = Math.min(4, Math.max(1, zoom + (event.deltaY < 0 ? 0.15 : -0.15)));
-    zoom = nextZoom;
-    if (zoom === 1) {
-      panX = 0;
-      panY = 0;
-    }
-    applyZoom();
-  }, { passive: false });
-
-  inspectImg.addEventListener('pointerdown', (event) => {
-    if (event.button !== 0) return;
-    dragging = true;
-    lastPointer = { x: event.clientX, y: event.clientY };
-    inspectImg.setPointerCapture(event.pointerId);
-  });
-  inspectImg.addEventListener('pointermove', (event) => {
-    if (!dragging) return;
-    const dx = event.clientX - lastPointer.x;
-    const dy = event.clientY - lastPointer.y;
-    lastPointer = { x: event.clientX, y: event.clientY };
-    panX += dx;
-    panY += dy;
-    applyZoom();
-  });
-  inspectImg.addEventListener('pointerup', () => {
-    dragging = false;
   });
 
   fullBtn.addEventListener('click', async () => {
@@ -185,11 +116,6 @@ if (root && root.dataset.ready !== 'true') {
     if (target?.closest('input, textarea, [contenteditable="true"]')) return;
 
     if (event.key === 'Escape') {
-      if (!inspect.hidden) {
-        event.preventDefault();
-        setInspect(false);
-        return;
-      }
       if (document.fullscreenElement) {
         event.preventDefault();
         void document.exitFullscreen();
@@ -198,23 +124,6 @@ if (root && root.dataset.ready !== 'true') {
       event.preventDefault();
       rememberReturn();
       location.href = '/#work';
-      return;
-    }
-
-    if (!inspect.hidden) {
-      if (event.key === 'ArrowRight') panX -= 40;
-      else if (event.key === 'ArrowLeft') panX += 40;
-      else if (event.key === 'ArrowDown') panY -= 40;
-      else if (event.key === 'ArrowUp') panY += 40;
-      else if (event.key === '+' || event.key === '=') zoom = Math.min(4, zoom + 0.2);
-      else if (event.key === '-' || event.key === '_') zoom = Math.max(1, zoom - 0.2);
-      else return;
-      event.preventDefault();
-      if (zoom === 1) {
-        panX = 0;
-        panY = 0;
-      }
-      applyZoom();
       return;
     }
 
