@@ -434,14 +434,19 @@ const structuredData = [
     --ease-dawn: linear;
   }
 
-  /* Below the two-column layout the drawing is a shallow band, so the faintest
-     outer haze and the widest lateral band have no room to read as atmosphere
-     and only muddy the crop. They are pulled back rather than rescaled, which
-     is what keeps the band a deliberate fragment instead of a shrunken
-     desktop composition. */
+  /* Below the two-column layout the drawing is a shallow band. The frame is
+     shifted so a strip of the dark foreground sits inside the band, and the
+     mask dissolves the sky before either cut edge. The horizon stays the only
+     readable line. */
   @media (max-width: 899px) {
-    .hs-far {
-      opacity: 0.55;
+    .hero__dawn {
+      transform: translateY(-44%);
+      -webkit-mask-image:
+        linear-gradient(90deg, transparent 0%, #000 20%, #000 90%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, transparent 46%, #000 68%, #000 100%);
+      mask-image:
+        linear-gradient(90deg, transparent 0%, #000 20%, #000 90%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, transparent 46%, #000 68%, #000 100%);
     }
   }
 
