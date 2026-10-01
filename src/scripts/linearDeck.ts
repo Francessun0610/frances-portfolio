@@ -12,8 +12,6 @@ type DeckScreen = {
   title: string;
   transcript: string;
   image?: string;
-  visual?: string;
-  rain?: boolean;
 };
 
 const root = document.querySelector<HTMLElement>('[data-linear-deck]');
@@ -68,9 +66,6 @@ if (root && root.dataset.ready !== 'true') {
       if (shot.getAttribute('src') !== screen.image) shot.src = screen.image;
       shot.alt = screen.transcript;
     }
-    frame.dataset.upfront = screen.rain ? 'true' : 'false';
-    const marketTitle = frame.querySelector<HTMLElement>('[data-market-title]');
-    if (marketTitle && screen.visual) marketTitle.textContent = screen.visual;
     progress.textContent = `${pad(positionOf(n))} / ${pad(total)}`;
     prev.disabled = n <= first;
     next.disabled = n >= last;

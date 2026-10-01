@@ -1,6 +1,5 @@
 ---
 import PresentationLayout from '../../../layouts/PresentationLayout.astro';
-import MarketScene from '../../../components/linear/MarketScene.astro';
 import { linearScreens } from '../../../data/linearDeck';
 
 export function getStaticPaths() {
@@ -24,8 +23,6 @@ const clientScreens = screens.map((item) => ({
   title: item.title,
   transcript: item.transcript,
   image: item.image,
-  visual: item.visual,
-  rain: item.rain,
 }));
 ---
 
@@ -50,11 +47,39 @@ const clientScreens = screens.map((item) => ({
             <span>Selected Work</span>
           </a>
         </div>
-        <div class="deck__frame" data-frame data-upfront={current.rain ? 'true' : 'false'}>
-        <section class="panel panel--market" data-panel="market" hidden={current.kind !== 'market'}>
-          <MarketScene
-            headline={current.visual ?? 'In 2023, TV ad revenue in the United States reached $61.3 billion'}
+        <div class="deck__frame" data-frame>
+        <section class="panel panel--upfront" data-panel="upfront" hidden={current.kind !== 'upfront'}>
+          <img
+            class="upfront__still"
+            src="/slides/linear/hi/slide-05.webp"
+            alt="In 2023, companies committed $9 billion during Upfront week to Disney."
+            width="3598"
+            height="2026"
           />
+          <img
+            class="upfront__base"
+            src="/slides/linear/hi/slide-05-base.webp"
+            alt=""
+            width="3598"
+            height="2026"
+          />
+          <div class="upfront__rain" aria-hidden="true">
+            <span class="bill" style="--x:45.6cqw;--w:2.5cqw;--dur:6.4s;--delay:-0.2s;--drift:0.6cqw;--a0:-6deg;--a1:8deg"><img src="/slides/linear/money/bill-01.png" alt="" /></span>
+            <span class="bill" style="--x:49.2cqw;--w:1.5cqw;--dur:7.1s;--delay:-1.4s;--drift:-0.8cqw;--a0:4deg;--a1:-7deg"><img src="/slides/linear/money/bill-02.png" alt="" /></span>
+            <span class="bill" style="--x:50.3cqw;--w:2.72cqw;--dur:6.6s;--delay:-3.1s;--drift:0.4cqw;--a0:-3deg;--a1:5deg"><img src="/slides/linear/money/bill-03.png" alt="" /></span>
+            <span class="bill" style="--x:43.8cqw;--w:2.33cqw;--dur:7.8s;--delay:-5.6s;--drift:-0.5cqw;--a0:7deg;--a1:-4deg"><img src="/slides/linear/money/bill-04.png" alt="" /></span>
+            <span class="bill" style="--x:54.3cqw;--w:1.83cqw;--dur:6.9s;--delay:-2.2s;--drift:0.9cqw;--a0:-8deg;--a1:3deg"><img src="/slides/linear/money/bill-05.png" alt="" /></span>
+            <span class="bill" style="--x:46cqw;--w:4.92cqw;--dur:8s;--delay:-4.4s;--drift:-0.3cqw;--a0:2deg;--a1:-6deg"><img src="/slides/linear/money/bill-06.png" alt="" /></span>
+            <span class="bill" style="--x:51.1cqw;--w:2.36cqw;--dur:6.5s;--delay:-6.1s;--drift:0.7cqw;--a0:-5deg;--a1:9deg"><img src="/slides/linear/money/bill-07.png" alt="" /></span>
+            <span class="bill" style="--x:52.3cqw;--w:4.7cqw;--dur:7.4s;--delay:-0.8s;--drift:-1cqw;--a0:6deg;--a1:-2deg"><img src="/slides/linear/money/bill-08.png" alt="" /></span>
+            <span class="bill" style="--x:44cqw;--w:5.42cqw;--dur:7.6s;--delay:-3.7s;--drift:0.5cqw;--a0:-2deg;--a1:4deg"><img src="/slides/linear/money/bill-09.png" alt="" /></span>
+            <span class="bill" style="--x:51.7cqw;--w:2.58cqw;--dur:6.8s;--delay:-5s;--drift:-0.6cqw;--a0:5deg;--a1:-8deg"><img src="/slides/linear/money/bill-10.png" alt="" /></span>
+            <span class="bill" style="--x:49cqw;--w:2.11cqw;--dur:7.9s;--delay:-1.9s;--drift:0.3cqw;--a0:-7deg;--a1:2deg"><img src="/slides/linear/money/bill-11.png" alt="" /></span>
+            <span class="bill" style="--x:55.6cqw;--w:2.28cqw;--dur:6.7s;--delay:-4.8s;--drift:-0.4cqw;--a0:3deg;--a1:-5deg"><img src="/slides/linear/money/bill-12.png" alt="" /></span>
+            <span class="bill" style="--x:47.1cqw;--w:1.58cqw;--dur:8.1s;--delay:-2.7s;--drift:0.8cqw;--a0:-4deg;--a1:6deg"><img src="/slides/linear/money/bill-13.png" alt="" /></span>
+            <span class="bill" style="--x:54.4cqw;--w:1.81cqw;--dur:7.2s;--delay:-6.6s;--drift:-0.7cqw;--a0:8deg;--a1:-3deg"><img src="/slides/linear/money/bill-14.png" alt="" /></span>
+            <span class="bill" style="--x:46.1cqw;--w:1.5cqw;--dur:6.3s;--delay:-3.5s;--drift:0.2cqw;--a0:-6deg;--a1:7deg"><img src="/slides/linear/money/bill-15.png" alt="" /></span>
+          </div>
         </section>
         <section class="panel panel--image" data-panel="image" hidden={current.kind !== 'image'}>
           <img
@@ -247,15 +272,79 @@ const clientScreens = screens.map((item) => ({
     display: none;
   }
 
-  .panel--market {
-    background: #070b22;
-  }
-
-  .panel--image img {
+  .panel--image img,
+  .upfront__still,
+  .upfront__base {
     width: 100%;
     height: 100%;
     object-fit: contain;
     background: #070b16;
+  }
+
+  .upfront__still,
+  .upfront__base {
+    position: absolute;
+    inset: 0;
+  }
+
+  .upfront__base,
+  .upfront__rain {
+    display: none;
+  }
+
+  .upfront__rain {
+    position: absolute;
+    inset: 0;
+    container-type: size;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .bill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: var(--w);
+    transform-origin: center;
+  }
+
+  .bill img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .upfront__still {
+      display: none;
+    }
+
+    .upfront__base,
+    .upfront__rain {
+      display: block;
+    }
+
+    .bill {
+      animation: upfront-fall var(--dur) linear infinite;
+      animation-delay: var(--delay);
+    }
+  }
+
+  @keyframes upfront-fall {
+    0% {
+      opacity: 0;
+      transform: translate3d(var(--x), 8cqh, 0) rotate(var(--a0));
+    }
+    12% {
+      opacity: 1;
+    }
+    86% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(calc(var(--x) + var(--drift)), 58cqh, 0) rotate(var(--a1));
+    }
   }
 
   .panel--copy {
@@ -411,10 +500,6 @@ const clientScreens = screens.map((item) => ({
       max-height: calc(100dvh - 8.5rem);
       height: auto;
       overflow: auto;
-    }
-
-    .panel--market {
-      aspect-ratio: 16 / 9;
     }
 
     .panel {
