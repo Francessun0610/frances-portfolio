@@ -72,10 +72,11 @@ const structuredData = [
         </div>
       </div>
 
-      {/* Decorative. First light follows the same enormous horizon as the
-          foreground: concentric arcs above the limb, brightest on the right,
-          tapering into the dark. Nothing here is a sun, and nothing is
-          focusable or announced. data-dawn="hold" is the opening frame. */}
+      {/* Decorative. The source sits below the limb, so the foreground
+          occludes it. What shows is light leaking over the curve. The core is
+          near the middle of the right half, clear of the copy. Nothing here
+          is a sun, and nothing is focusable. data-dawn="hold" is the opening
+          frame. */}
       <div class="hero__visual" aria-hidden="true">
         <svg
           class="hero__dawn"
@@ -86,96 +87,130 @@ const structuredData = [
         >
           <defs>
             {/* Limb of a circle so large the visible edge is nearly flat.
-                Apex sits at y=358. Light arcs use a slightly larger radius so
-                they sit above that limb and stay parallel to it. */}
+                Apex sits at y=358. Light above the limb uses a slightly
+                larger radius so it stays parallel to that edge. */}
             <mask id="hs-sky" maskUnits="userSpaceOnUse" x="-200" y="-40" width="1100" height="480">
               <rect x="-200" y="-40" width="1100" height="480" fill="#fff" />
               <circle cx="220" cy="7558" r="7200" fill="#000" />
             </mask>
 
-            {/* Source near x=440, clear of the frame's right fade. Left
-                shoulder is shorter. Right tail is longer and dies before the
-                mask cuts the edge. */}
-            <linearGradient id="hs-g-contact" gradientUnits="userSpaceOnUse" x1="360" y1="0" x2="530" y2="0">
+            {/* Peak near x=108. Left shoulder is short. Right tail is longer
+                and is gone before the frame's right fade. */}
+            <linearGradient id="hs-g-contact" gradientUnits="userSpaceOnUse" x1="60" y1="0" x2="230" y2="0">
               <stop offset="0" stop-color="#F3E6C8" stop-opacity="0" />
-              <stop offset="0.32" stop-color="#EBD4AE" stop-opacity="0.22" />
-              <stop offset="0.48" stop-color="#F4EBDA" stop-opacity="0.7" />
-              <stop offset="0.68" stop-color="#E4C79A" stop-opacity="0.32" />
-              <stop offset="1" stop-color="#E4C79A" stop-opacity="0" />
-            </linearGradient>
-            <linearGradient id="hs-g-arc" gradientUnits="userSpaceOnUse" x1="260" y1="0" x2="580" y2="0">
-              <stop offset="0" stop-color="#C4A27A" stop-opacity="0" />
-              <stop offset="0.22" stop-color="#C4A27A" stop-opacity="0.08" />
-              <stop offset="0.42" stop-color="#E4C49A" stop-opacity="0.32" />
-              <stop offset="0.56" stop-color="#F1DEC0" stop-opacity="0.55" />
-              <stop offset="0.74" stop-color="#E4C49A" stop-opacity="0.26" />
-              <stop offset="0.9" stop-color="#C4A27A" stop-opacity="0.07" />
+              <stop offset="0.18" stop-color="#EBD4AE" stop-opacity="0.1" />
+              <stop offset="0.3" stop-color="#F6E4C4" stop-opacity="0.58" />
+              <stop offset="0.52" stop-color="#E4C79A" stop-opacity="0.22" />
+              <stop offset="0.78" stop-color="#C4A27A" stop-opacity="0.06" />
               <stop offset="1" stop-color="#C4A27A" stop-opacity="0" />
             </linearGradient>
-            <linearGradient id="hs-g-scatter" gradientUnits="userSpaceOnUse" x1="180" y1="0" x2="620" y2="0">
+            <linearGradient id="hs-g-arc" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="340" y2="0">
+              <stop offset="0" stop-color="#C4A27A" stop-opacity="0" />
+              <stop offset="0.16" stop-color="#C4A27A" stop-opacity="0.04" />
+              <stop offset="0.32" stop-color="#E4C49A" stop-opacity="0.28" />
+              <stop offset="0.4" stop-color="#F1DEC0" stop-opacity="0.4" />
+              <stop offset="0.62" stop-color="#E4C49A" stop-opacity="0.14" />
+              <stop offset="0.84" stop-color="#C4A27A" stop-opacity="0.04" />
+              <stop offset="1" stop-color="#C4A27A" stop-opacity="0" />
+            </linearGradient>
+            <linearGradient id="hs-g-scatter" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="460" y2="0">
               <stop offset="0" stop-color="#A56D45" stop-opacity="0" />
-              <stop offset="0.28" stop-color="#C49262" stop-opacity="0.06" />
-              <stop offset="0.48" stop-color="#DDB88A" stop-opacity="0.2" />
-              <stop offset="0.62" stop-color="#E8C99A" stop-opacity="0.24" />
-              <stop offset="0.82" stop-color="#C49262" stop-opacity="0.08" />
+              <stop offset="0.22" stop-color="#C49262" stop-opacity="0.04" />
+              <stop offset="0.34" stop-color="#E8C99A" stop-opacity="0.2" />
+              <stop offset="0.55" stop-color="#DDB88A" stop-opacity="0.1" />
+              <stop offset="0.8" stop-color="#C49262" stop-opacity="0.03" />
               <stop offset="1" stop-color="#A56D45" stop-opacity="0" />
             </linearGradient>
-            <linearGradient id="hs-g-haze" gradientUnits="userSpaceOnUse" x1="120" y1="0" x2="660" y2="0">
+            <linearGradient id="hs-g-haze" gradientUnits="userSpaceOnUse" x1="-80" y1="0" x2="540" y2="0">
               <stop offset="0" stop-color="#7E6248" stop-opacity="0" />
-              <stop offset="0.36" stop-color="#8A6A4E" stop-opacity="0.05" />
-              <stop offset="0.58" stop-color="#C4A27A" stop-opacity="0.16" />
-              <stop offset="0.8" stop-color="#A56D45" stop-opacity="0.06" />
+              <stop offset="0.28" stop-color="#8A6A4E" stop-opacity="0.04" />
+              <stop offset="0.4" stop-color="#C4A27A" stop-opacity="0.14" />
+              <stop offset="0.68" stop-color="#A56D45" stop-opacity="0.05" />
               <stop offset="1" stop-color="#7E6248" stop-opacity="0" />
             </linearGradient>
             <linearGradient id="hs-g-cool" gradientUnits="userSpaceOnUse" x1="-40" y1="0" x2="680" y2="0">
               <stop offset="0" stop-color="#31465F" stop-opacity="0" />
-              <stop offset="0.16" stop-color="#526C8B" stop-opacity="0.07" />
-              <stop offset="0.42" stop-color="#7E94AA" stop-opacity="0.09" />
-              <stop offset="0.7" stop-color="#7E94AA" stop-opacity="0.08" />
-              <stop offset="0.9" stop-color="#31465F" stop-opacity="0.03" />
+              <stop offset="0.18" stop-color="#526C8B" stop-opacity="0.06" />
+              <stop offset="0.45" stop-color="#7E94AA" stop-opacity="0.08" />
+              <stop offset="0.72" stop-color="#7E94AA" stop-opacity="0.06" />
               <stop offset="1" stop-color="#31465F" stop-opacity="0" />
             </linearGradient>
-            <linearGradient id="hs-g-sky" gradientUnits="userSpaceOnUse" x1="420" y1="370" x2="420" y2="40">
-              <stop offset="0" stop-color="#31465F" stop-opacity="0.14" />
-              <stop offset="0.5" stop-color="#1a2433" stop-opacity="0.04" />
+            <linearGradient id="hs-g-sky" gradientUnits="userSpaceOnUse" x1="160" y1="370" x2="160" y2="40">
+              <stop offset="0" stop-color="#31465F" stop-opacity="0.1" />
+              <stop offset="0.55" stop-color="#1a2433" stop-opacity="0.03" />
               <stop offset="1" stop-color="#0b0d12" stop-opacity="0" />
             </linearGradient>
+            <radialGradient id="hs-g-warmth" gradientUnits="userSpaceOnUse" cx="120" cy="330" r="200">
+              <stop offset="0" stop-color="#E4C49A" stop-opacity="0.14" />
+              <stop offset="0.42" stop-color="#A56D45" stop-opacity="0.05" />
+              <stop offset="1" stop-color="#A56D45" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="hs-g-core" gradientUnits="userSpaceOnUse" cx="108" cy="360.4" r="11">
+              <stop offset="0" stop-color="#F7F3EA" stop-opacity="1" />
+              <stop offset="0.45" stop-color="#E8C99A" stop-opacity="0.58" />
+              <stop offset="1" stop-color="#E4C49A" stop-opacity="0" />
+            </radialGradient>
+            <radialGradient id="hs-g-leak" gradientUnits="userSpaceOnUse" cx="124" cy="365" r="32">
+              <stop offset="0" stop-color="#F4EBDA" stop-opacity="0.62" />
+              <stop offset="0.5" stop-color="#E4C49A" stop-opacity="0.22" />
+              <stop offset="1" stop-color="#C4A27A" stop-opacity="0" />
+            </radialGradient>
 
-            {/* Little horizontal smear, more vertical feather, so the light
-                stays a rim instead of blooming into a spot. */}
-            <filter id="hs-f-contact" filterUnits="userSpaceOnUse" x="240" y="280" width="420" height="140">
-              <feGaussianBlur stdDeviation="2.2 3.5" />
+            {/* Static, tight blurs. More vertical feather than horizontal
+                smear, so a buried source leaks as a point instead of a disc. */}
+            <filter id="hs-f-core" filterUnits="userSpaceOnUse" x="78" y="336" width="70" height="50">
+              <feGaussianBlur stdDeviation="1.5 2.6" />
             </filter>
-            <filter id="hs-f-arc" filterUnits="userSpaceOnUse" x="-200" y="260" width="1100" height="170">
-              <feGaussianBlur stdDeviation="3.5 5" />
+            <filter id="hs-f-leak" filterUnits="userSpaceOnUse" x="50" y="330" width="180" height="70">
+              <feGaussianBlur stdDeviation="7 3.2" />
             </filter>
-            <filter id="hs-f-scatter" filterUnits="userSpaceOnUse" x="-220" y="230" width="1160" height="210">
-              <feGaussianBlur stdDeviation="6 8" />
+            <filter id="hs-f-contact" filterUnits="userSpaceOnUse" x="20" y="300" width="280" height="90">
+              <feGaussianBlur stdDeviation="2.2 3.2" />
             </filter>
-            <filter id="hs-f-haze" filterUnits="userSpaceOnUse" x="-220" y="160" width="1160" height="280">
-              <feGaussianBlur stdDeviation="14 16" />
+            <filter id="hs-f-arc" filterUnits="userSpaceOnUse" x="-40" y="280" width="460" height="120">
+              <feGaussianBlur stdDeviation="3.4 4.6" />
             </filter>
-            <filter id="hs-f-cool" filterUnits="userSpaceOnUse" x="-220" y="270" width="1160" height="160">
-              <feGaussianBlur stdDeviation="8 7" />
+            <filter id="hs-f-scatter" filterUnits="userSpaceOnUse" x="-80" y="250" width="620" height="160">
+              <feGaussianBlur stdDeviation="6 7.5" />
+            </filter>
+            <filter id="hs-f-haze" filterUnits="userSpaceOnUse" x="-140" y="180" width="780" height="230">
+              <feGaussianBlur stdDeviation="14 15" />
+            </filter>
+            <filter id="hs-f-cool" filterUnits="userSpaceOnUse" x="-220" y="270" width="1160" height="150">
+              <feGaussianBlur stdDeviation="8 6.5" />
+            </filter>
+            <filter id="hs-f-warmth" filterUnits="userSpaceOnUse" x="-40" y="80" width="420" height="320">
+              <feGaussianBlur stdDeviation="10 12" />
             </filter>
           </defs>
 
           <g mask="url(#hs-sky)">
-            <rect class="hs-sky" x="-160" y="0" width="900" height="400" fill="url(#hs-g-sky)" />
+            <rect class="hs-cool" x="-160" y="0" width="900" height="390" fill="url(#hs-g-sky)" />
             <g class="hs-cool">
-              <path d="M -180 357.1 A 7212 7212 0 0 1 700 361.99" fill="none" stroke="url(#hs-g-cool)" stroke-width="18" filter="url(#hs-f-cool)" />
+              <path d="M -180 357.1 A 7212 7212 0 0 1 700 361.99" fill="none" stroke="url(#hs-g-cool)" stroke-width="16" filter="url(#hs-f-cool)" />
+            </g>
+            <g class="hs-warmth">
+              <ellipse cx="124" cy="328" rx="170" ry="78" fill="url(#hs-g-warmth)" filter="url(#hs-f-warmth)" />
             </g>
             <g class="hs-haze">
-              <path d="M -160 335.99 A 7232 7232 0 0 1 680 340.64" fill="none" stroke="url(#hs-g-haze)" stroke-width="28" filter="url(#hs-f-haze)" />
+              <path d="M -90 318.63 A 7246 7246 0 0 1 520 318.21" fill="none" stroke="url(#hs-g-haze)" stroke-width="30" filter="url(#hs-f-haze)" />
             </g>
             <g class="hs-scatter">
-              <path d="M -120 346.01 A 7220 7220 0 0 1 660 351.42" fill="none" stroke="url(#hs-g-scatter)" stroke-width="26" filter="url(#hs-f-scatter)" />
+              <path d="M -30 340.33 A 7222 7222 0 0 1 440 339.35" fill="none" stroke="url(#hs-g-scatter)" stroke-width="22" filter="url(#hs-f-scatter)" />
             </g>
             <g class="hs-arc">
-              <path d="M 200 350.03 A 7208 7208 0 0 1 600 360.02" fill="none" stroke="url(#hs-g-arc)" stroke-width="14" filter="url(#hs-f-arc)" />
+              <path d="M 20 351.77 A 7209 7209 0 0 1 320 349.69" fill="none" stroke="url(#hs-g-arc)" stroke-width="13" filter="url(#hs-f-arc)" />
             </g>
             <g class="hs-contact">
-              <path d="M 360 354.36 A 7205 7205 0 0 1 530 359.67" fill="none" stroke="url(#hs-g-contact)" stroke-width="11" filter="url(#hs-f-contact)" />
+              <path d="M 70 356.06 A 7203.5 7203.5 0 0 1 200 354.53" fill="none" stroke="url(#hs-g-contact)" stroke-width="8" filter="url(#hs-f-contact)" />
+            </g>
+            {/* Buried below the limb. The mask keeps the body hidden; only
+                the upper fringe can cross into the sky. */}
+            <g class="hs-leak">
+              <ellipse cx="124" cy="365" rx="16" ry="3.4" fill="url(#hs-g-leak)" filter="url(#hs-f-leak)" />
+            </g>
+            <g class="hs-core">
+              <ellipse cx="108" cy="360.4" rx="6.5" ry="2.2" fill="url(#hs-g-core)" filter="url(#hs-f-core)" />
             </g>
           </g>
 
@@ -564,25 +599,31 @@ const structuredData = [
   .hs-scatter,
   .hs-arc,
   .hs-contact,
-  .hs-cool {
+  .hs-cool,
+  .hs-warmth,
+  .hs-leak,
+  .hs-core {
     transform-box: fill-box;
-    transform-origin: center bottom;
+    transform-origin: center center;
   }
 
-  /* Opening frame. A faint cool limb is already there. Warm light has not
-     arrived. Reduced motion overrides this to the finished frame. */
+  /* Opening frame. Near-dark, with only a faint cool limb. The buried source
+     has not leaked yet. Reduced motion overrides this to the finished frame. */
   .hero__dawn[data-dawn='hold'] .hs-cool {
-    opacity: 0.72;
+    opacity: 0.4;
   }
 
   .hero__dawn[data-dawn='hold'] .hs-haze {
-    opacity: 0.08;
-    transform: translateY(7px);
+    opacity: 0;
+    transform: translateY(6px);
   }
 
   .hero__dawn[data-dawn='hold'] .hs-scatter,
   .hero__dawn[data-dawn='hold'] .hs-arc,
-  .hero__dawn[data-dawn='hold'] .hs-contact {
+  .hero__dawn[data-dawn='hold'] .hs-contact,
+  .hero__dawn[data-dawn='hold'] .hs-warmth,
+  .hero__dawn[data-dawn='hold'] .hs-leak,
+  .hero__dawn[data-dawn='hold'] .hs-core {
     opacity: 0;
   }
 
@@ -606,56 +647,107 @@ const structuredData = [
     animation: hs-contact var(--dawn) var(--ease-dawn) forwards;
   }
 
-  /* 3s 16.7% · 6s 33.3% · 7s 38.9% · 9s 50% · 11s 61.1% · 12s 66.7% · 16s 88.9% */
+  .hero__dawn[data-dawn='run'] .hs-warmth {
+    animation: hs-warmth var(--dawn) var(--ease-dawn) forwards;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-leak {
+    animation: hs-leak var(--dawn) var(--ease-dawn) forwards;
+  }
+
+  .hero__dawn[data-dawn='run'] .hs-core {
+    animation: hs-core var(--dawn) var(--ease-dawn) forwards;
+  }
+
+  /* 3s 16.7% · 6s 33.3% · 7s 38.9% · 9s 50% · 11s 61.1% · 12s 66.7% · 16s 88.9%
+     Source first, then the rim, then the air above it. */
   @keyframes hs-cool {
-    0% { opacity: 0.72; }
-    16.7% { opacity: 0.76; }
-    38.9% { opacity: 0.82; }
-    61.1% { opacity: 0.9; }
-    88.9% { opacity: 0.97; }
+    0% { opacity: 0.4; }
+    16.7% { opacity: 0.46; }
+    38.9% { opacity: 0.55; }
+    61.1% { opacity: 0.7; }
+    88.9% { opacity: 0.88; }
     100% { opacity: 1; }
+  }
+
+  @keyframes hs-core {
+    0% { opacity: 0; transform: translateY(0); }
+    16.7% { opacity: 0.62; transform: translateY(0); }
+    33.3% { opacity: 0.52; transform: translateY(0); }
+    38.9% { opacity: 0.6; transform: translateY(0); }
+    50% { opacity: 0.72; transform: translateY(0); }
+    61.1% { opacity: 0.82; transform: translateY(0); }
+    66.7% { opacity: 0.9; transform: translateY(-1px); }
+    88.9% { opacity: 1; transform: translateY(-1.5px); }
+    100% { opacity: 1; transform: translateY(-1.5px); }
+  }
+
+  @keyframes hs-leak {
+    0% { opacity: 0; transform: translateY(0); }
+    16.7% { opacity: 0; transform: translateY(0); }
+    33.3% { opacity: 0.22; transform: translateY(0); }
+    38.9% { opacity: 0.38; transform: translateY(0); }
+    50% { opacity: 0.55; transform: translateY(0); }
+    61.1% { opacity: 0.7; transform: translateY(0); }
+    66.7% { opacity: 0.8; transform: translateY(-1px); }
+    88.9% { opacity: 1; transform: translateY(-1.5px); }
+    100% { opacity: 1; transform: translateY(-1.5px); }
   }
 
   @keyframes hs-contact {
     0% { opacity: 0; }
-    16.7% { opacity: 0.35; }
-    33.3% { opacity: 0.62; }
-    38.9% { opacity: 0.72; }
-    61.1% { opacity: 0.88; }
+    16.7% { opacity: 0.04; }
+    33.3% { opacity: 0.3; }
+    38.9% { opacity: 0.46; }
+    50% { opacity: 0.62; }
+    61.1% { opacity: 0.76; }
+    66.7% { opacity: 0.84; }
     88.9% { opacity: 1; }
     100% { opacity: 1; }
   }
 
   @keyframes hs-arc {
     0% { opacity: 0; }
-    16.7% { opacity: 0.05; }
-    33.3% { opacity: 0.28; }
-    38.9% { opacity: 0.46; }
-    50% { opacity: 0.6; }
-    61.1% { opacity: 0.74; }
-    66.7% { opacity: 0.8; }
+    16.7% { opacity: 0; }
+    33.3% { opacity: 0.14; }
+    38.9% { opacity: 0.3; }
+    50% { opacity: 0.48; }
+    61.1% { opacity: 0.66; }
+    66.7% { opacity: 0.76; }
     88.9% { opacity: 0.96; }
     100% { opacity: 1; }
   }
 
   @keyframes hs-scatter {
     0% { opacity: 0; }
-    33.3% { opacity: 0.06; }
-    38.9% { opacity: 0.14; }
-    50% { opacity: 0.38; }
-    61.1% { opacity: 0.6; }
-    66.7% { opacity: 0.68; }
+    33.3% { opacity: 0; }
+    38.9% { opacity: 0.1; }
+    50% { opacity: 0.3; }
+    61.1% { opacity: 0.52; }
+    66.7% { opacity: 0.64; }
     88.9% { opacity: 0.92; }
     100% { opacity: 1; }
   }
 
+  @keyframes hs-warmth {
+    0% { opacity: 0; }
+    33.3% { opacity: 0; }
+    38.9% { opacity: 0.08; }
+    50% { opacity: 0.28; }
+    61.1% { opacity: 0.5; }
+    66.7% { opacity: 0.62; }
+    88.9% { opacity: 0.9; }
+    100% { opacity: 1; }
+  }
+
   @keyframes hs-haze {
-    0% { opacity: 0.08; transform: translateY(7px); }
-    16.7% { opacity: 0.1; transform: translateY(6px); }
-    38.9% { opacity: 0.16; transform: translateY(4px); }
-    50% { opacity: 0.36; transform: translateY(3px); }
-    61.1% { opacity: 0.55; transform: translateY(2px); }
-    88.9% { opacity: 0.9; transform: translateY(0); }
+    0% { opacity: 0; transform: translateY(6px); }
+    16.7% { opacity: 0; transform: translateY(6px); }
+    38.9% { opacity: 0.06; transform: translateY(5px); }
+    50% { opacity: 0.2; transform: translateY(3px); }
+    61.1% { opacity: 0.4; transform: translateY(2px); }
+    66.7% { opacity: 0.52; transform: translateY(1px); }
+    88.9% { opacity: 0.88; transform: translateY(0); }
     100% { opacity: 1; transform: translateY(0); }
   }
 
@@ -669,10 +761,21 @@ const structuredData = [
     .hero__dawn[data-dawn='hold'] .hs-arc,
     .hero__dawn[data-dawn='run'] .hs-arc,
     .hero__dawn[data-dawn='hold'] .hs-contact,
-    .hero__dawn[data-dawn='run'] .hs-contact {
+    .hero__dawn[data-dawn='run'] .hs-contact,
+    .hero__dawn[data-dawn='hold'] .hs-warmth,
+    .hero__dawn[data-dawn='run'] .hs-warmth {
       animation: none;
       transform: none;
       opacity: 1;
+    }
+
+    .hero__dawn[data-dawn='hold'] .hs-core,
+    .hero__dawn[data-dawn='run'] .hs-core,
+    .hero__dawn[data-dawn='hold'] .hs-leak,
+    .hero__dawn[data-dawn='run'] .hs-leak {
+      animation: none;
+      opacity: 1;
+      transform: translateY(-1.5px);
     }
   }
 
