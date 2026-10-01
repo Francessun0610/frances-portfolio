@@ -1,0 +1,467 @@
+---
+import PresentationLayout from '../../../layouts/PresentationLayout.astro';
+import { linearScreens } from '../../../data/linearDeck';
+
+export function getStaticPaths() {
+  return linearScreens().map((screen) => ({
+    params: { screen: String(screen.n) },
+    props: { screen },
+  }));
+}
+
+const { screen } = Astro.props;
+const screens = linearScreens();
+const current = screen ?? screens[0];
+if (!current) throw new Error('Missing Linear screen');
+const firstN = screens[0].n;
+const lastN = screens[screens.length - 1].n;
+const position = current.n - firstN + 1;
+
+const clientScreens = screens.map((item) => ({
+  n: item.n,
+  kind: item.kind,
+  title: item.title,
+  transcript: item.transcript,
+  image: item.image,
+  inspectImage: item.inspectImage,
+  inspect: item.inspect,
+}));
+---
+
+<PresentationLayout
+  title={`${current.title} · Linear Ad Platform`}
+  description="A visual introduction to the Linear Ad Platform team Frances Sun led."
+>
+  <div class="deck" data-linear-deck data-screen={current.n}>
+    <div class="deck__stage" data-stage>
+      <div class="deck__column">
+        <div class="deck__toolbar">
+          <a class="deck__return" href="/#work" data-return aria-label="Back to Selected Work">
+            <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+              <path
+                d="M10.25 3.25 5.5 8l4.75 4.75"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+            <span>Selected Work</span>
+          </a>
+        </div>
+        <div class="deck__frame" data-frame>
+        <section class="panel panel--image" data-panel="image" hidden={current.kind !== 'image'}>
+          <img
+            data-shot
+            src={current.kind === 'image' ? current.image : undefined}
+            alt={current.kind === 'image' ? current.transcript : ''}
+            width="1920"
+            height="1080"
+          />
+        </section>
+
+        <section class="panel panel--copy" data-panel="math" hidden={current.kind !== 'math'}>
+          <p class="eyebrow">An illustration, not a viewing study</p>
+          <h1>How the minutes add up</h1>
+          <p class="lede">
+            At 15 minutes of advertising per hour, 30-second spots add up to 30 ads. Across a
+            five-hour viewing window, that would be 75 minutes of advertising.
+          </p>
+        </section>
+
+        <section class="panel panel--copy" data-panel="networks" hidden={current.kind !== 'networks'}>
+          <p class="eyebrow">Narrative snapshot</p>
+          <h1>Networks referenced in this story</h1>
+          <p class="lede">
+            Names as written in the original narrative, with the duplicated Entertainment list
+            removed. This is not a current list of networks in operation.
+          </p>
+          <div class="nets">
+            <div>
+              <h2>ABC</h2>
+              <p>ABC-30 · ABC-5</p>
+            </div>
+            <div>
+              <h2>Entertainment</h2>
+              <p>Freeform · FX · FXM · FXX · Nat Geo Channel · Nat Geo Wild</p>
+              <h2>Entertainment Kids</h2>
+              <p>Disney Channel · Disney Junior · Disney XD</p>
+              <h2>Entertainment Spanish</h2>
+              <p>Nat Geo Mundo</p>
+            </div>
+            <div>
+              <h2>Sports</h2>
+              <p>
+                ACC Network · ESPN · ESPN2 · ESPN3 North · ESPNU · ESPN Classic · ESPN Deportes ·
+                ESPN México · ESPN Caribbean · ESPN Centroamérica · ESPN College Extra · ESPN Pac Rim ·
+                Longhorn Network · SEC Network
+              </p>
+            </div>
+            <div>
+              <h2>Addressable</h2>
+              <p>Disney Plus event · YouTube Kids · Disney Kids · Nat Geo Kids</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel panel--copy" data-panel="narrative" hidden={current.kind !== 'narrative'}>
+          <p class="eyebrow">What this narrative makes clear</p>
+          <h1>A shared view of our team’s work.</h1>
+          <p class="lede">One connected story across planning, inventory, and trafficking.</p>
+          <ol class="points">
+            <li>
+              <span>01</span>
+              <h2>Team scope</h2>
+              <p>See what each tool contributes to the advertising workflow.</p>
+            </li>
+            <li>
+              <span>02</span>
+              <h2>Connections</h2>
+              <p>Understand how work moves between products and teams.</p>
+            </li>
+            <li>
+              <span>03</span>
+              <h2>Common language</h2>
+              <p>Use a familiar candy-store metaphor to explain a complex platform.</p>
+            </li>
+          </ol>
+        </section>
+
+        <section class="panel panel--copy" data-panel="closing" hidden={current.kind !== 'closing'}>
+          <h1>Making complexity understandable.</h1>
+          <p class="lede">
+            This visual narrative connects our team’s work into one understandable story—from
+            planning an advertising opportunity to preparing it for airtime.
+          </p>
+        </section>
+
+        <section class="panel panel--copy" data-panel="thanks" hidden={current.kind !== 'thanks'}>
+          <h1>Thank you</h1>
+          <p class="cover__role">Frances Sun · Lead Product Designer</p>
+        </section>
+      </div>
+      </div>
+    </div>
+
+    <div class="deck__bar" data-bar>
+      <button type="button" data-prev disabled={current.n <= firstN}>Previous</button>
+      <p data-progress>
+        {String(position).padStart(2, '0')} / {String(screens.length).padStart(2, '0')}
+      </p>
+      <button type="button" data-next disabled={current.n >= lastN}>Next</button>
+      <button type="button" data-inspect hidden={!current.inspect}>Inspect</button>
+      <button type="button" data-fullscreen aria-pressed="false">Full screen</button>
+    </div>
+
+    <div class="inspect" data-inspect-layer hidden>
+      <button type="button" class="inspect__close" data-inspect-close>Close</button>
+      <div class="inspect__stage">
+        <img data-inspect-img alt="" />
+      </div>
+    </div>
+
+    <p class="visually-hidden" aria-live="polite" data-live></p>
+  </div>
+
+  <script id="linear-deck-data" type="application/json" set:html={JSON.stringify(clientScreens)} />
+  <script>
+    import '../../../scripts/linearDeck.ts';
+  </script>
+</PresentationLayout>
+
+<style>
+  .deck {
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background: #0b0d12;
+    color: var(--text);
+  }
+
+  .deck__stage {
+    display: grid;
+    place-items: center;
+    min-height: 0;
+    padding: 0.35rem 1.25rem 0.35rem;
+  }
+
+  .deck__column {
+    width: min(100%, calc((100dvh - 8.75rem) * 16 / 9));
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .deck__toolbar {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .deck__return {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    margin: 0;
+    padding: 0 0.15rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+  }
+
+  .deck__return svg {
+    flex: none;
+    transition: transform 160ms ease;
+  }
+
+  .deck__return:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .deck__return:hover svg {
+    transform: translateX(-2px);
+  }
+
+  .deck__frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: calc(100dvh - 8.75rem);
+    background: #070b16;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .deck__frame[data-moving='true'] {
+    opacity: 0.72;
+  }
+
+  .panel {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+
+  .panel--image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #070b16;
+  }
+
+  .panel--copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(1.25rem, 2vw, 2.5rem) clamp(1.4rem, 3vw, 3.25rem);
+    background:
+      radial-gradient(80% 60% at 88% 18%, rgba(36, 58, 110, 0.35), transparent 60%),
+      #070b16;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.55rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  h1 {
+    font-size: clamp(1.7rem, 2.4vw, 3rem);
+    max-width: 18ch;
+  }
+
+  .lede {
+    margin: 0.75rem 0 0;
+    max-width: 42ch;
+    color: var(--text);
+    font-size: clamp(1rem, 1.2vw, 1.25rem);
+  }
+
+  .cover__role {
+    margin: 0.4rem 0 0;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+  }
+
+  .points {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 1.75rem 0 0;
+    padding: 0;
+  }
+
+  .points li {
+    border-top: 1px solid rgba(242, 239, 233, 0.1);
+    padding-top: 0.8rem;
+  }
+
+  .points span {
+    color: #e7a15a;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+  }
+
+  .points h2,
+  .nets h2 {
+    margin: 0.35rem 0 0.3rem;
+    font-size: 1.05rem;
+  }
+
+  .points p,
+  .nets p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+  }
+
+  .nets {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .deck__bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    min-width: 0;
+    padding: 0.7rem 1.25rem calc(0.8rem + env(safe-area-inset-bottom));
+  }
+
+  .deck__bar button {
+    border: 1px solid rgba(242, 239, 233, 0.14);
+    background: transparent;
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.45rem 0.8rem;
+    font: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+
+  .deck__bar button:disabled {
+    opacity: 0.35;
+    cursor: default;
+  }
+
+  .deck__bar button:focus-visible,
+  .deck__return:focus-visible,
+  .inspect__close:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .deck__bar p {
+    margin: 0 0.4rem;
+    min-width: 5.5rem;
+    text-align: center;
+    color: var(--text-tertiary);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.875rem;
+  }
+
+  .deck[data-idle='true'] .deck__bar,
+  .deck[data-idle='true'] .deck__toolbar {
+    opacity: 0;
+  }
+
+  .deck[data-idle='true'] .deck__bar:focus-within,
+  .deck[data-idle='true'] .deck__toolbar:focus-within {
+    opacity: 1;
+  }
+
+  .inspect {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    background: rgba(5, 7, 12, 0.94);
+  }
+
+  .inspect__stage {
+    height: 100%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    touch-action: none;
+  }
+
+  .inspect img {
+    max-width: 96vw;
+    max-height: 92dvh;
+    transform-origin: center;
+    cursor: grab;
+  }
+
+  .inspect__close {
+    position: absolute;
+    top: 0.8rem;
+    right: 0.8rem;
+    z-index: 1;
+    border: 0;
+    border-radius: 999px;
+    background: var(--cobalt-deep);
+    color: white;
+    padding: 0.5rem 0.85rem;
+    font: inherit;
+  }
+
+  @media (max-width: 800px) {
+    .points,
+    .nets {
+      grid-template-columns: 1fr;
+    }
+
+    .deck__stage,
+    .deck__bar {
+      padding-inline: 0.85rem;
+      min-width: 0;
+    }
+
+    .deck__bar {
+      gap: 0.4rem;
+    }
+
+    .deck__frame {
+      width: 100%;
+      aspect-ratio: auto;
+      max-height: calc(100dvh - 8.5rem);
+      height: auto;
+      overflow: auto;
+    }
+
+    .panel {
+      position: relative;
+      inset: auto;
+    }
+
+    .panel[hidden] {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .deck__frame {
+      transition: none;
+    }
+
+    .deck__bar,
+    .deck__toolbar,
+    .deck__return svg {
+      transition: none;
+    }
+  }
+</style>

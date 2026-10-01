@@ -26,6 +26,11 @@ DECKS = [
         "source": "ddd-europe-2026.pptx",
         "label": "DDD Europe 2026 — When the Domain Is Fuzzy, the UI Pays the Price",
     },
+    {
+        "slug": "ccs-morning-boost-2024",
+        "source": "ccs-morning-boost-2024.pptx",
+        "label": "CCS Morning Boost 2024 — From Industrial Designer to Storyteller",
+    },
 ]
 
 # Full-size slide export. 1440x810 is a 16:9 frame that stays sharp on a 2x

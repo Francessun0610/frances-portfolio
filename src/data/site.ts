@@ -38,8 +38,8 @@ export const person = {
 export const links = {
   linkedin: 'https://www.linkedin.com/in/sun0610/',
   instagram: 'https://www.instagram.com/uxauntie/',
-  resume: '/Frances-Sun-Resume.pdf',
-  rateCardDemo: 'https://rate-card-demo.vercel.app/?section=atlas&slide=1',
+  resume: '/frances-sun-resume-2026.pdf',
+  rateCardDemo: 'https://rate-card-demo.vercel.app/portfolio.html?section=atlas&slide=1',
 } as const;
 
 export const nav = [
@@ -66,6 +66,12 @@ export type Project = {
   /** True when `image` is an abstract stand-in rather than a product capture. */
   imageIsPlaceholder: boolean;
   /**
+   * Quiet Coming Soon media surface instead of an image. Used only when a
+   * case study is intentionally not public yet — not for abstract stand-ins
+   * that still carry visual identity (e.g. Linear).
+   */
+  comingSoonMedia?: boolean;
+  /**
    * What Frances personally did, and what the public representation actually
    * is. Each project words this for its own situation: the products are real
    * client work, but what can be shown publicly differs from one to the next.
@@ -88,7 +94,7 @@ export const projects: Project[] = [
     category: 'Enterprise UX · Pricing · AI\u2011assisted Prototyping',
     image: '/images/projects/rate-card-manager.webp',
     imageAlt:
-      'Rate Card Manager prototype showing the All Rate Cards list with search, filters, and draft and published states.',
+      'Rate Card Manager in Ad Tool, showing the rate cards list with search, filters, and draft and published states.',
     imageIsPlaceholder: false,
     portfolioNote:
       'I designed and built this interactive portfolio prototype. All data shown is synthetic and created for demonstration purposes.',
@@ -103,6 +109,7 @@ export const projects: Project[] = [
     image: '/images/projects/atlas.webp',
     imageAlt: 'Abstract graphic of concentric rings and access points representing identity and access management.',
     imageIsPlaceholder: true,
+    comingSoonMedia: true,
     portfolioNote:
       'I designed the administration experience and interaction patterns represented here. The visual shown is an abstract portfolio placeholder, not a production screenshot.',
   },
@@ -115,20 +122,23 @@ export const projects: Project[] = [
     image: '/images/projects/simba.webp',
     imageAlt: 'Abstract graphic of stacked ledger rules representing connected financial workflows.',
     imageIsPlaceholder: true,
+    comingSoonMedia: true,
     portfolioNote:
       'I designed the workflow, navigation, and interaction concepts represented in this portfolio entry. No production financial data is shown, and the visual above is an abstract portfolio placeholder rather than a product screenshot.',
   },
   {
     slug: 'linear',
-    title: 'Linear Advertising Workflows',
+    title: 'Linear Ad Platform',
     description:
-      'Enterprise UX for linear advertising operations, simplifying dense workflows, operational tools, and cross-team handoffs used to get advertising on air.',
-    category: 'Enterprise UX · Advertising Technology · Workflow Design',
+      'A connected view of the team I led and the tools behind linear advertising, from planning and inventory to trafficking and airtime.',
+    category: 'TEAM LEADERSHIP · ENTERPRISE UX · ADVERTISING TECHNOLOGY',
     image: '/images/projects/linear.webp',
-    imageAlt: 'Abstract graphic of parallel tracks converging, representing advertising operations handoffs.',
-    imageIsPlaceholder: true,
+    imageAlt:
+      'Two-row map of the Linear Ad Platform: SalesHub, Rate Card, Proposal, Deal Management, and Media Management, continuing through Copy Management, Content Restrictor, Log Management, Log Scheduling, and Cannonball.',
+    imageIsPlaceholder: false,
     portfolioNote:
-      'I designed the workflow and interaction patterns represented in this portfolio entry. The visual above is an abstract portfolio placeholder rather than a product screenshot, and nothing shown here exposes production data.',
+      'I created this visual narrative to explain our team’s work. My direct product design ownership focused on Media Management.',
+    cta: { label: 'Explore the platform', href: '/work/linear/2', external: false },
   },
 ];
 
@@ -140,20 +150,35 @@ export type Talk = {
   event: string;
   /** Extra organisation lines shown under the event name. */
   organization?: string[];
+  /** Lecture series, when the event sits inside one. Shown on the detail page. */
+  series?: string;
+  /** Host school or hall, when it is distinct from the city. Shown on the detail page. */
+  venue?: string;
   location: string;
   year: string;
   /**
-   * ISO date, only when the talk's own date is actually known. None of the
-   * three talks has one recorded, so ordering within a year falls to
-   * sortOrder rather than a guessed date.
+   * ISO date, only when the talk's own date is actually known. Talks without
+   * one order within a year by sortOrder rather than a guessed date.
    */
   date?: string;
+  /** How the date is written on the detail page, when a date is known. */
+  dateLabel?: string;
   /** Tie-break within a year. Lower comes first. */
   sortOrder: number;
   cardDescription: string;
   intro: string;
+  /** Second paragraph on the detail page, when the intro needs one. */
+  supporting?: string;
   image: string;
   imageAlt: string;
+  /** Intrinsic pixel size. Defaults match the landscape speaking photos. */
+  imageWidth?: number;
+  imageHeight?: number;
+  /**
+   * Portrait posters cannot fill the 16:9 card without losing the event.
+   * `contain` keeps the whole image inside the existing media frame.
+   */
+  imageFit?: 'cover' | 'contain';
   seoTitle: string;
   seoDescription: string;
 };
@@ -216,6 +241,34 @@ export const talks: Talk[] = [
     seoTitle: 'Frances Sun at DDD Europe 2026 | Enterprise UX',
     seoDescription:
       'Frances Sun presents “When the Domain Is Fuzzy, the UI Pays the Price” at DDD Europe 2026 in Antwerp, exploring domain understanding, workflow clarity, and enterprise UX.',
+  },
+  {
+    slug: 'ccs-morning-boost-2024',
+    deck: 'ccs-morning-boost-2024',
+    title: 'From Industrial Designer to Storyteller',
+    event: 'CCS Morning Boost 2024',
+    series: 'Toyota Lecture Series',
+    venue: 'College for Creative Studies',
+    location: 'Detroit, Michigan',
+    year: '2024',
+    date: '2024-03-29',
+    dateLabel: 'March 29, 2024',
+    sortOrder: 1,
+    cardDescription:
+      'Returning to CCS as an alumna, I shared lessons from my own design journey to help students approach their first roles, communicate their work, and tell stronger portfolio stories.',
+    intro:
+      'I returned to the College for Creative Studies as an MFA alumna to share what I wish I had known as a design student. Drawing on the successes and setbacks of my career, I offered advice on understanding problems, working with product teams, and presenting design work with clarity.',
+    supporting:
+      'The talk connects everyday design practice with the transition into professional life: using tools to make ideas work, explaining complex processes visually, building a compelling portfolio narrative, and helping people understand who you are and what you contributed.',
+    image: '/images/speaking/ccs-morning-boost-2024-cover.png',
+    imageAlt:
+      'CCS Morning Boost event poster for March 29, 2024, listing Frances Sun among the speakers.',
+    imageWidth: 1284,
+    imageHeight: 2268,
+    imageFit: 'contain',
+    seoTitle: 'Frances Sun at CCS Morning Boost 2024 | From Industrial Designer to Storyteller',
+    seoDescription:
+      'Frances Sun returned to the College for Creative Studies as an alumna for CCS Morning Boost 2024, part of the Toyota Lecture Series, sharing advice on problems, teamwork, and portfolio storytelling.',
   },
 ];
 

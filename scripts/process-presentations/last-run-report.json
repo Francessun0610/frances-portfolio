@@ -1,21 +1,21 @@
 {
-  "generated": "2026-09-18T10:48:31-0500",
+  "generated": "2026-10-01T01:00:21-0500",
   "decks": [
     {
-      "slug": "ddd-europe-2026",
+      "slug": "ccs-morning-boost-2024",
       "renderer": "powerpoint",
-      "source": "content/speaking/source/ddd-europe-2026.pptx",
-      "sourceSlideCount": 101,
-      "hiddenSlideCount": 3,
-      "visibleSlideCount": 98,
-      "exportedSlideCount": 98,
-      "thumbnailCount": 98,
+      "source": "content/speaking/source/ccs-morning-boost-2024.pptx",
+      "sourceSlideCount": 53,
+      "hiddenSlideCount": 0,
+      "visibleSlideCount": 53,
+      "exportedSlideCount": 53,
+      "thumbnailCount": 53,
       "aspectRatio": 1.7778,
-      "speakerNotePartsInSource": 92,
+      "speakerNotePartsInSource": 53,
       "speakerNotesExported": false,
-      "fullBytes": 4929228,
-      "thumbBytes": 525494,
-      "outputDir": "public/slides/ddd-europe-2026/",
+      "fullBytes": 2171116,
+      "thumbBytes": 202188,
+      "outputDir": "public/slides/ccs-morning-boost-2024/",
       "missingFonts": []
     }
   ]

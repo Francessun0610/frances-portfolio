@@ -5,23 +5,55 @@ interface Props {
   project: Project;
   /** First cards render eagerly; the rest lazy-load. */
   priority?: boolean;
+  /**
+   * `wide` runs the same card horizontally at desktop width. It is a layout
+   * change only: the category, title, description, note and CTA all come from
+   * the same record, so a project can lead the page without different copy or
+   * a badge announcing that it leads.
+   */
+  layout?: 'compact' | 'wide';
 }
 
-const { project, priority = false } = Astro.props;
+const { project, priority = false, layout = 'compact' } = Astro.props;
 const headingId = `project-${project.slug}`;
 ---
 
-<article class="card" aria-labelledby={headingId}>
+<article
+  class:list={['card', layout === 'wide' && 'card--wide']}
+  id={`card-${project.slug}`}
+  tabindex="-1"
+  aria-labelledby={headingId}
+>
   <div class="card__media">
-    <img
-      src={project.image}
-      alt={project.imageAlt}
-      width="1280"
-      height="800"
-      loading={priority ? 'eager' : 'lazy'}
-      fetchpriority={priority ? 'high' : 'auto'}
-      decoding="async"
-    />
+    {
+      project.comingSoonMedia ? (
+        <div class="card__soon" aria-hidden="true">
+          <span class="card__soon-label">Coming soon</span>
+        </div>
+      ) : project.cta && !project.cta.external ? (
+        <a class="card__media-link" href={project.cta.href} aria-label={project.cta.label}>
+          <img
+            src={project.image}
+            alt=""
+            width="1280"
+            height="800"
+            loading={priority ? 'eager' : 'lazy'}
+            fetchpriority={priority ? 'high' : 'auto'}
+            decoding="async"
+          />
+        </a>
+      ) : (
+        <img
+          src={project.image}
+          alt={project.imageAlt}
+          width="1280"
+          height="800"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchpriority={priority ? 'high' : 'auto'}
+          decoding="async"
+        />
+      )
+    }
   </div>
 
   <div class="card__body">
@@ -53,25 +85,22 @@ const headingId = `project-${project.slug}`;
 </article>
 
 <style>
+  /*
+    Compact supporting work is editorial, not a tile. No full card chrome —
+    media carries the crop, type sits in open space. That keeps a three-up row
+    from reading as a dashboard and from outgrowing the lead by vertical mass.
+  */
   .card {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: linear-gradient(180deg, var(--surface) 0%, var(--bg-raised) 100%);
-    transition: border-color 200ms var(--ease);
-  }
-
-  .card:hover {
-    border-color: var(--border-strong);
+    background: transparent;
   }
 
   .card__media {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 2 / 1;
     overflow: hidden;
+    border-radius: var(--radius-lg);
     background: #05070a;
-    border-bottom: 1px solid var(--border);
   }
 
   .card__media img {
@@ -81,44 +110,186 @@ const headingId = `project-${project.slug}`;
     object-position: top center;
   }
 
+  .card__media-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .card__media-link:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: -3px;
+  }
+
+  /* Quiet Coming Soon surface. Recedes behind real work; never a badge or
+     empty-state component. Decorative — titles/descriptions carry meaning. */
+  .card__soon {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(
+        70% 65% at 50% 42%,
+        rgba(22, 34, 52, 0.38) 0%,
+        rgba(12, 16, 24, 0.12) 48%,
+        rgba(10, 12, 18, 0) 72%
+      ),
+      #0c1017;
+  }
+
+  .card__soon-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+    opacity: 0.52;
+    line-height: 1;
+    /* Optical lift — default grid center sits a hair low against the glow. */
+    transform: translateY(-0.05em);
+  }
+
+  @media (max-width: 767.98px) {
+    .card__soon-label {
+      font-size: 0.6875rem;
+      letter-spacing: 0.15em;
+      opacity: 0.5;
+    }
+  }
+
   .card__body {
     display: flex;
     flex-direction: column;
-    gap: 0.7rem;
-    padding: clamp(1.25rem, 1rem + 1vw, 1.85rem);
+    gap: 0.4rem;
+    padding: 0.95rem 0.1rem 0;
   }
 
   .card__category {
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     letter-spacing: 0.02em;
     color: var(--text-tertiary);
   }
 
   .card__title {
-    font-size: clamp(1.2rem, 1.1rem + 0.5vw, 1.4375rem);
+    font-size: clamp(1.125rem, 1.05rem + 0.4vw, 1.3125rem);
+    line-height: 1.25;
   }
 
   .card__description {
     font-size: var(--step-small);
-    line-height: 1.62;
+    line-height: 1.52;
     color: var(--text-secondary);
   }
 
+  /* Secondary to the story. Kept readable, never a legal callout. */
   .card__note {
     padding-top: 0.35rem;
-    font-size: 0.8125rem;
-    line-height: 1.55;
+    font-size: 0.6875rem;
+    line-height: 1.45;
     color: var(--text-tertiary);
-    border-top: 1px solid var(--border);
-    margin-top: 0.35rem;
+    border-top: 1px solid rgba(242, 239, 233, 0.05);
+    margin-top: 0.15rem;
   }
 
   .card__cta {
-    margin-top: 0.35rem;
+    margin-top: 0.15rem;
   }
 
   .card__cta .text-link {
     min-height: 44px;
     align-items: center;
+  }
+
+  @media (min-width: 1024px) {
+    .card__cta .text-link {
+      min-height: 0;
+      padding-block: 0.2rem;
+    }
+  }
+
+  /* Wide: the one framed surface. Below this width it stays stacked so a lead
+     project is never a tall phone block. Media stays 16/9 so the row lands
+     around 360–420px instead of a second hero. */
+  @media (min-width: 1024px) {
+    .card--wide {
+      flex-direction: row;
+      align-items: stretch;
+      overflow: hidden;
+      border: 1px solid rgba(242, 239, 233, 0.08);
+      border-radius: var(--radius-lg);
+      background: linear-gradient(90deg, #0d1016 0%, var(--bg-raised) 58%);
+    }
+
+    .card--wide .card__media {
+      flex: 0 0 58%;
+      aspect-ratio: 16 / 9;
+      border-radius: 0;
+      border-right: 1px solid rgba(242, 239, 233, 0.05);
+    }
+
+    /* Compact crops from the top (product chrome). The lead is a shallower
+       centred crop, so it holds the middle of the composition. */
+    .card--wide .card__media img {
+      object-position: center;
+    }
+
+    .card--wide .card__body {
+      flex: 1 1 42%;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: clamp(1.5rem, 0.8rem + 1.8vw, 2.35rem) clamp(1.5rem, 0.9rem + 1.6vw, 2.4rem);
+    }
+
+    /* Hierarchy from width and title scale, not a label. */
+    .card--wide .card__title {
+      font-size: clamp(1.5rem, 1.15rem + 1.1vw, 1.9rem);
+    }
+
+    .card--wide .card__category {
+      font-size: 0.8125rem;
+    }
+
+    .card--wide .card__description {
+      color: var(--text);
+      line-height: 1.58;
+    }
+
+    .card--wide .card__note {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .card--wide .card__media {
+      flex: 0 0 60%;
+    }
+
+    .card--wide .card__body {
+      flex: 1 1 40%;
+    }
+  }
+
+  /* On small screens the supporting set stacks, so restore a light surface
+     so each project still reads as a discrete unit while scrolling. */
+  @media (max-width: 767.98px) {
+    .card:not(.card--wide) {
+      border: 1px solid rgba(242, 239, 233, 0.06);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: var(--bg-raised);
+    }
+
+    .card:not(.card--wide) .card__media {
+      aspect-ratio: 16 / 9;
+      border-radius: 0;
+    }
+
+    .card:not(.card--wide) .card__body {
+      gap: 0.5rem;
+      padding: 1.1rem 1.15rem 1.25rem;
+    }
   }
 </style>

@@ -2,6 +2,7 @@
 # They contain speaker notes and document metadata that must stay private.
 content/speaking/source/
 content/previous-work-source/
+content/linear/source/
 qa-output/
 
 # Local build and QA tooling. None of it is part of the site: `astro build`

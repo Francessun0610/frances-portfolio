@@ -14,7 +14,6 @@ function isCurrent(href: string) {
 <header class="masthead">
   <div class="shell masthead__inner">
     <a class="brand" href="/">
-      <span class="brand__mark" aria-hidden="true">{person.initials}</span>
       <span class="brand__name">{person.name}</span>
     </a>
 
@@ -37,7 +36,7 @@ function isCurrent(href: string) {
               <a
                 href={item.href}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
-                {...(item.href.endsWith('.pdf') ? { target: '_blank', rel: 'noopener' } : {})}
+                {...(item.href.endsWith('.pdf') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
               >
                 {item.label}
               </a>
@@ -84,22 +83,8 @@ function isCurrent(href: string) {
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.7rem;
     text-decoration: none;
     flex-shrink: 0;
-  }
-
-  .brand__mark {
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    border: 1px solid var(--border-strong);
-    border-radius: 7px;
-    font-size: 0.8125rem;
-    font-weight: 650;
-    letter-spacing: 0.04em;
-    color: var(--text);
   }
 
   .brand__name {

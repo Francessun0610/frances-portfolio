@@ -24,6 +24,10 @@ content/speaking/source/*.pptx
 content/speaking/source/*.ppt
 content/speaking/source/*.key
 
+# Linear deck captures. Screen recordings of an internal Figma deck.
+# Review locally only. Do not commit or deploy until public use is confirmed.
+content/linear/source/
+
 # intermediate render artifacts from the slide pipeline
 scripts/process-presentations/.render-cache/
 

@@ -20,7 +20,7 @@ const description =
         </p>
         <p class="measure speaking-index__note">
           My talks draw from hands-on experience designing enterprise software, operational
-          workflows, design systems, and connected product ecosystems.
+          workflows, and connected product ecosystems.
         </p>
         <p class="measure speaking-index__invite">
           For conference, university, and UX community speaking inquiries, get in touch.
@@ -50,11 +50,31 @@ const description =
   }
 
   .speaking-index__head {
-    margin-bottom: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+    margin-bottom: clamp(2rem, 1.25rem + 1.5vw, 3rem);
   }
 
   .speaking-index__head h1 {
     margin-bottom: 1.25rem;
+  }
+
+  /* Wider than the shared 58ch measure, and never past the card grid,
+     which is this same shell. The opening line stops at 52rem so it breaks
+     into two real lines instead of a full line and a short tail. */
+  .speaking-index__head .lede {
+    max-width: min(52rem, 100%);
+  }
+
+  .speaking-index__head .speaking-index__note,
+  .speaking-index__head .speaking-index__invite {
+    max-width: 100%;
+  }
+
+  /* Just below the width where the second sentence fits on one line, a full
+     container leaves a few words alone. Pull it in so the wrap stays even. */
+  @media (max-width: 1150px) {
+    .speaking-index__head .speaking-index__note {
+      max-width: 38rem;
+    }
   }
 
   /* Second intro line sits a step quieter than the lede. */

@@ -14,19 +14,14 @@ import { DECKS,
   REPO_ROOT, ROUTES, Report, makeSink, startPreview, watchForProblems } from './lib.mjs';
 
 const SITE_ORIGIN = 'https://francessun.design';
-const RATE_CARD_URL = 'https://rate-card-demo.vercel.app/?section=atlas&slide=1';
+const RATE_CARD_URL = 'https://rate-card-demo.vercel.app/portfolio.html?section=atlas&slide=1';
 
 /**
  * Routes that are intentionally reserved but not yet filled in. These are
  * reported separately rather than counted as broken links, and must be cleared
  * before launch.
  */
-const KNOWN_TODO_ROUTES = new Map([
-  [
-    '/Frances-Sun-Resume.pdf',
-    'Drop the resume PDF at public/Frances-Sun-Resume.pdf. The nav route is reserved for it.',
-  ],
-]);
+const KNOWN_TODO_ROUTES = new Map();
 
 async function loadManifest(deck) {
   return JSON.parse(await readFile(join(REPO_ROOT, 'public', 'slides', deck, 'slides.json'), 'utf8'));
@@ -415,7 +410,7 @@ async function main() {
       'Rate Card Manager',
       'Atlas — Identity & Access Management',
       'SIMBA — Financial Systems 2.0',
-      'Linear Advertising Workflows',
+      'Linear Ad Platform',
       'Open to relocation for the right opportunity.',
       'I turn complex products and workflows into clear, scalable experiences',
       // The homepage carries the two most recent talks; the rest live on
@@ -457,7 +452,7 @@ async function main() {
     const indexOrder = await orderOf('/speaking');
     report.check(
       JSON.stringify(indexOrder) ===
-        JSON.stringify(['ddd-europe-2026', 'uiuc-ux-day-2026', 'canux-2025']),
+        JSON.stringify(['ddd-europe-2026', 'uiuc-ux-day-2026', 'canux-2025', 'ccs-morning-boost-2024']),
       '/speaking lists talks newest first',
       indexOrder.join(' > '),
     );
@@ -483,6 +478,7 @@ async function main() {
       'When the Domain Is Fuzzy, the UI Pays the Price',
       'What Enterprise UX Taught Me About Clarity',
       'Infusing Enterprise Creativity with a Dose of Playfulness',
+      'From Industrial Designer to Storyteller',
     ]) {
       report.check(speakingText.includes(phrase), `/speaking lists "${phrase}"`);
     }

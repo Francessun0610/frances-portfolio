@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PresentationViewer from '../../components/PresentationViewer.astro';
-import { talks, PERSON_ID } from '../../data/site';
+import { talks, PERSON_ID, type Talk } from '../../data/site';
 import { loadDeck } from '../../lib/slides';
 
 export function getStaticPaths() {
@@ -11,11 +11,25 @@ export function getStaticPaths() {
 const { talk } = Astro.props;
 const slides = loadDeck(talk.deck);
 
+/**
+ * Eyebrow only when an organisation line adds context the event name does not
+ * already carry. Otherwise the Event meta field is enough — repeating
+ * "CanUX 2025" as both eyebrow and Event teaches nothing.
+ */
+function talkEyebrow(entry: Talk): string | null {
+  const org = entry.organization?.at(-1);
+  if (!org) return null;
+  return `${org} · ${entry.event}`;
+}
+
+/** Standalone YEAR only when the event name does not already state it. */
+const showYearMeta = !talk.event.includes(talk.year);
+const eyebrow = talkEyebrow(talk);
+
 const site = Astro.site ?? new URL('http://localhost:4321');
 const talkUrl = new URL(`/speaking/${talk.slug}`, site).href;
 
-// Described as a presentation document. No event date is asserted, because none
-// was supplied — only the event name, location and year Frances confirmed.
+// A date is included only when one was actually recorded.
 const structuredData = [
   {
     '@context': 'https://schema.org',
@@ -26,6 +40,7 @@ const structuredData = [
     url: talkUrl,
     inLanguage: 'en',
     copyrightYear: talk.year,
+    ...(talk.date ? { datePublished: talk.date } : {}),
     numberOfPages: slides.length || undefined,
     image: new URL(talk.image, site).href,
     // Reference the site-wide Person node rather than minting a new,
@@ -70,11 +85,10 @@ const structuredData = [
 
       <div class="talk__head">
         <div class="talk__intro">
-          <p class="eyebrow">
-            {talk.event} · {talk.year}
-          </p>
+          {eyebrow && <p class="eyebrow talk__eyebrow">{eyebrow}</p>}
           <h1>{talk.title}</h1>
           <p class="lede talk__lede">{talk.intro}</p>
+          {talk.supporting && <p class="talk__supporting">{talk.supporting}</p>}
 
           <dl class="talk__meta">
             <div>
@@ -84,19 +98,39 @@ const structuredData = [
                 {talk.organization?.map((line) => <span class="talk__meta-line">{line}</span>)}
               </dd>
             </div>
+            {
+              talk.series && (
+                <div>
+                  <dt>Series</dt>
+                  <dd>{talk.series}</dd>
+                </div>
+              )
+            }
+            {
+              talk.venue && (
+                <div>
+                  <dt>Venue</dt>
+                  <dd>{talk.venue}</dd>
+                </div>
+              )
+            }
             <div>
               <dt>Location</dt>
               <dd>{talk.location}</dd>
             </div>
-            <div>
-              <dt>Year</dt>
-              <dd>{talk.year}</dd>
-            </div>
             {
-              slides.length > 0 && (
+              talk.dateLabel && (
                 <div>
-                  <dt>Slides</dt>
-                  <dd>{slides.length}</dd>
+                  <dt>Date</dt>
+                  <dd>{talk.dateLabel}</dd>
+                </div>
+              )
+            }
+            {
+              showYearMeta && (
+                <div>
+                  <dt>Year</dt>
+                  <dd>{talk.year}</dd>
                 </div>
               )
             }
@@ -107,8 +141,8 @@ const structuredData = [
           <img
             src={talk.image}
             alt={talk.imageAlt}
-            width="1600"
-            height="1000"
+            width={talk.imageWidth ?? 1600}
+            height={talk.imageHeight ?? 1000}
             fetchpriority="high"
             decoding="async"
           />
@@ -141,23 +175,38 @@ const structuredData = [
     padding-block: clamp(1.75rem, 1.2rem + 2.5vw, 3rem) 0;
   }
 
+  /* Modest separation so the eyebrow reads as context, not a stuck label. */
+  .talk__eyebrow {
+    margin: 0 0 1rem;
+  }
+
   .talk__intro h1 {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.15rem;
   }
 
   .talk__lede {
     max-width: 62ch;
   }
 
+  .talk__supporting {
+    max-width: 62ch;
+    margin-top: 1rem;
+    font-size: var(--step-small);
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  /* Compact: Event + Location only on current talks. No empty slots left by
+     removed Year / Slides fields. */
   .talk__meta {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(9rem, max-content));
-    gap: 1.25rem 2.5rem;
-    margin: 2rem 0 0;
+    grid-template-columns: repeat(auto-fit, minmax(10rem, max-content));
+    gap: 1.15rem 2.75rem;
+    margin: 1.75rem 0 0;
   }
 
   .talk__meta dt {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -165,8 +214,9 @@ const structuredData = [
   }
 
   .talk__meta dd {
-    margin: 0.35rem 0 0;
+    margin: 0.3rem 0 0;
     font-size: var(--step-small);
+    line-height: 1.5;
     color: var(--text);
   }
 
