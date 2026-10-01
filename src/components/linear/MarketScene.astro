@@ -1,0 +1,319 @@
+---
+/**
+ * Opening market illustration for Linear slides 01 and 02.
+ * Drawn as vectors so the city stays sharp at viewer size and in full screen.
+ * Slide 02 adds a continuous rain of separate bills over Disney.
+ */
+interface Props {
+  headline: string;
+}
+
+const { headline } = Astro.props;
+
+const ground = 668;
+
+const towers = [
+  { id: 'netflix', x: 86, w: 92, h: 228 },
+  { id: 'youtube', x: 198, w: 84, h: 196 },
+  { id: 'paramount', x: 302, w: 100, h: 214 },
+  { id: 'wb', x: 422, w: 96, h: 188 },
+  { id: 'nbcu', x: 1048, w: 88, h: 210 },
+  { id: 'fox', x: 1156, w: 84, h: 198 },
+  { id: 'cw', x: 1260, w: 76, h: 168 },
+  { id: 'univision', x: 1354, w: 74, h: 158 },
+  { id: 'telemundo', x: 1446, w: 74, h: 152 },
+];
+
+const skyline = [
+  [18, 118], [52, 86], [78, 140], [108, 96], [142, 124], [176, 72], [204, 108],
+  [248, 90], [286, 132], [330, 78], [362, 110], [408, 84], [446, 128], [490, 70],
+  [528, 102], [570, 88], [610, 210], [656, 168], [692, 248], [734, 186], [780, 268],
+  [820, 204], [868, 236], [910, 176], [958, 228], [996, 150], [1040, 96], [1088, 142],
+  [1136, 76], [1174, 118], [1220, 84], [1264, 108], [1310, 68], [1348, 96],
+  [1392, 130], [1440, 78], [1484, 112], [1530, 88], [1570, 124],
+];
+
+const people = [
+  [90, 78, 0.9], [150, 118, 1.15], [210, 86, 0.95], [270, 142, 1.28],
+  [340, 96, 1], [410, 132, 1.12], [470, 72, 0.86],
+  [530, 124, 1.18], [590, 88, 0.96],
+  [650, 150, 1.3], [660, 96, 1], [760, 206, 1.18], [830, 204, 1.05],
+  [900, 208, 1.16], [980, 88, 0.94],
+  [1020, 138, 1.16], [1080, 76, 0.88], [1140, 120, 1.1],
+  [1210, 152, 1.24], [1270, 90, 0.96], [1330, 130, 1.12], [1390, 100, 1],
+  [1450, 146, 1.2], [1510, 80, 0.9],
+];
+
+function rand(i: number, n: number) {
+  const x = Math.sin(i * 12.9898 + n * 78.233) * 43758.5453;
+  return x - Math.floor(x);
+}
+
+const bills = Array.from({ length: 16 }, (_, i) => {
+  const dur = 6.4 + i * 0.04;
+  const phase = (i / 16) * 6.7;
+  const lane = (i * 0.6180339887) % 1;
+  const behind = i % 3 === 0;
+  return {
+    x: Math.round(630 + lane * 420 + (rand(i, 1) - 0.5) * 18),
+    y: Math.round(250 + (i % 8) * 46),
+    dur: dur.toFixed(2),
+    delay: (-phase).toFixed(2),
+    a0: Math.round(-16 + rand(i, 5) * 32),
+    a1: Math.round(-28 + rand(i, 6) * 56),
+    drift: Math.round(-18 + rand(i, 7) * 36),
+    s: (behind ? 0.66 + rand(i, 8) * 0.12 : 0.84 + rand(i, 8) * 0.34).toFixed(2),
+    from: Math.round(70 + rand(i, 9) * 40),
+    to: Math.round(630 + rand(i, 10) * 40),
+    behind,
+  };
+});
+
+const backBills = bills.filter((bill) => bill.behind);
+const frontBills = bills.filter((bill) => !bill.behind);
+
+const face = '692,620 948,620 986,432 724,456';
+---
+
+<div class="market">
+  <p class="market__title" data-market-title>{headline}</p>
+  <svg class="market__art" viewBox="0 0 1600 900" role="img" aria-label={headline}>
+    <defs>
+      <pattern id="disney-diamonds" width="32" height="32" patternUnits="userSpaceOnUse">
+        <path d="M16 0 L32 16 L16 32 L0 16 Z" fill="none" stroke="#1a4e9e" stroke-width="2.4" />
+      </pattern>
+      <clipPath id="disney-face">
+        <polygon points={face} />
+      </clipPath>
+      <clipPath id="uni-heart">
+        <path d="M0 5 C0 5 -9 -2 -9 -7 C-9 -12 -4 -14 0 -9 C4 -14 9 -12 9 -7 C9 -2 0 5 0 5 Z" />
+      </clipPath>
+      <clipPath id="rain-window">
+        <rect x="620" y="228" width="440" height="400" />
+      </clipPath>
+    </defs>
+
+    <rect width="1600" height="900" fill="#070b22" />
+    <g fill="#2a3148">
+      {skyline.map(([x, h]) => (
+        <rect x={x} y={ground - h} width="34" height={h} />
+      ))}
+    </g>
+    <rect x="0" y={ground} width="1600" height={900 - ground} fill="#29323f" />
+
+    {towers.map((tower) => {
+      const cols = 4;
+      const rows = Math.max(4, Math.floor((tower.h - 40) / 20));
+      const windows = [];
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          windows.push({ row, col });
+        }
+      }
+      const top = ground - tower.h;
+      const gap = (tower.w - 16) / cols;
+      return (
+        <g transform={`translate(${tower.x} ${top})`}>
+          <rect width={tower.w} height={tower.h} rx="2" fill="#3e4658" />
+          <rect x={tower.w - 8} width="8" height={tower.h} fill="#343b4c" />
+          <rect width={tower.w} height="16" fill="#5c6578" />
+          {windows.map(({ row, col }) => (
+            <rect
+              x={8 + col * gap}
+              y={26 + row * 20}
+              width={Math.max(6, gap - 5)}
+              height="11"
+              rx="1"
+              fill="#f3e7a4"
+            />
+          ))}
+          <g transform={`translate(${tower.w / 2} -14)`} font-family="Arial, Helvetica, sans-serif" font-weight="800" text-anchor="middle">
+            {tower.id === 'netflix' && <text y="0" fill="#e50914" font-size="15" letter-spacing="0.6">NETFLIX</text>}
+            {tower.id === 'youtube' && (
+              <g>
+                <rect x="-48" y="-13" width="18" height="13" rx="3" fill="#ff0033" />
+                <polygon points="-43,-10 -43,-3 -36,-6.5" fill="#fff" />
+                <text x="8" y="-2" fill="#f4f1ea" font-size="11" font-weight="700">YouTube TV</text>
+              </g>
+            )}
+            {tower.id === 'paramount' && <text y="0" fill="#7ec8ff" font-size="14" font-style="italic" font-family="Georgia, Palatino, serif" font-weight="700">Paramount+</text>}
+            {tower.id === 'wb' && (
+              <g>
+                <circle cy="-4" r="11" fill="#e0b03a" />
+                <ellipse cy="-4" rx="4.5" ry="11" fill="none" stroke="#2c4f8f" stroke-width="1.4" />
+                <path d="M-11 -4 H11" stroke="#2c4f8f" stroke-width="1.3" />
+                <text y="16" fill="#f4f1ea" font-size="7" letter-spacing="0.4">WARNER BROS.</text>
+              </g>
+            )}
+            {tower.id === 'nbcu' && <text y="0" fill="#8a5cf6" font-size="16" letter-spacing="0.4">NBCU</text>}
+            {tower.id === 'fox' && <text y="0" fill="#8ec8ff" font-size="18" letter-spacing="0.6">FOX</text>}
+            {tower.id === 'cw' && <text y="0" fill="#3db84a" font-size="18" letter-spacing="0.4">CW</text>}
+            {tower.id === 'univision' && (
+              <g clip-path="url(#uni-heart)">
+                <rect x="-9" y="-14" width="9" height="10" fill="#e23d8a" />
+                <rect x="0" y="-14" width="9" height="10" fill="#2fcea0" />
+                <rect x="-9" y="-4" width="9" height="10" fill="#e23d3d" />
+                <rect x="0" y="-4" width="9" height="10" fill="#3a5ce8" />
+              </g>
+            )}
+            {tower.id === 'telemundo' && (
+              <g fill="#e10600">
+                <rect x="-9" y="-16" width="18" height="5" rx="1" />
+                <rect x="-3.2" y="-16" width="6.4" height="17" rx="1" />
+              </g>
+            )}
+          </g>
+        </g>
+      );
+    })}
+
+    <g class="market__rain" clip-path="url(#rain-window)">
+      {backBills.map((bill) => (
+        <g
+          class="bill"
+          style={`--x:${bill.x}px;--y:${bill.y}px;--dur:${bill.dur}s;--delay:${bill.delay}s;--a0:${bill.a0}deg;--a1:${bill.a1}deg;--drift:${bill.drift}px;--s:${bill.s};--from:${bill.from}px;--to:${bill.to}px;`}
+        >
+          <g transform="translate(-28 -12)">
+            <rect width="56" height="24" rx="4" fill="#7fbf6a" stroke="#4f8a45" stroke-width="1.5" />
+            <rect x="4" y="4" width="48" height="16" rx="2" fill="#98d184" />
+            <rect x="4" y="9" width="48" height="6" fill="#e2b07a" />
+            <rect x="7" y="6" width="7" height="12" rx="1" fill="#4f8a45" />
+          </g>
+        </g>
+      ))}
+    </g>
+
+    <g>
+      <polygon points={face} fill="#8ed4f2" />
+      <rect x="660" y="420" width="360" height="230" fill="url(#disney-diamonds)" clip-path="url(#disney-face)" />
+      <polygon points={face} fill="none" stroke="#1a4e9e" stroke-width="3.5" />
+      <rect x="708" y="612" width="214" height="8" fill="#d5e0e8" />
+      <rect x="716" y="620" width="198" height="40" fill="#6fbfc4" />
+      <rect x="716" y="612" width="5" height="52" fill="#c5d0d8" />
+      <rect x="755" y="612" width="5" height="52" fill="#c5d0d8" />
+      <rect x="794" y="612" width="5" height="52" fill="#c5d0d8" />
+      <rect x="833" y="612" width="5" height="52" fill="#c5d0d8" />
+      <rect x="872" y="612" width="5" height="52" fill="#c5d0d8" />
+      <rect x="909" y="612" width="5" height="52" fill="#c5d0d8" />
+      <rect x="708" y="656" width="214" height="12" fill="#b7c4ce" />
+    </g>
+
+    <g fill="#0872e9">
+      {people.map(([x, lift, s]) => (
+        <g transform={`translate(${x} ${ground + lift}) scale(${s})`}>
+          <path d="M-7 0 L-6 -22 L-11 -25 L-8 -44 C-12 -47 -12 -58 -4 -64 C2 -72 8 -70 10 -62 C14 -56 11 -47 8 -44 L11 -25 L6 -22 L7 0 Z" />
+        </g>
+      ))}
+    </g>
+
+    <g class="market__rain" clip-path="url(#rain-window)">
+      {frontBills.map((bill) => (
+        <g
+          class="bill"
+          style={`--x:${bill.x}px;--y:${bill.y}px;--dur:${bill.dur}s;--delay:${bill.delay}s;--a0:${bill.a0}deg;--a1:${bill.a1}deg;--drift:${bill.drift}px;--s:${bill.s};--from:${bill.from}px;--to:${bill.to}px;`}
+        >
+          <g transform="translate(-28 -12)">
+            <rect width="56" height="24" rx="4" fill="#7fbf6a" stroke="#4f8a45" stroke-width="1.5" />
+            <rect x="4" y="4" width="48" height="16" rx="2" fill="#98d184" />
+            <rect x="4" y="9" width="48" height="6" fill="#e2b07a" />
+            <rect x="7" y="6" width="7" height="12" rx="1" fill="#4f8a45" />
+          </g>
+        </g>
+      ))}
+    </g>
+    <g transform="translate(688 458) scale(0.058 -0.058)" fill="#2f86f0">
+<path d="M106 879Q106 872 119 872Q128 872 200.5 884.0Q273 896 332 897Q266 879 218.5 860.5Q171 842 120.5 819.5Q70 797 48.0 789.5Q26 782 10 782Q-41 782 -41 848Q-41 1018 45 1087Q80 1115 157.5 1153.5Q235 1192 332.5 1226.5Q430 1261 547.0 1286.0Q664 1311 778 1311Q895 1311 993.0 1277.0Q1091 1243 1157.0 1181.5Q1223 1120 1258.5 1031.0Q1294 942 1294 831Q1294 662 1196.5 503.0Q1099 344 936.5 222.5Q774 101 570.0 30.0Q366 -41 168 -41Q131 -41 109.5 -33.0Q88 -25 79.0 -1.5Q70 22 70 68Q70 125 79.0 161.0Q88 197 109 244Q253 563 610 1047Q538 1039 452.0 1016.5Q366 994 289.0 967.0Q212 940 159.0 915.0Q106 890 106 879ZM639 1053Q639 1051 643.0 1030.5Q647 1010 647 995Q647 972 623.5 930.5Q600 889 531.0 783.0Q462 677 413.0 597.0Q364 517 297 391Q276 351 268.0 337.0Q260 323 242.5 291.0Q225 259 217.0 236.0Q209 213 209 201Q209 175 237.5 164.5Q266 154 319 154Q455 154 607.0 203.5Q759 253 892.5 341.0Q1026 429 1106.0 540.0Q1186 651 1186 772Q1186 910 1085.0 984.5Q984 1059 791 1059Q710 1059 639 1053Z" transform="translate(0 0)" />
+        <path d="M426 762Q401 762 378.5 781.0Q356 800 356 829Q356 873 398.0 927.0Q440 981 485 981Q515 981 535.0 962.5Q555 944 555 909Q555 866 514.0 814.0Q473 762 426 762ZM494 315V242Q397 117 313.0 53.5Q229 -10 170 -10Q88 -10 48.0 76.0Q8 162 8 264Q8 303 16.0 338.5Q24 374 35.0 397.0Q46 420 76 469Q218 690 336 690Q397 690 397 643Q397 611 357.5 543.0Q318 475 287 446Q200 362 173.5 329.0Q147 296 147 254Q147 218 174.0 194.0Q201 170 244 170Q291 170 347.5 204.5Q404 239 494 315Z" transform="translate(1323 0)" />
+        <path d="M12 287V311Q270 583 367 692Q389 815 473 815Q494 815 518 803L524 784Q520 772 520 750Q520 731 534.5 679.5Q549 628 557.0 593.0Q565 558 565 514Q565 448 535.0 387.5Q505 327 448.0 271.5Q391 216 301 158Q337 152 358 152Q399 152 446.5 172.5Q494 193 543.5 227.5Q593 262 659 317V250Q531 125 430.0 60.5Q329 -4 256 -4Q162 -4 82 76Q35 124 23.5 168.0Q12 212 12 287ZM385 440 367 586Q305 516 102 317Q162 304 184.0 282.0Q206 260 246 197Q314 225 350.5 273.5Q387 322 387 406Q387 416 386.5 424.0Q386 432 385 440Z" transform="translate(1792 0)" />
+        <path d="M690 496Q514 300 514 223Q514 180 549 180Q578 180 624.5 210.5Q671 241 770 319V250Q628 110 552.0 48.0Q476 -14 428 -14Q346 -14 346 94Q346 126 356.0 157.0Q366 188 383.5 221.5Q401 255 437.0 317.5Q473 380 520 459Q463 430 377 344Q321 290 282.0 241.5Q243 193 198.5 133.5Q154 74 133.5 53.5Q113 33 92 33Q60 33 33.0 100.0Q6 167 6 256Q6 311 18.5 342.0Q31 373 68 430Q137 536 187.0 585.5Q237 635 283 635Q315 635 334.5 624.0Q354 613 354 590Q354 580 348.0 569.0Q342 558 334.5 549.0Q327 540 303 514Q145 339 145 287Q145 258 164 258Q176 258 210.5 296.5Q245 335 299.5 397.5Q354 460 428.5 528.0Q503 596 598 659Q651 696 686 696Q702 696 717.5 652.0Q733 608 733 563Q733 541 690 496Z" transform="translate(2431 0)" />
+        <path d="M176 279V254Q176 195 205.0 162.0Q234 129 281 129Q330 129 382.5 152.0Q435 175 487.0 213.0Q539 251 614 315V254Q501 118 402.0 45.5Q303 -27 201 -27Q112 -27 60.0 42.0Q8 111 8 231Q8 336 57.0 421.5Q106 507 217 602Q293 667 368.0 700.0Q443 733 502 733Q549 733 576.5 711.5Q604 690 604 647Q604 584 557.0 521.5Q510 459 413.5 397.5Q317 336 176 279ZM186 344Q276 379 340.0 431.0Q404 483 434.5 530.5Q465 578 465 600Q465 623 444 623Q426 623 385.5 600.0Q345 577 303.5 540.0Q262 503 229.0 453.0Q196 403 186 344Z" transform="translate(3179 0)" />
+        <path d="M477 276 299 125Q172 14 129 14Q90 14 47.0 103.5Q4 193 4 260Q4 317 21.5 356.5Q39 396 82 459Q143 544 199.0 603.0Q255 662 298.0 694.5Q341 727 358 727Q385 727 410.5 699.0Q436 671 436 641Q436 622 408.5 580.0Q381 538 321.5 473.5Q262 409 156 319L137 264Q129 248 129 236Q129 209 156 209Q184 209 287.5 280.0Q391 351 512 471Q559 518 590.0 554.0Q621 590 646.0 621.5Q671 653 687.5 669.0Q704 685 717 686Q742 689 756.0 665.0Q770 641 770 594Q770 567 746.0 526.5Q722 486 656.0 388.5Q590 291 524.5 186.5Q459 82 391 -49Q394 -46 452.5 11.0Q511 68 576.0 130.0Q641 192 683.0 229.5Q725 267 788 317V250Q653 105 543.5 -25.0Q434 -155 374.5 -233.0Q315 -311 305 -324Q278 -359 256.5 -389.5Q235 -420 220.5 -436.5Q206 -453 197 -453Q176 -453 159.5 -411.5Q143 -370 143 -338Q143 -309 154 -287Q226 -125 477 276Z" transform="translate(3777 0)" />
+    </g>
+
+    <g class="market__billion" data-billion>
+      <text x="820" y="748" text-anchor="middle" fill="#9fd4f5" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="800">9billion</text>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .market {
+    position: absolute;
+    inset: 0;
+    background: #070b22;
+    container-type: size;
+  }
+
+  .market__title {
+    position: absolute;
+    z-index: 2;
+    top: 6%;
+    left: 6%;
+    right: 6%;
+    margin: 0;
+    text-align: center;
+    color: #f7f4ee;
+    font-size: 3.15cqw;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .market__art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .market__billion,
+  .market__rain {
+    display: none;
+  }
+
+  :global(.deck__frame[data-upfront='true']) .market__billion,
+  :global(.deck__frame[data-upfront='true']) .market__rain {
+    display: inline;
+  }
+
+  .bill {
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: translate3d(var(--x), var(--y), 0) rotate(var(--a0)) scale(var(--s));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bill:nth-child(n + 7) {
+      display: none;
+    }
+
+    .bill {
+      animation: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .bill {
+      animation: market-rain var(--dur) linear infinite;
+      animation-delay: var(--delay);
+    }
+  }
+
+  @keyframes market-rain {
+    0% {
+      opacity: 0;
+      transform: translate3d(var(--x), var(--from), 0) rotate(var(--a0)) scale(var(--s));
+    }
+    8% {
+      opacity: 1;
+    }
+    88% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(calc(var(--x) + var(--drift)), var(--to), 0) rotate(var(--a1)) scale(var(--s));
+    }
+  }
+</style>

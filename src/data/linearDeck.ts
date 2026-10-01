@@ -12,7 +12,7 @@
 
 export const LINEAR_TOTAL = 49;
 
-export type LinearKind = 'image' | 'math' | 'networks' | 'narrative' | 'closing' | 'thanks';
+export type LinearKind = 'image' | 'market' | 'math' | 'networks' | 'narrative' | 'closing' | 'thanks';
 
 export type LinearScreen = {
   n: number;
@@ -22,6 +22,9 @@ export type LinearScreen = {
   /** Original Figma slide number, when this screen comes from the deck. */
   sourceSlide?: number;
   image?: string;
+  /** Exact on-slide headline when the scene is drawn in the viewer. */
+  visual?: string;
+  rain?: boolean;
   adaptation: string;
 };
 
@@ -73,9 +76,17 @@ export function linearScreens(): LinearScreen[] {
     let kind: LinearKind = 'image';
     let adaptation = 'Presented from the source deck, in original order.';
 
+    let visual: string | undefined;
+    let rain = false;
     if (source === 4 || source === 5) {
+      kind = 'market';
+      rain = source === 5;
+      visual =
+        source === 4
+          ? 'In 2023, TV ad revenue in the United States reached $61.3 billion'
+          : 'In 2023, companies committed $9 billion during Upfront week to Disney.';
       adaptation =
-        'Kept the 2023 framing already on the slide. The dollar figures are not independently verified for publication.';
+        'Kept the 2023 framing already on the slide. The city is drawn in the viewer so it stays sharp. The dollar figures are not independently verified for publication.';
     }
     if (source === 47) {
       kind = 'math';
@@ -121,6 +132,8 @@ export function linearScreens(): LinearScreen[] {
           : title,
       sourceSlide: source,
       image: kind === 'image' ? linearImage(source) : undefined,
+      visual,
+      rain,
       adaptation,
     });
   }

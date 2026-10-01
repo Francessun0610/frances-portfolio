@@ -1,5 +1,6 @@
 ---
 import PresentationLayout from '../../../layouts/PresentationLayout.astro';
+import MarketScene from '../../../components/linear/MarketScene.astro';
 import { linearScreens } from '../../../data/linearDeck';
 
 export function getStaticPaths() {
@@ -23,6 +24,8 @@ const clientScreens = screens.map((item) => ({
   title: item.title,
   transcript: item.transcript,
   image: item.image,
+  visual: item.visual,
+  rain: item.rain,
 }));
 ---
 
@@ -47,7 +50,12 @@ const clientScreens = screens.map((item) => ({
             <span>Selected Work</span>
           </a>
         </div>
-        <div class="deck__frame" data-frame>
+        <div class="deck__frame" data-frame data-upfront={current.rain ? 'true' : 'false'}>
+        <section class="panel panel--market" data-panel="market" hidden={current.kind !== 'market'}>
+          <MarketScene
+            headline={current.visual ?? 'In 2023, TV ad revenue in the United States reached $61.3 billion'}
+          />
+        </section>
         <section class="panel panel--image" data-panel="image" hidden={current.kind !== 'image'}>
           <img
             data-shot
@@ -239,6 +247,10 @@ const clientScreens = screens.map((item) => ({
     display: none;
   }
 
+  .panel--market {
+    background: #070b22;
+  }
+
   .panel--image img {
     width: 100%;
     height: 100%;
@@ -399,6 +411,10 @@ const clientScreens = screens.map((item) => ({
       max-height: calc(100dvh - 8.5rem);
       height: auto;
       overflow: auto;
+    }
+
+    .panel--market {
+      aspect-ratio: 16 / 9;
     }
 
     .panel {
