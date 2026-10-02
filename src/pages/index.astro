@@ -86,88 +86,100 @@ const structuredData = [
         >
           <defs>
             {/* Limb of a circle so large the visible edge is nearly flat.
-                Apex sits near y=358. Everything warm is painted above that
-                limb and then covered again by the foreground, so the source
-                stays behind the horizon. */}
-            <mask id="hs-sky" maskUnits="userSpaceOnUse" x="-220" y="-80" width="1200" height="520">
-              <rect x="-220" y="-80" width="1200" height="520" fill="#fff" />
-              <circle cx="220" cy="7558" r="7200" fill="#000" />
+                Apex sits near y=450, low in the hero. Radius is unchanged.
+                Everything warm is painted above that limb and then covered
+                again by the foreground, so the source stays behind the horizon. */}
+            <mask id="hs-sky" maskUnits="userSpaceOnUse" x="-220" y="-80" width="1200" height="620">
+              <rect x="-220" y="-80" width="1200" height="620" fill="#fff" />
+              <circle cx="220" cy="7650" r="7200" fill="#000" />
             </mask>
 
-            {/* One cool wash. No stroked horizon. */}
-            <linearGradient id="hs-g-cool" gradientUnits="userSpaceOnUse" x1="0" y1="20" x2="0" y2="370">
-              <stop offset="0" stop-color="#0b0d12" stop-opacity="0" />
-              <stop offset="0.62" stop-color="#1a2838" stop-opacity="0.04" />
-              <stop offset="1" stop-color="#31465f" stop-opacity="0.14" />
-            </linearGradient>
-
-            {/* Oversized fields. Colour is gone long before the paint
-                rectangle, so the geometry never reads as an edge. */}
-            <radialGradient id="hs-g-veil" gradientUnits="userSpaceOnUse" cx="560" cy="280" r="720" fx="250" fy="350" gradientTransform="translate(250 350) scale(1.2 0.62) translate(-250 -350)">
-              <stop offset="0" stop-color="#f4e6cc" stop-opacity="0.07" />
-              <stop offset="0.2" stop-color="#e6d2b2" stop-opacity="0.035" />
-              <stop offset="0.46" stop-color="#7f96aa" stop-opacity="0.016" />
-              <stop offset="0.72" stop-color="#1a2432" stop-opacity="0.006" />
+            {/* Two fields only, plus the buried contact. Each stop is a small
+                step, and the vertical scale stays near 1 so the falloff is
+                not a flattened ellipse. */}
+            <radialGradient id="hs-g-haze" gradientUnits="userSpaceOnUse" cx="620" cy="400" r="760" fx="300" fy="430" gradientTransform="translate(480 410) scale(1.9 1.08) translate(-480 -410)">
+              <stop offset="0" stop-color="#e4d8c4" stop-opacity="0.022" />
+              <stop offset="0.08" stop-color="#d5d0c4" stop-opacity="0.016" />
+              <stop offset="0.18" stop-color="#b7c0c8" stop-opacity="0.011" />
+              <stop offset="0.32" stop-color="#7e94a6" stop-opacity="0.006" />
+              <stop offset="0.48" stop-color="#3c5062" stop-opacity="0.003" />
+              <stop offset="0.66" stop-color="#1a2632" stop-opacity="0.0012" />
+              <stop offset="0.84" stop-color="#10161c" stop-opacity="0.0003" />
               <stop offset="1" stop-color="#0b0d12" stop-opacity="0" />
             </radialGradient>
-            <radialGradient id="hs-g-haze" gradientUnits="userSpaceOnUse" cx="640" cy="160" r="1100" fx="300" fy="300">
-              <stop offset="0" stop-color="#e7d4b4" stop-opacity="0.055" />
-              <stop offset="0.22" stop-color="#9aafc2" stop-opacity="0.028" />
-              <stop offset="0.48" stop-color="#2a3c50" stop-opacity="0.016" />
-              <stop offset="0.74" stop-color="#121820" stop-opacity="0.006" />
-              <stop offset="1" stop-color="#0b0d12" stop-opacity="0" />
-            </radialGradient>
-            <radialGradient id="hs-g-lift" gradientUnits="userSpaceOnUse" cx="760" cy="80" r="900" fx="420" fy="260">
-              <stop offset="0" stop-color="#c9b89a" stop-opacity="0.04" />
-              <stop offset="0.3" stop-color="#6e8498" stop-opacity="0.02" />
-              <stop offset="0.62" stop-color="#1c2836" stop-opacity="0.01" />
-              <stop offset="1" stop-color="#0b0d12" stop-opacity="0" />
-            </radialGradient>
-            <radialGradient id="hs-g-main" gradientUnits="userSpaceOnUse" cx="470" cy="390" r="860" fx="250" fy="356" gradientTransform="translate(250 356) scale(1.35 0.5) translate(-250 -356)">
-              <stop offset="0" stop-color="#f7f3ea" stop-opacity="0.2" />
-              <stop offset="0.08" stop-color="#f3e2c4" stop-opacity="0.11" />
-              <stop offset="0.2" stop-color="#e4cba8" stop-opacity="0.055" />
-              <stop offset="0.38" stop-color="#b7a890" stop-opacity="0.028" />
-              <stop offset="0.58" stop-color="#6d8498" stop-opacity="0.014" />
-              <stop offset="0.78" stop-color="#1a2432" stop-opacity="0.005" />
+            <radialGradient id="hs-g-main" gradientUnits="userSpaceOnUse" cx="430" cy="460" r="640" fx="250" fy="448" gradientTransform="translate(250 448) scale(2.15 1.05) translate(-250 -448)">
+              <stop offset="0" stop-color="#f7f3ea" stop-opacity="0.3" />
+              <stop offset="0.04" stop-color="#f6f1e6" stop-opacity="0.26" />
+              <stop offset="0.09" stop-color="#f3e8d6" stop-opacity="0.21" />
+              <stop offset="0.15" stop-color="#eadcc6" stop-opacity="0.16" />
+              <stop offset="0.22" stop-color="#e0d2ba" stop-opacity="0.12" />
+              <stop offset="0.3" stop-color="#d2c6b2" stop-opacity="0.085" />
+              <stop offset="0.4" stop-color="#b7b6ac" stop-opacity="0.055" />
+              <stop offset="0.5" stop-color="#8ea0ae" stop-opacity="0.034" />
+              <stop offset="0.62" stop-color="#4d6274" stop-opacity="0.018" />
+              <stop offset="0.74" stop-color="#243240" stop-opacity="0.008" />
+              <stop offset="0.86" stop-color="#141b24" stop-opacity="0.002" />
+              <stop offset="0.95" stop-color="#0d1116" stop-opacity="0.0004" />
               <stop offset="1" stop-color="#0b0d12" stop-opacity="0" />
             </radialGradient>
 
-            {/* Tiny leak, centered below the limb. Only the fringe crosses. */}
-            <radialGradient id="hs-g-contact" gradientUnits="userSpaceOnUse" cx="250" cy="364" r="16">
-              <stop offset="0" stop-color="#f8f6f1" stop-opacity="0.9" />
-              <stop offset="0.4" stop-color="#f3dcb4" stop-opacity="0.35" />
-              <stop offset="1" stop-color="#e8c99a" stop-opacity="0" />
+            {/* Tiny leak, centered below the limb. Only the fringe crosses.
+                Same size as before; the final frame carries a little more
+                warm-white exposure. */}
+            <radialGradient id="hs-g-contact" gradientUnits="userSpaceOnUse" cx="250" cy="456" r="16">
+              <stop offset="0" stop-color="#f8f6f1" stop-opacity="0.96" />
+              <stop offset="0.35" stop-color="#f7f1e4" stop-opacity="0.4" />
+              <stop offset="1" stop-color="#e8d7b8" stop-opacity="0" />
             </radialGradient>
-            <filter id="hs-f-contact" filterUnits="userSpaceOnUse" x="216" y="346" width="70" height="32">
+            <filter id="hs-f-contact" filterUnits="userSpaceOnUse" x="216" y="438" width="70" height="32">
               <feGaussianBlur stdDeviation="1.2 0.9" />
+            </filter>
+            <filter id="hs-f-grain" x="0" y="0" width="100%" height="100%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" />
+              <feColorMatrix type="saturate" values="0" />
+            </filter>
+            {/* Feather only the lit part of the limb. Farther along the
+                horizon the mask falls off and the edge stays crisp. */}
+            <radialGradient id="hs-g-limb" gradientUnits="userSpaceOnUse" cx="250" cy="449" r="240">
+              <stop offset="0" stop-color="#fff" />
+              <stop offset="0.42" stop-color="#fff" stop-opacity="0.7" />
+              <stop offset="1" stop-color="#fff" stop-opacity="0" />
+            </radialGradient>
+            <mask id="hs-limb" maskUnits="userSpaceOnUse" x="0" y="420" width="520" height="70">
+              <rect x="0" y="420" width="520" height="70" fill="url(#hs-g-limb)" />
+            </mask>
+            <filter id="hs-f-limb" filterUnits="userSpaceOnUse" x="30" y="436" width="440" height="28">
+              <feGaussianBlur stdDeviation="1.1 2.4" />
             </filter>
           </defs>
 
           <g mask="url(#hs-sky)">
-            <g class="hs-cool">
-              <rect x="-200" y="0" width="1040" height="400" fill="url(#hs-g-cool)" />
-            </g>
             <g class="hs-haze">
               <rect x="-500" y="-280" width="1800" height="820" fill="url(#hs-g-haze)" />
-            </g>
-            <g class="hs-lift">
-              <rect x="-500" y="-280" width="1800" height="820" fill="url(#hs-g-lift)" />
-            </g>
-            <g class="hs-veil">
-              <rect x="-500" y="-280" width="1800" height="820" fill="url(#hs-g-veil)" />
             </g>
             <g class="hs-main">
               <rect x="-500" y="-280" width="1800" height="820" fill="url(#hs-g-main)" />
             </g>
             <g class="hs-contact">
-              <ellipse cx="250" cy="366" rx="18" ry="2" fill="url(#hs-g-contact)" filter="url(#hs-f-contact)" />
+              <ellipse cx="250" cy="458" rx="18" ry="2" fill="url(#hs-g-contact)" filter="url(#hs-f-contact)" />
             </g>
+            <rect x="-220" y="-40" width="1100" height="520" filter="url(#hs-f-grain)" opacity="0.008" />
           </g>
 
           {/* Foreground is page colour. It covers any light that falls below
-              the limb, so the glow stays in the sky. */}
-          <circle cx="220" cy="7558" r="7200" fill="#0b0d12" />
+              the limb, so the glow stays in the sky. A dark stroke, blurred
+              only near the dawn, softens that edge without lifting the mass. */}
+          <circle cx="220" cy="7650" r="7200" fill="#0b0d12" />
+          <circle
+            cx="220"
+            cy="7650"
+            r="7200"
+            fill="none"
+            stroke="#0b0d12"
+            stroke-width="3"
+            mask="url(#hs-limb)"
+            filter="url(#hs-f-limb)"
+          />
         </svg>
       </div>
     </div>
@@ -314,25 +326,32 @@ const structuredData = [
     pointer-events: none;
     background:
       /* Foot: resolves to page colour before the work starts. */
-      linear-gradient(180deg, rgba(11, 13, 18, 0) 48%, rgba(11, 13, 18, 0.55) 78%, var(--bg) 100%),
-      /* Reading side: page colour held flat across the text measure, then
-         released. Listed first among the side washes so it only ever
-         subtracts light. */
+      linear-gradient(
+        180deg,
+        rgba(11, 13, 18, 0) 0%,
+        rgba(11, 13, 18, 0) 76%,
+        rgba(11, 13, 18, 0.06) 84%,
+        rgba(11, 13, 18, 0.22) 91%,
+        rgba(11, 13, 18, 0.55) 96%,
+        var(--bg) 100%
+      ),
+      /* Reading side stays near-black. The release is wide so it does not
+         draw a vertical wall. */
       linear-gradient(
         90deg,
         var(--bg) 0%,
-        var(--bg) 36%,
-        rgba(11, 13, 18, 0.9) 50%,
-        rgba(11, 13, 18, 0.28) 70%,
+        var(--bg) 28%,
+        rgba(11, 13, 18, 0.82) 46%,
+        rgba(11, 13, 18, 0.28) 68%,
         rgba(11, 13, 18, 0) 92%
       ),
-      /* One cool field, wide enough to reach the right edge without a
-         second centre. The dawn in the drawing is the only warm source. */
+      /* Oversized cool field. Its edge sits past the frame. Only a trace
+         reaches toward the center. */
       radial-gradient(
-        180% 120% at 72% 72%,
-        rgba(24, 38, 56, 0.36) 0%,
-        rgba(14, 22, 34, 0.14) 52%,
-        rgba(11, 13, 18, 0) 88%
+        240% 190% at 86% 80%,
+        rgba(20, 32, 46, 0.1) 0%,
+        rgba(14, 22, 32, 0.035) 40%,
+        rgba(11, 13, 18, 0) 72%
       );
   }
 
@@ -440,13 +459,13 @@ const structuredData = [
      readable line. */
   @media (max-width: 899px) {
     .hero__dawn {
-      transform: translateY(-44%);
+      transform: translateY(-56%);
       -webkit-mask-image:
-        linear-gradient(90deg, transparent 0%, #000 20%, #000 90%, transparent 100%),
-        linear-gradient(180deg, transparent 0%, transparent 46%, #000 68%, #000 100%);
+        linear-gradient(90deg, transparent 0%, #000 18%, #000 92%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, transparent 48%, #000 70%, #000 100%);
       mask-image:
-        linear-gradient(90deg, transparent 0%, #000 20%, #000 90%, transparent 100%),
-        linear-gradient(180deg, transparent 0%, transparent 46%, #000 68%, #000 100%);
+        linear-gradient(90deg, transparent 0%, #000 18%, #000 92%, transparent 100%),
+        linear-gradient(180deg, transparent 0%, transparent 48%, #000 70%, #000 100%);
     }
   }
 
@@ -502,10 +521,10 @@ const structuredData = [
       height: auto;
       aspect-ratio: 7 / 5;
       transform: translateY(-50%);
-      /* Left fade keeps the warm light off the copy. The right edge stays open
-         so the dawn tail can reach the window instead of dying in a mask. */
-      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 100%);
-      mask-image: linear-gradient(90deg, transparent 0%, #000 12%, #000 100%);
+      /* Dissolves the drawing's left side so the element box never reads.
+         The right edge stays open. */
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 22%, #000 100%);
     }
   }
 
@@ -541,44 +560,31 @@ const structuredData = [
     }
   }
 
-  .hs-cool,
   .hs-haze,
-  .hs-lift,
-  .hs-veil,
   .hs-main,
   .hs-contact {
     transform-box: fill-box;
   }
 
-  /* Fields are already full size. Only opacity changes, so a boundary
-     never grows into view. */
-  .hs-veil,
-  .hs-main,
-  .hs-haze,
-  .hs-lift,
-  .hs-contact {
-    opacity: 0;
+  /* Opening frame, before the run starts. A tiny contact and a trace of
+     the dawn are already there, so the first paint is not black. */
+  .hero__dawn[data-dawn='hold'] .hs-contact {
+    opacity: 0.72;
   }
 
-  /* Opening frame. Near-black, faint cool separation, no warm light.
-     Reduced motion overrides this to the finished dawn. */
-  .hero__dawn[data-dawn='hold'] .hs-cool {
-    opacity: 0.26;
+  .hero__dawn[data-dawn='hold'] .hs-main {
+    opacity: 0.14;
+  }
+
+  .hero__dawn[data-dawn='hold'] .hs-haze {
+    opacity: 0.5;
   }
 
   /* 4s 17.4% · 7s 30.4% · 11s 47.8% · 16s 69.6% · 21s 91.3% · 23s 100%
      A point behind the horizon, then the field grows from that point.
      After 23s only the broad air drifts. The source stays put. */
-  .hero__dawn[data-dawn='run'] .hs-cool {
-    animation: hs-cool var(--dawn) var(--ease-dawn) forwards;
-  }
-
   .hero__dawn[data-dawn='run'] .hs-contact {
     animation: hs-contact var(--dawn) var(--ease-dawn) forwards;
-  }
-
-  .hero__dawn[data-dawn='run'] .hs-veil {
-    animation: hs-veil var(--dawn) var(--ease-dawn) forwards;
   }
 
   .hero__dawn[data-dawn='run'] .hs-main {
@@ -591,44 +597,20 @@ const structuredData = [
       hs-drift-haze 28s ease-in-out var(--dawn) infinite alternate;
   }
 
-  .hero__dawn[data-dawn='run'] .hs-lift {
-    animation:
-      hs-lift var(--dawn) var(--ease-dawn) forwards,
-      hs-drift-lift 32s ease-in-out var(--dawn) infinite alternate;
-  }
-
-  @keyframes hs-cool {
-    0% { opacity: 0.26; }
-    17.4% { opacity: 0.3; }
-    30.4% { opacity: 0.36; }
-    47.8% { opacity: 0.46; }
-    69.6% { opacity: 0.58; }
-    91.3% { opacity: 0.68; }
-    100% { opacity: 0.72; }
-  }
-
   @keyframes hs-contact {
-    0% { opacity: 0; }
-    17.4% { opacity: 0; }
-    26% { opacity: 0.35; }
-    30.4% { opacity: 0.85; }
-    47.8% { opacity: 0.9; }
-    69.6% { opacity: 0.95; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes hs-veil {
-    0% { opacity: 0; }
-    17.4% { opacity: 0; }
-    26% { opacity: 0.35; }
-    30.4% { opacity: 0.7; }
-    47.8% { opacity: 1; }
+    0% { opacity: 0.72; }
+    17.4% { opacity: 0.76; }
+    30.4% { opacity: 0.82; }
+    47.8% { opacity: 0.88; }
+    69.6% { opacity: 0.94; }
+    91.3% { opacity: 0.98; }
     100% { opacity: 1; }
   }
 
   @keyframes hs-main {
-    0% { opacity: 0; }
-    30.4% { opacity: 0.08; }
+    0% { opacity: 0.14; }
+    17.4% { opacity: 0.18; }
+    30.4% { opacity: 0.24; }
     47.8% { opacity: 0.42; }
     69.6% { opacity: 0.72; }
     91.3% { opacity: 0.94; }
@@ -636,19 +618,12 @@ const structuredData = [
   }
 
   @keyframes hs-haze {
-    0% { opacity: 0; }
-    30.4% { opacity: 0; }
-    47.8% { opacity: 0.12; }
-    69.6% { opacity: 0.5; }
-    91.3% { opacity: 0.86; }
-    100% { opacity: 1; }
-  }
-
-  @keyframes hs-lift {
-    0% { opacity: 0; }
-    47.8% { opacity: 0.1; }
-    69.6% { opacity: 0.55; }
-    91.3% { opacity: 0.88; }
+    0% { opacity: 0.5; }
+    17.4% { opacity: 0.54; }
+    30.4% { opacity: 0.6; }
+    47.8% { opacity: 0.72; }
+    69.6% { opacity: 0.84; }
+    91.3% { opacity: 0.94; }
     100% { opacity: 1; }
   }
 
@@ -657,20 +632,9 @@ const structuredData = [
     to { opacity: 0.97; }
   }
 
-  @keyframes hs-drift-lift {
-    from { opacity: 1; }
-    to { opacity: 0.96; }
-  }
-
   @media (prefers-reduced-motion: reduce) {
-    .hero__dawn[data-dawn='hold'] .hs-cool,
-    .hero__dawn[data-dawn='run'] .hs-cool,
     .hero__dawn[data-dawn='hold'] .hs-haze,
     .hero__dawn[data-dawn='run'] .hs-haze,
-    .hero__dawn[data-dawn='hold'] .hs-lift,
-    .hero__dawn[data-dawn='run'] .hs-lift,
-    .hero__dawn[data-dawn='hold'] .hs-veil,
-    .hero__dawn[data-dawn='run'] .hs-veil,
     .hero__dawn[data-dawn='hold'] .hs-contact,
     .hero__dawn[data-dawn='run'] .hs-contact,
     .hero__dawn[data-dawn='hold'] .hs-main,
@@ -678,17 +642,8 @@ const structuredData = [
       animation: none;
     }
 
-    .hero__dawn[data-dawn='hold'] .hs-cool,
-    .hero__dawn[data-dawn='run'] .hs-cool {
-      opacity: 0.72;
-    }
-
     .hero__dawn[data-dawn='hold'] .hs-haze,
     .hero__dawn[data-dawn='run'] .hs-haze,
-    .hero__dawn[data-dawn='hold'] .hs-lift,
-    .hero__dawn[data-dawn='run'] .hs-lift,
-    .hero__dawn[data-dawn='hold'] .hs-veil,
-    .hero__dawn[data-dawn='run'] .hs-veil,
     .hero__dawn[data-dawn='hold'] .hs-contact,
     .hero__dawn[data-dawn='run'] .hs-contact,
     .hero__dawn[data-dawn='hold'] .hs-main,
