@@ -21,11 +21,11 @@ export const person = {
   initials: 'FS',
   role: 'Lead UX Designer',
   /** Homepage role line only. jobTitle and the About page stay on `role`. */
-  heroRole: 'Lead UX Designer · UX Speaker',
+  heroRole: 'Lead UX Designer · Educator · Speaker',
   statement: 'Product design across consumer electronics and complex enterprise systems.',
   /** Schema description. Design first, then speaking. Not the hero line. */
   description:
-    'Lead UX Designer with experience across consumer electronics and enterprise software, and a UX speaker on complex workflows and systems thinking.',
+    'Lead UX Designer with experience across consumer electronics and enterprise software, and an educator and speaker on complex workflows and systems thinking.',
   supporting:
     'I turn complex products and workflows into clear, scalable experiences through systems thinking, interaction design, and hands-on prototyping.',
   location: 'Based in Austin, Texas.',

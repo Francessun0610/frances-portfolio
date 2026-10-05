@@ -28,9 +28,9 @@ const ordered = HOMEPAGE_ORDER.map((slug) => bySlug.get(slug)).filter(
 const prototypeProjects = ordered.filter((project) => project.slug !== 'linear');
 const featureProject = ordered.find((project) => project.slug === 'linear');
 
-const title = 'Frances Sun | Lead UX Designer & UX Speaker';
+const title = 'Frances Sun | Lead UX Designer, Educator & Speaker';
 const description =
-  'Frances Sun is a Lead UX Designer and UX speaker with experience across consumer electronics and enterprise software, specializing in complex workflows, systems thinking, interaction design, and hands-on prototyping.';
+  'Frances Sun is a Lead UX Designer, educator, and speaker with experience across consumer electronics and enterprise software, specializing in complex workflows, systems thinking, interaction design, and hands-on prototyping.';
 
 // The site itself, attributed to the one Person node defined in BaseLayout.
 const structuredData = [
@@ -386,6 +386,7 @@ const structuredData = [
     font-weight: 550;
     color: var(--cobalt-bright);
     letter-spacing: -0.008em;
+    text-wrap: balance;
   }
 
   /* The positioning line, treated as a brand statement rather than body copy.

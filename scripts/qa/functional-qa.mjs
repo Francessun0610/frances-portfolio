@@ -521,7 +521,7 @@ async function main() {
       'every page has a canonical URL and an OG image',
     );
     report.check(
-      metadata[0].title === 'Frances Sun | Lead UX Designer & UX Speaker',
+      metadata[0].title === 'Frances Sun | Lead UX Designer, Educator & Speaker',
       'homepage title matches the brief',
       metadata[0].title,
     );
