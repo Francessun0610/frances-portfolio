@@ -16,6 +16,12 @@ interface Props {
 
 const { project, priority = false, layout = 'compact' } = Astro.props;
 const headingId = `project-${project.slug}`;
+const mediaCta =
+  project.cta && (project.linkCover || project.linkCard || !project.cta.external) ? project.cta : null;
+const actions = [project.cta, project.secondaryCta].filter(
+  (action): action is NonNullable<Project['cta']> =>
+    action != null && !(project.coverLabel && action === project.cta),
+);
 ---
 
 <article
@@ -30,8 +36,17 @@ const headingId = `project-${project.slug}`;
         <div class="card__soon" aria-hidden="true">
           <span class="card__soon-label">Coming soon</span>
         </div>
-      ) : project.cta && !project.cta.external ? (
-        <a class="card__media-link" href={project.cta.href} aria-label={project.cta.label}>
+      ) : mediaCta ? (
+        <a
+          class:list={[
+            'card__media-link',
+            project.linkCard && 'card__media-link--card',
+            project.coverLabel && 'card__media-link--labeled',
+          ]}
+          href={mediaCta.href}
+          aria-label={mediaCta.external ? `${mediaCta.label} (opens in a new tab)` : mediaCta.label}
+          {...(mediaCta.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
           <img
             src={project.image}
             alt=""
@@ -41,6 +56,15 @@ const headingId = `project-${project.slug}`;
             fetchpriority={priority ? 'high' : 'auto'}
             decoding="async"
           />
+          {
+            project.coverLabel && (
+              <span class="card__cover-label">
+                {mediaCta.label}
+                <span aria-hidden="true">↗</span>
+              </span>
+            )
+          }
+          {mediaCta.external && <span class="visually-hidden">(opens in a new tab)</span>}
         </a>
       ) : (
         <img
@@ -57,9 +81,11 @@ const headingId = `project-${project.slug}`;
   </div>
 
   <div class="card__body">
-    <p class="card__category">{project.category}</p>
-    <h3 class="card__title" id={headingId}>{project.title}</h3>
-    <p class="card__description">{project.description}</p>
+    <div class="card__copy">
+      <p class="card__category">{project.category}</p>
+      <h3 class="card__title" id={headingId}>{project.title}</h3>
+      <p class="card__description">{project.description}</p>
+    </div>
 
     {/* Quiet context: what Frances built, and what the visual actually is.
         The wording belongs to each project in src/data/site.ts, so nothing
@@ -67,17 +93,19 @@ const headingId = `project-${project.slug}`;
     {project.portfolioNote && <p class="card__note">{project.portfolioNote}</p>}
 
     {
-      project.cta && (
+      actions.length > 0 && (
         <p class="card__cta">
-          <a
-            class="text-link"
-            href={project.cta.href}
-            {...(project.cta.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-          >
-            {project.cta.label}
-            <span aria-hidden="true">↗</span>
-            {project.cta.external && <span class="visually-hidden">(opens in a new tab)</span>}
-          </a>
+          {actions.map((action) => (
+            <a
+              class="text-link"
+              href={action.href}
+              {...(action.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              {action.label}
+              <span aria-hidden="true">↗</span>
+              {action.external && <span class="visually-hidden">(opens in a new tab)</span>}
+            </a>
+          ))}
         </p>
       )
     }
@@ -91,6 +119,7 @@ const headingId = `project-${project.slug}`;
     from reading as a dashboard and from outgrowing the lead by vertical mass.
   */
   .card {
+    position: relative;
     display: flex;
     flex-direction: column;
     background: transparent;
@@ -117,9 +146,41 @@ const headingId = `project-${project.slug}`;
     text-decoration: none;
   }
 
+  .card__media-link--labeled {
+    position: relative;
+  }
+
+  /* Same type as a text link, set on the cover. The fade keeps it readable
+     on a light product screenshot without covering the top of the interface. */
+  .card__cover-label {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 1.35rem 0.9rem 0.65rem;
+    background: linear-gradient(to top, rgba(8, 10, 14, 0.82), rgba(8, 10, 14, 0));
+    color: var(--cobalt-bright);
+    font-weight: 550;
+    font-size: var(--step-small);
+    line-height: 1;
+    pointer-events: none;
+  }
+
   .card__media-link:focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: -3px;
+  }
+
+  /* Primary destination covers the card. Labeled actions sit above it. */
+  .card__media-link--card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
 
   /* Quiet Coming Soon surface. Recedes behind real work; never a badge or
@@ -166,6 +227,12 @@ const headingId = `project-${project.slug}`;
     padding: 0.95rem 0.1rem 0;
   }
 
+  .card__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
   .card__category {
     font-size: 0.75rem;
     letter-spacing: 0.02em;
@@ -194,6 +261,12 @@ const headingId = `project-${project.slug}`;
   }
 
   .card__cta {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.15rem 1.15rem;
     margin-top: 0.15rem;
   }
 
@@ -240,6 +313,10 @@ const headingId = `project-${project.slug}`;
       justify-content: center;
       gap: 0.75rem;
       padding: clamp(1.5rem, 0.8rem + 1.8vw, 2.35rem) clamp(1.5rem, 0.9rem + 1.6vw, 2.4rem);
+    }
+
+    .card--wide .card__copy {
+      gap: 0.75rem;
     }
 
     /* Hierarchy from width and title scale, not a label. */
@@ -290,6 +367,10 @@ const headingId = `project-${project.slug}`;
     .card:not(.card--wide) .card__body {
       gap: 0.5rem;
       padding: 1.1rem 1.15rem 1.25rem;
+    }
+
+    .card:not(.card--wide) .card__copy {
+      gap: 0.5rem;
     }
   }
 </style>

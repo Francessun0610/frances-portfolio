@@ -16,16 +16,17 @@ import { SITE_URL } from '../config/site.mjs';
 
 /**
  * Reading order for the homepage only. The canonical records, including every
- * ownership and placeholder note, stay in src/data/site.ts; this decides which
- * one leads here and which three read as the surrounding body of work.
+ * ownership and placeholder note, stay in src/data/site.ts. Prototypes come
+ * first; the platform feature follows in the same document order.
  */
-const HOMEPAGE_ORDER = ['linear', 'rate-card-manager', 'atlas', 'simba'];
+const HOMEPAGE_ORDER = ['rate-card-manager', 'simba', 'atlas', 'linear'];
 
 const bySlug = new Map(projects.map((project) => [project.slug, project]));
 const ordered = HOMEPAGE_ORDER.map((slug) => bySlug.get(slug)).filter(
   (project): project is Project => Boolean(project),
 );
-const [leadProject, ...supportingProjects] = ordered;
+const prototypeProjects = ordered.filter((project) => project.slug !== 'linear');
+const featureProject = ordered.find((project) => project.slug === 'linear');
 
 const title = 'Frances Sun | Lead UX Designer & UX Speaker';
 const description =
@@ -213,11 +214,17 @@ const structuredData = [
         </p>
       </header>
 
-      {leadProject && <ProjectCard project={leadProject} layout="wide" priority />}
-
       <div class="work-grid">
-        {supportingProjects.map((project) => <ProjectCard project={project} />)}
+        {prototypeProjects.map((project, index) => (
+          <ProjectCard project={project} priority={index === 0} />
+        ))}
       </div>
+
+      {featureProject && (
+        <div class="work-feature">
+          <ProjectCard project={featureProject} layout="wide" />
+        </div>
+      )}
     </div>
   </section>
 
@@ -679,11 +686,15 @@ const structuredData = [
     gap: clamp(1.25rem, 1rem + 1.5vw, 2rem);
   }
 
-  /* Same body of work as the lead row, so the gap is closer than a section
-     break. Tops align; bottoms may differ with disclosure length. */
+  /* Prototypes lead. The platform feature follows with the same gap the
+     two rows used when the feature came first. Stacked cards size to their
+     own copy. */
   .work-grid {
-    margin-top: clamp(2rem, 1.6rem + 1.4vw, 2.75rem);
     align-items: start;
+  }
+
+  .work-feature {
+    margin-top: clamp(2rem, 1.6rem + 1.4vw, 2.75rem);
   }
 
   /* Two up once there is room. Three up only when each column can still carry
@@ -691,39 +702,45 @@ const structuredData = [
   @media (min-width: 768px) {
     .work-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
       gap: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem) clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    }
+
+    /* One set of rows for every card in the line: image, copy, note, links.
+       Descriptions and notes wrap inside their rows, so the divider and the
+       link row stay on shared lines. */
+    .work-grid > :global(.card) {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 4;
+      row-gap: 0;
+      align-items: start;
+    }
+
+    .work-grid > :global(.card) > :global(.card__body) {
+      display: grid;
+      grid-template-rows: subgrid;
+      grid-row: span 3;
+      row-gap: 0;
+      align-items: start;
+    }
+
+    .work-grid > :global(.card) :global(.card__copy) {
+      padding-bottom: 0.85rem;
+    }
+
+    .work-grid > :global(.card) :global(.card__note) {
+      margin-top: 0;
+    }
+
+    .work-grid > :global(.card) :global(.card__cta) {
+      margin-top: 0.85rem;
     }
   }
 
   @media (min-width: 900px) {
     .speaking-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  /* Mid desktop: Rate Card leads the supporting set at full measure, Atlas and
-     SIMBA share the row beneath — avoids three cramped tiles at ~290px. */
-  @media (min-width: 1024px) and (max-width: 1199.98px) {
-    .work-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(1.5rem, 1.2rem + 1vw, 2rem);
-    }
-
-    .work-grid > :first-child {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-      gap: 0 1.5rem;
-      align-items: center;
-    }
-
-    .work-grid > :first-child :global(.card__media) {
-      aspect-ratio: 16 / 10;
-      margin: 0;
-    }
-
-    .work-grid > :first-child :global(.card__body) {
-      padding-top: 0;
     }
   }
 

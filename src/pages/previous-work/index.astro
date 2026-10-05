@@ -113,12 +113,11 @@ const description =
   }
 
   .archive__item--linked {
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
   .archive__item--linked:hover {
     border-color: var(--border-strong);
-    transform: translateY(-2px);
   }
 
   .archive__item:focus-within {
@@ -187,10 +186,6 @@ const description =
   @media (prefers-reduced-motion: reduce) {
     .archive__item--linked {
       transition: none;
-    }
-
-    .archive__item--linked:hover {
-      transform: none;
     }
   }
 </style>

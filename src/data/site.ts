@@ -40,6 +40,7 @@ export const links = {
   instagram: 'https://www.instagram.com/uxauntie/',
   resume: '/frances-sun-resume-2026.pdf',
   rateCardDemo: 'https://rate-card-demo.vercel.app/portfolio.html?section=atlas&slide=1',
+  rateCardLive: 'https://rate-card-demo.vercel.app/portfolio.html?slide=14',
 } as const;
 
 export const nav = [
@@ -80,6 +81,17 @@ export type Project = {
    */
   portfolioNote?: string;
   cta?: { label: string; href: string; external: boolean };
+  /** Second labeled action, with the same external-link treatment as `cta`. */
+  secondaryCta?: { label: string; href: string; external: boolean };
+  /**
+   * The thumbnail, and the rest of the card surface, open `cta`.
+   * Labeled actions stay independently clickable above that hit area.
+   */
+  linkCard?: boolean;
+  /** The thumbnail links to `cta`, including when that URL is external. */
+  linkCover?: boolean;
+  /** Draws the CTA label on the thumbnail. The cover is the link. */
+  coverLabel?: boolean;
 };
 
 export const projects: Project[] = [
@@ -98,7 +110,9 @@ export const projects: Project[] = [
     imageIsPlaceholder: false,
     portfolioNote:
       'I designed and built this interactive portfolio prototype. All data shown is synthetic and created for demonstration purposes.',
-    cta: { label: 'Live demo', href: links.rateCardDemo, external: true },
+    cta: { label: 'Presentation', href: links.rateCardDemo, external: true },
+    secondaryCta: { label: 'Live demo', href: links.rateCardLive, external: true },
+    linkCover: true,
   },
   {
     slug: 'atlas',
@@ -107,11 +121,17 @@ export const projects: Project[] = [
       'A consistent administration experience for managing users, roles, companies, and application access across a complex enterprise product ecosystem.',
     category: 'Enterprise UX · Identity & Access · AI\u2011assisted Prototyping',
     image: '/images/projects/atlas.webp',
-    imageAlt: 'Abstract graphic of concentric rings and access points representing identity and access management.',
-    imageIsPlaceholder: true,
-    comingSoonMedia: true,
+    imageAlt:
+      'Access Management, showing the users list with roles, status, team, and last login.',
+    imageIsPlaceholder: false,
     portfolioNote:
-      'I designed the administration experience and interaction patterns represented here. The visual shown is an abstract portfolio placeholder, not a production screenshot.',
+      'I designed the administration experience and interaction patterns presented here. This interactive prototype uses sample data for demonstration purposes.',
+    cta: {
+      label: 'Live demo',
+      href: 'https://frances-iam-demo.vercel.app/v4.2/index.html',
+      external: true,
+    },
+    linkCover: true,
   },
   {
     slug: 'simba',
@@ -120,11 +140,22 @@ export const projects: Project[] = [
       'A next-generation financial platform designed to unify revenue recognition, billing, invoicing, and review workflows into one connected experience.',
     category: 'Enterprise UX · Financial Systems · AI\u2011assisted Prototyping',
     image: '/images/projects/simba.webp',
-    imageAlt: 'Abstract graphic of stacked ledger rules representing connected financial workflows.',
-    imageIsPlaceholder: true,
-    comingSoonMedia: true,
+    imageAlt:
+      'Accounts Receivable in Financial Systems 2.0, with period selection, order search, and billing status for each order.',
+    imageIsPlaceholder: false,
     portfolioNote:
-      'I designed the workflow, navigation, and interaction concepts represented in this portfolio entry. No production financial data is shown, and the visual above is an abstract portfolio placeholder rather than a product screenshot.',
+      'I designed the workflow, navigation, and interaction concepts represented in this portfolio entry. No production financial data is shown.',
+    cta: {
+      label: 'Presentation',
+      href: 'https://harps-finance-prototype.vercel.app/v2a/harps-intro-1.html',
+      external: true,
+    },
+    secondaryCta: {
+      label: 'Live demo',
+      href: 'https://harps-finance-prototype.vercel.app/v2a/harps.html',
+      external: true,
+    },
+    linkCard: true,
   },
   {
     slug: 'linear',

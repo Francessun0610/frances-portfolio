@@ -56,15 +56,17 @@ const structuredData = [
           universities about enterprise UX, systems thinking, product clarity, and creativity.
         </p>
 
-        <h2 class="about-page__subhead">What I bring</h2>
-        <ul class="about-page__list">
-          <li>Hands-on product design</li>
-          <li>Design team leadership</li>
-          <li>Information architecture &amp; interaction design</li>
-          <li>Interactive prototyping</li>
-          <li>Systems thinking</li>
-          <li>Teaching &amp; mentorship</li>
-        </ul>
+        <div class="about-page__aside">
+          <h2 class="about-page__subhead">What I bring</h2>
+          <ul class="about-page__list">
+            <li>Hands-on product design</li>
+            <li>Design team leadership</li>
+            <li>Information architecture &amp; interaction design</li>
+            <li>Interactive prototyping</li>
+            <li>Systems thinking</li>
+            <li>Teaching &amp; mentorship</li>
+          </ul>
+        </div>
 
         <p class="about-page__contact">
           <a class="text-link" href={links.linkedin} target="_blank" rel="noopener noreferrer">
@@ -106,11 +108,52 @@ const structuredData = [
     gap: 1.35rem;
   }
 
+  /* Desktop: the biography keeps a reading measure, and "What I bring"
+     occupies the column that would otherwise sit empty. Same words, same order
+     on small screens. */
+  @media (min-width: 1100px) {
+    .about-page__body {
+      max-width: none;
+      grid-template-columns: minmax(0, 1.55fr) minmax(14rem, 18rem);
+      column-gap: clamp(3rem, 4vw, 5rem);
+      row-gap: 1.15rem;
+      align-items: start;
+    }
+
+    .about-page__body > p:not(.about-page__contact) {
+      grid-column: 1;
+      max-width: 62ch;
+    }
+
+    /* Starts with the first paragraph, not with the name. The heading and
+       list stay one column so the bullets sit under the heading. */
+    .about-page__aside {
+      grid-column: 2;
+      grid-row: 1 / span 3;
+      align-self: start;
+      gap: 0.95rem;
+    }
+
+    .about-page__aside .about-page__subhead {
+      margin-top: 0;
+    }
+
+    .about-page__contact {
+      grid-column: 1 / -1;
+      margin-top: 1.75rem;
+    }
+  }
+
   /* One body color across the whole page. Hierarchy comes from headings and
      spacing, never from alternating paragraph shades. */
   .about-page__body p,
   .about-page__list {
     color: #c9ced6;
+  }
+
+  .about-page__aside {
+    display: grid;
+    gap: 1.35rem;
   }
 
   .about-page__subhead {
