@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import { person, links, PERSON_ID } from '../data/site';
 
 interface Props {
@@ -66,6 +67,7 @@ const personSchema = {
 <!doctype html>
 <html lang="en">
   <head>
+    <GoogleAnalytics />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
