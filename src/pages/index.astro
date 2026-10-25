@@ -381,6 +381,25 @@ const structuredData = [
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+    /* The page colour shows through the top of the sky, so the navigation
+       and the hero open as one dark field. Light feathers in over a long
+       stretch and never arrives as a horizontal edge. */
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2.25rem,
+      rgb(0 0 0 / 0.28) 20%,
+      rgb(0 0 0 / 0.7) 36%,
+      #000 52%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2.25rem,
+      rgb(0 0 0 / 0.28) 20%,
+      rgb(0 0 0 / 0.7) 36%,
+      #000 52%
+    );
   }
 
   .sky__depth,
@@ -660,10 +679,10 @@ const structuredData = [
 
   @keyframes sky-depth {
     from {
-      opacity: calc(0.42 * (1 - var(--sp, 0)));
+      opacity: calc(0.08 * (1 - var(--sp, 0)));
     }
     7.7% {
-      opacity: calc(0.5 * (1 - var(--sp, 0)));
+      opacity: calc(0.22 * (1 - var(--sp, 0)));
     }
     38.5% {
       opacity: calc(0.68 * (1 - var(--sp, 0)));
