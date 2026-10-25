@@ -18,17 +18,18 @@ const { project } = Astro.props;
 const meta = metaLine(project);
 const paragraphs = project.description.split('\n\n').filter((text) => text.trim());
 
-const title = `${project.title} | Previous Work | Frances Sun`;
+const title = `${project.title} | Frances Sun`;
 
-// Prefer the project's own words. Where the source carried no prose, fall back
-// to the facts it did provide rather than writing marketing copy.
+// A complete sentence. Never cut the project's own words in the middle of one.
 const firstParagraph = paragraphs[0]?.replace(/\s+/g, ' ').trim() ?? '';
 const description = firstParagraph
-  ? firstParagraph.slice(0, 155)
+  ? firstParagraph.endsWith('.')
+    ? firstParagraph
+    : `${firstParagraph}.`
   : [
-      `${project.title}, earlier work by Frances Sun`,
+      `${project.title} is earlier UX work by Frances Sun`,
       project.client ? ` for ${project.client}` : '',
-      project.year ? `, ${project.year}` : '',
+      project.year ? ` (${project.year})` : '',
       '.',
     ].join('');
 ---

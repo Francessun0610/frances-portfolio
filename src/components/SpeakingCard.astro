@@ -1,5 +1,6 @@
 ---
 import type { Talk } from '../data/site';
+import ItemGlow from './ItemGlow.astro';
 
 interface Props {
   talk: Talk;
@@ -9,16 +10,26 @@ interface Props {
 }
 
 const { talk, priority = false, headingLevel = 3 } = Astro.props;
+/* Speaker cards and posters carry type out to the edge, so a zoom would crop it. */
+const graphic = /card|poster/i.test(talk.imageAlt);
+const zoom = talk.imageFit !== 'contain' && !graphic;
 const Heading = `h${headingLevel}` as 'h2' | 'h3';
 const headingId = `talk-${talk.slug}`;
 ---
 
-<article class="talk-card" aria-labelledby={headingId}>
+<article class="talk-card item-glow-host" aria-labelledby={headingId}>
+  <ItemGlow />
   <a class="talk-card__link" href={`/speaking/${talk.slug}`}>
     <span class="visually-hidden">View talk: {talk.title}</span>
   </a>
 
-  <div class:list={['talk-card__media', talk.imageFit === 'contain' && 'talk-card__media--contain']}>
+  <div
+    class:list={[
+      'talk-card__media',
+      zoom && 'item-zoom',
+      talk.imageFit === 'contain' && 'talk-card__media--contain',
+    ]}
+  >
     <img
       src={talk.image}
       alt={talk.imageAlt}
@@ -36,7 +47,14 @@ const headingId = `talk-${talk.slug}`;
         /* The host organisation already identifies the place, so the separate
            location line is only shown when there is no organisation. */
         talk.organization?.length ? (
-          talk.organization.map((line) => <span class="talk-card__org">{line}</span>)
+          <span class="talk-card__org">
+            {talk.organization.map((line, index) => (
+              <>
+                {index > 0 && ' · '}
+                <span class="talk-card__org-part">{line}</span>
+              </>
+            ))}
+          </span>
         ) : (
           <span class="talk-card__location">
             {talk.venue ? `${talk.venue} · ${talk.location}` : talk.location}
@@ -61,8 +79,7 @@ const headingId = `talk-${talk.slug}`;
     flex-direction: column;
     /* Quieter than Selected Work's lead surface — speaking is secondary. */
     border: 1px solid rgba(242, 239, 233, 0.06);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
+    border-radius: 8px;
     background: var(--bg-raised);
     transition: border-color 200ms var(--ease);
   }
@@ -84,13 +101,14 @@ const headingId = `talk-${talk.slug}`;
 
   .talk-card__link:focus-visible {
     outline: 2px solid var(--focus);
-    outline-offset: -4px;
-    border-radius: var(--radius-lg);
+    outline-offset: 3px;
+    border-radius: 8px;
   }
 
   .talk-card__media {
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    border-radius: 8px 8px 0 0;
     background: #05070a;
     border-bottom: 1px solid rgba(242, 239, 233, 0.05);
   }
@@ -124,6 +142,19 @@ const headingId = `talk-${talk.slug}`;
   .talk-card__event-name {
     font-weight: 600;
     color: var(--text-secondary);
+  }
+
+  /* Keep each place name intact. The line may break between them on small screens. */
+  .talk-card__org-part {
+    white-space: nowrap;
+  }
+
+  /* Desktop cards fit the venue and university together, so this title stays
+     level with the card beside it. */
+  @media (min-width: 1024px) {
+    .talk-card__org {
+      white-space: nowrap;
+    }
   }
 
   .talk-card__title {

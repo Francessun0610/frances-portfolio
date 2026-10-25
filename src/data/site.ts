@@ -22,12 +22,12 @@ export const person = {
   role: 'Lead UX Designer',
   /** Homepage role line only. jobTitle and the About page stay on `role`. */
   heroRole: 'Lead UX Designer · Educator · Speaker',
-  statement: 'Product design across consumer electronics and complex enterprise systems.',
-  /** Schema description. Design first, then speaking. Not the hero line. */
+  statement: 'Designing experiences for consumer electronics and enterprise software.',
+  /** Schema description. Matches the homepage summary; not the hero line. */
   description:
-    'Lead UX Designer with experience across consumer electronics and enterprise software, and an educator and speaker on complex workflows and systems thinking.',
+    'Frances Sun is a Lead UX Designer, educator, and speaker designing consumer and enterprise experiences, with expertise in complex workflows and interactive prototyping.',
   supporting:
-    'I turn complex products and workflows into clear, scalable experiences through systems thinking, interaction design, and hands-on prototyping.',
+    'I make complex workflows easier to use through systems thinking, interaction design, and prototyping.',
   location: 'Based in Austin, Texas.',
   relocation: 'Open to relocation for the right opportunity.',
   locality: 'Austin',
@@ -61,9 +61,19 @@ export type Project = {
   title: string;
   description: string;
   category: string;
+  /** Card image, 1920px wide. */
   image: string;
+  /** The same image at 960px, for the card at its usual size. */
+  imageSmall?: string;
   /** Written for screen readers; never describes a screen that does not exist. */
   imageAlt: string;
+  /**
+   * The expanded screenshot. The same capture as `image`, kept at full
+   * resolution and only fetched when a visitor shows intent to open it.
+   * `base` gains `-1600.webp`, `-2400.webp` and `-3200.webp`; see
+   * scripts/capture-project-previews.mjs.
+   */
+  preview?: { base: string; width: number; height: number; label: string };
   /** True when `image` is an abstract stand-in rather than a product capture. */
   imageIsPlaceholder: boolean;
   /**
@@ -77,99 +87,116 @@ export type Project = {
    * is. Each project words this for its own situation: the products are real
    * client work, but what can be shown publicly differs from one to the next.
    * Keep it factual and specific. If an asset is ever swapped, update the note
-   * with it.
+   * with it. The three prototypes share one authorship and data note, stated
+   * once in the section introduction as `prototypeNote`, so this field is for a project whose
+   * contribution is different, such as Linear.
    */
   portfolioNote?: string;
+  /** Primary destination. The screenshot and the title open it too. */
   cta?: { label: string; href: string; external: boolean };
   /** Second labeled action, with the same external-link treatment as `cta`. */
   secondaryCta?: { label: string; href: string; external: boolean };
-  /**
-   * The thumbnail, and the rest of the card surface, open `cta`.
-   * Labeled actions stay independently clickable above that hit area.
-   */
-  linkCard?: boolean;
-  /** The thumbnail links to `cta`, including when that URL is external. */
-  linkCover?: boolean;
-  /** Draws the CTA label on the thumbnail. The cover is the link. */
-  coverLabel?: boolean;
 };
+
+/**
+ * Shared by the three prototypes only, and shown once in the Selected Work
+ * introduction, above that row. It does not describe Linear Ad Platform.
+ */
+export const prototypeNote =
+  'I designed these three projects end to end and built their interactive prototypes with AI assistance. All use sample data.';
 
 export const projects: Project[] = [
   {
     slug: 'rate-card-manager',
     title: 'Rate Card Manager',
     description:
-      'Enterprise pricing management that brings rate card setup, line items, premium adjustments, and publishing into one clearer workflow. I built the interactive prototype in code using Cursor as part of my design process.',
-    // Non-breaking hyphen (U+2011) in "AI-assisted". At 375px the line has to
-    // wrap somewhere, and a normal hyphen lets it split mid-term as
-    // "AI-" / "assisted"; this moves the break to the separator instead.
-    category: 'Enterprise UX · Pricing · AI\u2011assisted Prototyping',
+      'Manage rate cards, pricing adjustments, and publishing in one workflow.',
+    category: 'Ad tech · Pricing',
     image: '/images/projects/rate-card-manager.webp',
+    imageSmall: '/images/projects/rate-card-manager-960.webp',
     imageAlt:
-      'Rate Card Manager in Ad Tool, showing the rate cards list with search, filters, and draft and published states.',
+      'Rate Card Manager in Ad Tool, showing the line items of the WPP Streaming Video Upfront 2026-2027 rate card, with the Line Details panel open for Ford Motor Company.',
+    preview: {
+      base: '/images/projects/preview/rate-card-manager',
+      width: 3200,
+      height: 1800,
+      label: 'Rate card line items and line details',
+    },
     imageIsPlaceholder: false,
-    portfolioNote:
-      'I designed and built this interactive portfolio prototype. All data shown is synthetic and created for demonstration purposes.',
-    cta: { label: 'Presentation', href: links.rateCardDemo, external: true },
-    secondaryCta: { label: 'Live demo', href: links.rateCardLive, external: true },
-    linkCover: true,
+    cta: { label: 'Slides', href: links.rateCardDemo, external: true },
+    secondaryCta: { label: 'Prototype', href: links.rateCardLive, external: true },
   },
   {
     slug: 'atlas',
     title: 'Identity & Access Management',
     description:
-      'A consistent administration experience for managing users, roles, companies, and application access across a complex enterprise product ecosystem.',
-    category: 'Enterprise UX · Identity & Access · AI\u2011assisted Prototyping',
+      'Manage users, roles, and permissions across enterprise applications.',
+    category: 'Identity & access',
     image: '/images/projects/atlas.webp',
+    imageSmall: '/images/projects/atlas-960.webp',
     imageAlt:
       'Access Management, showing the users list with roles, status, team, and last login.',
+    preview: {
+      base: '/images/projects/preview/atlas',
+      width: 3200,
+      height: 1800,
+      label: 'Users, roles, and access status',
+    },
     imageIsPlaceholder: false,
-    portfolioNote:
-      'I designed the administration experience and interaction patterns presented here. This interactive prototype uses sample data for demonstration purposes.',
     cta: {
-      label: 'Live demo',
+      label: 'Prototype',
       href: 'https://frances-iam-demo.vercel.app/v4.2/index.html',
       external: true,
     },
-    linkCover: true,
   },
   {
     slug: 'simba',
     title: 'Financial Systems 2.0',
     description:
-      'A next-generation financial platform designed to unify revenue recognition, billing, invoicing, and review workflows into one connected experience.',
-    category: 'Enterprise UX · Financial Systems · AI\u2011assisted Prototyping',
+      'Connect revenue recognition, billing, invoicing, and review in one workspace.',
+    category: 'Enterprise finance',
     image: '/images/projects/simba.webp',
+    imageSmall: '/images/projects/simba-960.webp',
     imageAlt:
-      'Accounts Receivable in Financial Systems 2.0, with period selection, order search, and billing status for each order.',
+      'An order in Financial Systems 2.0, showing its invoice summary, cumulative invoicing information, and sales line items.',
+    preview: {
+      base: '/images/projects/preview/simba',
+      width: 3200,
+      height: 1800,
+      label: 'Order invoice summary and sales line items',
+    },
     imageIsPlaceholder: false,
-    portfolioNote:
-      'I designed the workflow, navigation, and interaction concepts represented in this portfolio entry. No production financial data is shown.',
     cta: {
-      label: 'Presentation',
+      label: 'Slides',
       href: 'https://harps-finance-prototype.vercel.app/v2a/harps-intro-1.html',
       external: true,
     },
     secondaryCta: {
-      label: 'Live demo',
+      label: 'Prototype',
       href: 'https://harps-finance-prototype.vercel.app/v2a/harps.html',
       external: true,
     },
-    linkCard: true,
   },
   {
     slug: 'linear',
     title: 'Linear Ad Platform',
     description:
-      'A connected view of the team I led and the tools behind linear advertising, from planning and inventory to trafficking and airtime.',
-    category: 'TEAM LEADERSHIP · ENTERPRISE UX · ADVERTISING TECHNOLOGY',
+      'A connected view of the teams and tools behind linear advertising.',
+    category: 'Design leadership · Ad tech',
     image: '/images/projects/linear.webp',
+    imageSmall: '/images/projects/linear-960.webp',
+    preview: {
+      base: '/images/projects/preview/linear',
+      width: 3200,
+      height: 1800,
+      label: 'The tools behind linear advertising',
+    },
     imageAlt:
       'Two-row map of the Linear Ad Platform: SalesHub, Rate Card, Proposal, Deal Management, and Media Management, continuing through Copy Management, Content Restrictor, Log Management, Log Scheduling, and Cannonball.',
     imageIsPlaceholder: false,
     portfolioNote:
-      'I created this visual narrative to explain our team’s work. My direct product design ownership focused on Media Management.',
-    cta: { label: 'Explore the platform', href: '/work/linear/2', external: false },
+      'Led the design team; directly designed Media Management.',
+    cta: { label: 'Slides', href: '/work/linear/2', external: false },
   },
 ];
 
@@ -224,9 +251,9 @@ export const talks: Talk[] = [
     year: '2025',
     sortOrder: 1,
     cardDescription:
-      'Lessons from moving between consumer and enterprise UX, using business context, metaphors, and playfulness to make complex systems easier to understand.',
+      'Using metaphors, business context, and playfulness to make enterprise UX easier to understand.',
     intro:
-      'A talk about lessons learned moving from consumer products into enterprise UX, and how understanding the business, breaking down complexity, listening for real needs, adding context, and using familiar metaphors can make complex systems easier to understand.',
+      'Using metaphors, business context, and playfulness to make enterprise UX easier to understand.',
     image: '/images/speaking/canux-2025.jpg',
     imageAlt:
       'CanUX 2025 speaker card for Frances Sun, Lead Designer, Austin, Texas, for Canada’s premier experience design event in Ottawa.',
@@ -244,9 +271,9 @@ export const talks: Talk[] = [
     year: '2026',
     sortOrder: 2,
     cardDescription:
-      'A practical look at clarity in enterprise UX: understanding the business, breaking down complexity, listening for real needs, and giving design the right context.',
+      'Practical lessons in understanding business needs and simplifying complex enterprise products.',
     intro:
-      'A practical look at what clarity requires in enterprise UX: understanding the business, breaking down complexity, listening beyond surface requests, giving design the right context, and using simple stories to connect complex systems.',
+      'Practical lessons in understanding business needs and simplifying complex enterprise products.',
     image: '/images/speaking/uiuc-ux-day-2026.jpg',
     imageAlt:
       'Frances Sun speaking to students in a design studio classroom at the Siebel Center for Design.',
@@ -263,9 +290,9 @@ export const talks: Talk[] = [
     year: '2026',
     sortOrder: 1,
     cardDescription:
-      'How unclear domain understanding shows up in the interface, and how workflow clarity and better collaboration can lead to better enterprise UX.',
+      'How domain understanding and shared language bring clarity to enterprise workflows.',
     intro:
-      'When teams do not understand the domain clearly, that uncertainty eventually shows up in the interface. This talk looks at how domain understanding, workflow clarity, and better collaboration can lead to better enterprise UX.',
+      'How domain understanding and shared language bring clarity to enterprise workflows.',
     image: '/images/speaking/ddd-europe-2026.jpg',
     imageAlt:
       'DDD Europe 2026 speaker card for Frances Sun, showing the Domain Driven Design Europe logo, her portrait, and the talk title.',
@@ -286,11 +313,9 @@ export const talks: Talk[] = [
     dateLabel: 'March 29, 2024',
     sortOrder: 1,
     cardDescription:
-      'Returning to CCS as an alumna, I shared lessons from my own design journey to help students approach their first roles, communicate their work, and tell stronger portfolio stories.',
+      'Lessons from my design career on understanding problems, collaborating with teams, and telling clearer portfolio stories.',
     intro:
-      'I returned to the College for Creative Studies as an MFA alumna to share what I wish I had known as a design student. Drawing on the successes and setbacks of my career, I offered advice on understanding problems, working with product teams, and presenting design work with clarity.',
-    supporting:
-      'The talk connects everyday design practice with the transition into professional life: using tools to make ideas work, explaining complex processes visually, building a compelling portfolio narrative, and helping people understand who you are and what you contributed.',
+      'Lessons from my design career on understanding problems, collaborating with teams, and telling clearer portfolio stories.',
     image: '/images/speaking/ccs-morning-boost-2024-cover.png',
     imageAlt:
       'CCS Morning Boost event poster for March 29, 2024, listing Frances Sun among the speakers.',
@@ -322,11 +347,11 @@ export function getTalk(slug: string): Talk {
 
 export const about = {
   homepage:
-    'I’m a Lead UX Designer focused on complex enterprise software and operational systems. Over nearly two decades, I’ve worked across consumer technology, infrastructure, advertising platforms, and enterprise software, turning complex workflows into clear, usable experiences.',
+    'I’m a Lead UX Designer with nearly two decades of experience across consumer electronics and enterprise software. I combine hands-on design, team leadership, and teaching to make complex workflows easier to use.',
 } as const;
 
 export const previousWorkIntro = {
-  copy: 'Earlier work across consumer products, mobile experiences, interaction design, and enterprise software.',
+  copy: 'Earlier UX and product design across consumer electronics, mobile apps, and enterprise software.',
   cta: 'View previous work',
   href: '/previous-work',
 } as const;

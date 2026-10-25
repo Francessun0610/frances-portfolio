@@ -1,0 +1,102 @@
+<div class="item-glow" data-item-glow aria-hidden="true">
+  <div class="item-glow__wash"></div>
+  <div class="item-glow__field" data-item-field></div>
+</div>
+
+<script>
+  // Shifts the broad wash within each card. It never tracks a spot on the
+  // cursor, and it stays centered when motion is reduced or hover is absent.
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const hosts = [...document.querySelectorAll<HTMLElement>('.item-glow-host')];
+  const TAU = 125;
+
+  const tracking = () => fine.matches && !reduced.matches;
+
+  hosts.forEach((host) => {
+    const light = host.querySelector<HTMLElement>(':scope > [data-item-glow]');
+    const field = light?.querySelector<HTMLElement>('[data-item-field]');
+    if (!light || !field) return;
+
+    let tx = 50;
+    let ty = 48;
+    let cx = 50;
+    let cy = 48;
+    let active = false;
+    let frame = 0;
+    let last = 0;
+
+    const place = (x: number, y: number) => {
+      field.style.setProperty('--glow-x', `${x}%`);
+      field.style.setProperty('--glow-y', `${y}%`);
+    };
+
+    const aim = (event: PointerEvent) => {
+      const rect = light.getBoundingClientRect();
+      const nx = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width));
+      const ny = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height));
+      tx = 35 + nx * 30;
+      ty = 35 + ny * 30;
+    };
+
+    const tick = (now: number) => {
+      frame = 0;
+      if (!active) return;
+      const dt = last ? Math.min(now - last, 48) : 16;
+      last = now;
+      const k = 1 - Math.exp(-dt / TAU);
+      const dx = tx - cx;
+      const dy = ty - cy;
+      if (Math.hypot(dx, dy) <= 0.4) {
+        cx = tx;
+        cy = ty;
+        place(cx, cy);
+        last = 0;
+        return;
+      }
+      cx += dx * k;
+      cy += dy * k;
+      place(cx, cy);
+      frame = requestAnimationFrame(tick);
+    };
+
+    host.addEventListener('pointerenter', (event) => {
+      if (!tracking() || event.pointerType === 'touch') return;
+      aim(event);
+      cx = tx;
+      cy = ty;
+      last = 0;
+      place(cx, cy);
+      active = true;
+    });
+
+    host.addEventListener(
+      'pointermove',
+      (event) => {
+        if (!active || event.pointerType === 'touch') return;
+        aim(event);
+        if (!frame) frame = requestAnimationFrame(tick);
+      },
+      { passive: true },
+    );
+
+    const stop = () => {
+      active = false;
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      last = 0;
+    };
+
+    host.addEventListener('pointerleave', stop);
+    host.addEventListener('pointercancel', stop);
+  });
+
+  reduced.addEventListener('change', () => {
+    if (!reduced.matches) return;
+    hosts.forEach((host) => {
+      const field = host.querySelector<HTMLElement>('[data-item-field]');
+      field?.style.removeProperty('--glow-x');
+      field?.style.removeProperty('--glow-y');
+    });
+  });
+</script>

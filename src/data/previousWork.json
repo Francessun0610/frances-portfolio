@@ -1,12 +1,12 @@
 [
   {
     "slug": "my-selected-work",
-    "title": "My selected work",
+    "title": "Selected Lenovo Projects",
     "client": "Lenovo",
     "role": "",
     "year": "",
     "type": "",
-    "description": "This document represents a variety of diverse projects that I have worked on over the past seven years.",
+    "description": "A selection of UX and UI design projects for Lenovo.",
     "order": 1,
     "sourceUrl": "https://francessun.carbonmade.com/projects/6983864",
     "images": [
@@ -239,7 +239,7 @@
   },
   {
     "slug": "dell-works",
-    "title": "Dell Works",
+    "title": "Dell UX & UI Design",
     "client": "",
     "role": "UX/UI designer",
     "year": "2021",
@@ -1480,12 +1480,12 @@
   },
   {
     "slug": "reach4-0",
-    "title": "Reach4.0",
+    "title": "REACHit 4.0",
     "client": "Lenovo Group",
     "role": "UI/UX designer",
     "year": "2016 April",
     "type": "",
-    "description": "Lenovo’s REACHit app lets you connect and search multiple file storage locations in one place. Lenovo worked with Microsoft to integrate their app with Cortana so that users can use Cortana to find any content in any storage location that is connected to REACHit. Cortana and REACHit works on any PC or Tablet running Windows 10, no matter what brand it is. Users can also use natural language like ‘find the photos I took at Jane’s wedding’, and REACHit will use metadata like file-type, keywords, dates and locations to produce the most relevant results.\n\nYou can search for files and emails stored on:\n\nAny device running Windows 10\nCloud accounts: Google Drive, Dropbox, Box, OneDrive\nOutlook.com, Microsoft Exchange, Gmail, IMAP\nAnd you can also search for files you may have looked at or created during meetings on your Google Calendar, Outlook Calendar, or Exchange Calendar.",
+    "description": "File-search UX across devices, cloud storage, and email, with Cortana integration.",
     "order": 4,
     "sourceUrl": "https://francessun.carbonmade.com/projects/6350158",
     "images": [
@@ -2108,12 +2108,12 @@
   },
   {
     "slug": "lenovo-support-win8-metro-app",
-    "title": "Lenovo Support- Win8 Metro app",
-    "client": "Lenovo group",
+    "title": "Lenovo Support for Windows 8",
+    "client": "Lenovo Group",
     "role": "Interaction Designer/ User Interface Designer",
     "year": "2012",
     "type": "UI/UX Windows 8 design",
-    "description": "Lenovo Support. Be at ease with your PC. Understand your system’s performance. Know when to take action and how to address the need.",
+    "description": "A Windows 8 support app for understanding PC performance and finding help.",
     "order": 5,
     "sourceUrl": "https://francessun.carbonmade.com/projects/4639461",
     "images": [
@@ -2376,12 +2376,12 @@
   },
   {
     "slug": "smart-home-related-project",
-    "title": "Smart home related project",
-    "client": "Advantech taiwan",
+    "title": "Smart Home & Kiosk Interfaces",
+    "client": "Advantech Taiwan",
     "role": "UI designer",
     "year": "~2007",
     "type": "",
-    "description": "Some projects I did when I was in Taiwan",
+    "description": "Early interface design for Advantech smart home and kiosk projects.",
     "order": 6,
     "sourceUrl": "https://francessun.carbonmade.com/projects/6373992",
     "images": [
@@ -2867,12 +2867,12 @@
   },
   {
     "slug": "lenovo-id-single-sign-on",
-    "title": "Lenovo ID single sign on",
+    "title": "Lenovo ID: Single Sign-On",
     "client": "Lenovo",
     "role": "UX and UI designer",
     "year": "2017",
     "type": "",
-    "description": "Connect to everything Lenovo with one ID.\nYour Lenovo ID connects you seamlessly to all things Lenovo:\n\nShop on Lenovo shopping Web sites.\n\nInteract in Lenovo forums.\n\nAccess Lenovo Apps.\n\nPersonalize your device support… and much more.\nAccess everything you need with one account.",
+    "description": "Sign-in, registration, and account-management UX for Lenovo services.",
     "order": 8,
     "sourceUrl": "https://francessun.carbonmade.com/projects/6794490",
     "images": [
@@ -2990,7 +2990,7 @@
     "role": "UX/UI designer",
     "year": "2016 Nov",
     "type": "PC app,android app",
-    "description": "Your PC and phone together as one!\n\nUse Connect2 to automatically copy or move photos, music, videos and other files between your phone and PC. Connect2 will automatically connect your devices too, so you can instantly start moving content between them.\n\nReliable, EASY, SECURE\n\nThe Wireless technology of Connect2 automatically connects your devices together with no WIFI LAN or cellular data network required. Transfer huge files securely and easily.\n\nWORKS WITH WINDOWS & ANDROID DEVICES\nConnect2 requires Windows 7 & Android 4.4 or above.\n\nREQUIREMENTS\nBoth your phone and PC must have WIFI enabled. Trouble connecting? Visit the Connect2 FAQ page for help – https://connect2.lenovo.com/faq/\n\nDownload the PC app from https://connect2.lenovo.com/ and get started now!",
+    "description": "A Lenovo app for transferring photos, music, videos, and files between phones and PCs.",
     "order": 9,
     "sourceUrl": "https://francessun.carbonmade.com/projects/6350134",
     "images": [
@@ -3178,12 +3178,12 @@
   },
   {
     "slug": "fender-mobile-studio-proposal",
-    "title": "Fender Mobile studio proposal",
+    "title": "Fender Mobile Studio Concept",
     "client": "CCS MFA",
     "role": "UX designer",
     "year": "2010",
     "type": "User experience Design",
-    "description": "This is from CCS MFA graduate studio class 2011",
+    "description": "An MFA studio concept for a traveling Fender music experience.\n\nFrom the CCS MFA graduate studio class in 2011.",
     "order": 10,
     "sourceUrl": "https://francessun.carbonmade.com/projects/3223201",
     "images": [
@@ -3522,11 +3522,11 @@
   {
     "slug": "reachit-3-0",
     "title": "REACHit 3.0",
-    "client": "Lenovo group",
+    "client": "Lenovo Group",
     "role": "Interaction Designer and UI designer",
     "year": "2015",
     "type": "UI/UX. Windows 10 design. Android UI design. IOS design",
-    "description": "Access your files. Anytime. Anywhere. Find and organize all the photos, videos, music and documents you have on your PC and mobile devices or in the cloud with REACHit.\n\nI was the designer for previous version and continue to be the designer for this latest version.",
+    "description": "File management across PCs, mobile devices, and cloud storage.\n\nI designed both this version and the one before it.",
     "order": 11,
     "sourceUrl": "https://francessun.carbonmade.com/projects/5837403",
     "images": [
@@ -4059,12 +4059,12 @@
   },
   {
     "slug": "lenovo-id-universal-app",
-    "title": "Lenovo ID universal app",
+    "title": "Lenovo ID: Universal App",
     "client": "Lenovo Group",
     "role": "Interaction Designer/ User Interface Designer",
     "year": "2015",
     "type": "UI/UX Window 10 Design",
-    "description": "Connect to everything Lenovo with one ID.\nSimple is good. Your Lenovo ID connects you seamlessly to all things Lenovo:\n– Shop on Lenovo shopping Web sites.\n– Interact in Lenovo forums.\n\nAccess Lenovo Apps.\n– Personalize your device support… and much more. Access everything you need with one account.",
+    "description": "Account access and management across Lenovo apps and services.",
     "order": 12,
     "sourceUrl": "https://francessun.carbonmade.com/projects/5837749",
     "images": [
@@ -4147,7 +4147,7 @@
   },
   {
     "slug": "whirlpool-sponsored-project",
-    "title": "Whirlpool sponsored project",
+    "title": "Whirlpool Sponsored Project",
     "client": "Whirlpool and CCS MFA",
     "role": "UI designer",
     "year": "2009",
@@ -4385,12 +4385,12 @@
   },
   {
     "slug": "representative-nathan-small-website",
-    "title": "Representative Nathan Small website",
-    "client": "New Mexico House of Representatives Nathan P small",
-    "role": "UX/UI DESIGNER",
+    "title": "Nathan Small Campaign Website",
+    "client": "New Mexico House of Representatives, Nathan P. Small",
+    "role": "UX/UI designer",
     "year": "2018 Summer",
     "type": "website design",
-    "description": "This is the volunteer project via Tech for the campaign. The goal is helping New Mexico Representative redesign the website for his upcoming re-election. Make sure the voter can access the necessary information and have the easy method My job: Redesign the information architecture, UX design, visual and responsive design. I worked with a team of five people ( Project lead, Technical writer, two developers)",
+    "description": "A responsive campaign website redesign focused on information architecture, UX, and visual design.",
     "order": 14,
     "sourceUrl": "https://francessun.carbonmade.com/projects/6982081",
     "images": [
@@ -4460,7 +4460,7 @@
     "slug": "thinkpad-tablet-android-ui-design",
     "title": "ThinkPad Tablet Android UI Design",
     "client": "Lenovo Group",
-    "role": "Interaction Design/ UI design",
+    "role": "Interaction design / UI design",
     "year": "2012",
     "type": "",
     "description": "",
@@ -4921,7 +4921,7 @@
   },
   {
     "slug": "my-portfolio-2010",
-    "title": "My portfolio 2010",
+    "title": "Design Portfolio 2010",
     "client": "",
     "role": "",
     "year": "",

@@ -1,0 +1,61 @@
+---
+/**
+ * Tabler outline marks, inlined so the site does not take an icon package.
+ * Rendered at 16px beside LinkedIn, Instagram, and the About resume link.
+ */
+interface Props {
+  brand: 'LinkedIn' | 'Instagram' | 'Resume';
+}
+
+const { brand } = Astro.props;
+---
+
+<svg
+  class="social-icon"
+  viewBox="0 0 24 24"
+  width="16"
+  height="16"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    brand === 'LinkedIn' ? (
+      <>
+        <path d="M8 11v5" />
+        <path d="M8 8v.01" />
+        <path d="M12 16v-5" />
+        <path d="M16 16v-3a2 2 0 1 0 -4 0" />
+        <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10" />
+      </>
+    ) : brand === 'Instagram' ? (
+      <>
+        <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4l0 -10" />
+        <path d="M8.5 12a3.5 3.5 0 1 0 7 0a3.5 3.5 0 0 0 -7 0" />
+        <path d="M17 7v.01" />
+      </>
+    ) : (
+      <>
+        <path d="M14 3v4a1 1 0 0 0 1 1h4" />
+        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2" />
+        <path d="M9 9l1 0" />
+        <path d="M9 13l6 0" />
+        <path d="M9 17l6 0" />
+      </>
+    )
+  }
+</svg>
+
+<style>
+  .social-icon {
+    display: block;
+    flex-shrink: 0;
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+  }
+</style>

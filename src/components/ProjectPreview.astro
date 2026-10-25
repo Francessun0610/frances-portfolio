@@ -1,0 +1,863 @@
+---
+/**
+ * Larger screenshots for Selected Work, from one set of full-resolution
+ * captures.
+ *
+ * Hover preview: on a fine pointer, resting on a card screenshot shows it at
+ * roughly 600–800px in the top layer. It is a visual aid only, never the only
+ * way to see the image, and holds no controls.
+ *
+ * Expanded image: the card's "Expand image" button opens one native modal
+ * dialog. The card image travels into place, then the full-resolution capture
+ * replaces it once decoded, so the work is never shown enlarged from the small
+ * file for longer than that takes.
+ */
+import { projects } from '../data/site';
+
+const PREVIEW_WIDTHS = [1600, 2400, 3200];
+
+const records = Object.fromEntries(
+  projects.flatMap((project) => {
+    const preview = project.preview;
+    if (!preview) return [];
+    const actions = [project.cta, project.secondaryCta].filter(
+      (action): action is NonNullable<typeof action> => action != null,
+    );
+    return [
+      [
+        project.slug,
+        {
+          title: project.title,
+          label: preview.label,
+          alt: project.imageAlt,
+          width: preview.width,
+          height: preview.height,
+          srcset: PREVIEW_WIDTHS.map((width) => `${preview.base}-${width}.webp ${width}w`).join(', '),
+          actions: actions.map((action) => ({
+            label: action.label,
+            href: action.href,
+            external: action.external,
+          })),
+        },
+      ],
+    ];
+  }),
+);
+---
+
+<dialog class="preview" aria-labelledby="preview-title" data-preview>
+  <div class="preview__scrim" data-preview-scrim></div>
+  <div class="preview__panel" data-preview-panel>
+    <header class="preview__bar" data-preview-bar>
+      <div class="preview__heading">
+        <h2 class="preview__title" id="preview-title" data-preview-title></h2>
+        <p class="preview__label" data-preview-label></p>
+      </div>
+      <p class="preview__links" data-preview-links></p>
+      <button type="button" class="preview__close" data-preview-close aria-label="Close preview" autofocus>
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M3.5 3.5l9 9M12.5 3.5l-9 9" />
+        </svg>
+      </button>
+    </header>
+    <div class="preview__frame" data-preview-frame>
+      <img class="preview__placeholder" data-preview-placeholder alt="" aria-hidden="true" />
+      <img class="preview__image" data-preview-image alt="" />
+      <p class="preview__loading" data-preview-loading hidden>Loading full resolution</p>
+    </div>
+  </div>
+</dialog>
+
+<div class="peek" data-peek popover="manual" aria-hidden="true" hidden>
+  <img class="peek__image" alt="" decoding="async" />
+</div>
+
+<script type="application/json" id="preview-data" set:html={JSON.stringify(records)} />
+
+<script>
+  type PreviewRecord = {
+    title: string;
+    label: string;
+    alt: string;
+    width: number;
+    height: number;
+    srcset: string;
+    actions: { label: string; href: string; external: boolean }[];
+  };
+
+  const dialog = document.querySelector<HTMLDialogElement>('[data-preview]');
+  const dataNode = document.getElementById('preview-data');
+
+  if (dialog && dataNode && typeof dialog.showModal === 'function') {
+    const records: Record<string, PreviewRecord> = JSON.parse(dataNode.textContent || '{}');
+    const q = <T extends HTMLElement>(name: string) => dialog.querySelector<T>(`[data-preview-${name}]`)!;
+    const scrim = q('scrim');
+    const panel = q('panel');
+    const bar = q('bar');
+    const frame = q('frame');
+    const image = q<HTMLImageElement>('image');
+    const placeholder = q<HTMLImageElement>('placeholder');
+    const loading = q('loading');
+    const title = q('title');
+    const label = q('label');
+    const links = q('links');
+    const closeButton = q<HTMLButtonElement>('close');
+
+    const root = document.documentElement;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const OPEN_EASE = 'cubic-bezier(0.2, 0.9, 0.25, 1)';
+    const CLOSE_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)';
+
+    const decoded = new Map<string, Promise<void>>();
+    let trigger: HTMLButtonElement | null = null;
+    /** The card screenshot the dialog grows from and returns to. */
+    let source: HTMLElement | null = null;
+    let dismissPeek = () => {};
+    let record: PreviewRecord | null = null;
+    let token = 0;
+    let closing = false;
+    let running: Animation[] = [];
+    let downOnBackdrop = false;
+
+    /** Width the frame will take, used both to lay it out and to choose a source. */
+    const fitWidth = (entry: PreviewRecord, barHeight?: number) => {
+      const vw = root.clientWidth;
+      const vh = window.innerHeight;
+      const narrow = vw < 720;
+      const maxWidth = Math.min(narrow ? vw - 24 : vw * 0.88, 1560);
+      const chrome = (narrow ? 24 : 64) + (barHeight ?? (narrow ? 96 : 52)) + 14;
+      const maxHeight = Math.max(160, vh - chrome);
+      return Math.round(Math.min(maxWidth, maxHeight * (entry.width / entry.height)));
+    };
+
+    const sizesFor = (entry: PreviewRecord) => `${fitWidth(entry)}px`;
+
+    /** Fetch and decode the full capture ahead of a click or a hover. */
+    const preload = (slug: string, sizes?: string) => {
+      const entry = records[slug];
+      if (!entry) return Promise.resolve();
+      const want = sizes ?? sizesFor(entry);
+      const key = `${slug} ${want}`;
+      let pending = decoded.get(key);
+      if (!pending) {
+        const img = new Image();
+        img.decoding = 'async';
+        img.sizes = want;
+        img.srcset = entry.srcset;
+        pending = img.decode().catch(() => undefined);
+        decoded.set(key, pending);
+      }
+      return pending;
+    };
+
+    const lockScroll = () => {
+      const gutter = window.innerWidth - root.clientWidth;
+      document.body.style.overflow = 'hidden';
+      if (gutter > 0) document.body.style.paddingRight = `${gutter}px`;
+    };
+
+    const unlockScroll = () => {
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+
+    const stopRunning = () => {
+      running.forEach((animation) => animation.cancel());
+      running = [];
+    };
+
+    const play = (element: Element, keyframes: Keyframe[], options: KeyframeAnimationOptions) => {
+      const animation = element.animate(keyframes, options);
+      running.push(animation);
+      return animation.finished.catch(() => undefined);
+    };
+
+    const fill = (entry: PreviewRecord) => {
+      title.textContent = entry.title;
+      label.textContent = entry.label;
+      links.replaceChildren(
+        ...entry.actions.map((action) => {
+          const link = document.createElement('a');
+          link.className = 'text-link';
+          link.href = action.href;
+          link.textContent = action.label;
+          const arrow = document.createElement('span');
+          arrow.className = action.external ? 'arrow arrow--out' : 'arrow';
+          arrow.setAttribute('aria-hidden', 'true');
+          arrow.textContent = action.external ? '↗' : '→';
+          link.append(arrow);
+          if (action.external) {
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            const note = document.createElement('span');
+            note.className = 'visually-hidden';
+            note.textContent = ' (opens in a new tab)';
+            link.append(note);
+          }
+          return link;
+        }),
+      );
+      panel.style.setProperty('--ar', `${entry.width} / ${entry.height}`);
+      image.alt = entry.alt;
+    };
+
+    const size = (entry: PreviewRecord) => {
+      panel.style.width = `${fitWidth(entry)}px`;
+      panel.style.width = `${fitWidth(entry, bar.offsetHeight)}px`;
+    };
+
+    /**
+     * Where the card shows this image, expressed as a transform and a clip of
+     * the open frame. Compact cards crop to the top of the capture; the wide
+     * card shows it whole, so the clip resolves to nothing there.
+     */
+    const cardGeometry = () => {
+      if (!source) return null;
+      const cardImage = source.querySelector('img');
+      const from = source.getBoundingClientRect();
+      const to = frame.getBoundingClientRect();
+      const inView = from.bottom > 0 && from.top < window.innerHeight && from.width > 0;
+      if (!cardImage || !inView || to.width === 0) return null;
+      const scale = from.width / to.width;
+      const visible = Math.min(to.height, from.height / scale);
+      const yAlign = parseFloat(getComputedStyle(cardImage).objectPosition.split(' ')[1] ?? '50') / 100;
+      const cut = to.height - visible;
+      const top = cut * (Number.isFinite(yAlign) ? yAlign : 0.5);
+      const bottom = cut - top;
+      const radius = parseFloat(getComputedStyle(source).borderTopLeftRadius) || 0;
+      return {
+        start: {
+          transform: `translate(${from.left - to.left}px, ${from.top - to.top - top * scale}px) scale(${scale})`,
+          clipPath: `inset(${top}px 0 ${bottom}px 0 round ${radius / scale}px)`,
+        },
+        end: {
+          transform: 'none',
+          clipPath: `inset(0 0 0 0 round ${parseFloat(getComputedStyle(frame).borderTopLeftRadius) || 0}px)`,
+        },
+      };
+    };
+
+    /** The sharp capture takes over from the card image as soon as it is decoded. */
+    const showSharp = (openToken: number, wasReady: boolean) => {
+      image
+        .decode()
+        .catch(() => undefined)
+        .then(() => {
+          if (openToken !== token) return;
+          loading.hidden = true;
+          image.style.opacity = '1';
+          if (!wasReady && !reduced.matches) {
+            image.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 220, easing: 'ease-out' });
+          }
+        });
+    };
+
+    const open = async (button: HTMLButtonElement) => {
+      const slug = button.dataset.previewTrigger ?? '';
+      const entry = records[slug];
+      if (!entry || dialog.open) return;
+
+      dismissPeek();
+      trigger = button;
+      source = document.querySelector<HTMLElement>(`[data-shot="${slug}"]`);
+      record = entry;
+      closing = false;
+      const openToken = ++token;
+      const ready = await Promise.race([
+        preload(slug).then(() => true),
+        new Promise<boolean>((resolve) => setTimeout(() => resolve(false), 0)),
+      ]);
+      if (openToken !== token) return;
+
+      fill(entry);
+      const cardImage = source?.querySelector('img');
+      placeholder.src = cardImage?.currentSrc || cardImage?.src || '';
+      image.style.opacity = '0';
+      image.sizes = sizesFor(entry);
+      image.srcset = entry.srcset;
+      loading.hidden = false;
+
+      lockScroll();
+      dialog.showModal();
+      closeButton.focus({ preventScroll: true });
+      size(entry);
+      showSharp(openToken, ready);
+
+      if (reduced.matches) {
+        play(dialog, [{ opacity: 0 }, { opacity: 1 }], { duration: 160, easing: 'ease-out' });
+        return;
+      }
+
+      const geometry = cardGeometry();
+      play(scrim, [{ opacity: 0 }, { opacity: 1 }], { duration: 300, easing: 'ease-out' });
+      play(bar, [{ opacity: 0, transform: 'translateY(-6px)' }, { opacity: 1, transform: 'none' }], {
+        duration: 260,
+        delay: 140,
+        easing: OPEN_EASE,
+        fill: 'backwards',
+      });
+
+      if (geometry && source) {
+        const from = source;
+        from.setAttribute('data-preview-source', '');
+        await play(frame, [geometry.start, geometry.end], { duration: 360, easing: OPEN_EASE });
+        if (openToken === token && !closing) from.removeAttribute('data-preview-source');
+      } else {
+        play(frame, [
+          { opacity: 0, transform: 'scale(0.97)', transformOrigin: '50% 50%' },
+          { opacity: 1, transform: 'none', transformOrigin: '50% 50%' },
+        ], {
+          duration: 280,
+          easing: OPEN_EASE,
+        });
+      }
+    };
+
+    const requestClose = async () => {
+      if (!dialog.open || closing) return;
+      closing = true;
+      const closeToken = token;
+      stopRunning();
+
+      if (reduced.matches) {
+        await play(dialog, [{ opacity: 1 }, { opacity: 0 }], { duration: 120, easing: 'ease-in', fill: 'forwards' });
+      } else {
+        const geometry = cardGeometry();
+        const fade = { duration: 220, easing: CLOSE_EASE, fill: 'forwards' as const };
+        play(scrim, [{ opacity: 1 }, { opacity: 0 }], { ...fade, duration: 280 });
+        play(bar, [{ opacity: 1 }, { opacity: 0 }], { ...fade, duration: 140 });
+        if (geometry) {
+          source?.setAttribute('data-preview-source', '');
+          await play(frame, [geometry.end, geometry.start], { duration: 300, easing: CLOSE_EASE, fill: 'forwards' });
+        } else {
+          await play(
+            frame,
+            [
+              { opacity: 1, transform: 'none', transformOrigin: '50% 50%' },
+              { opacity: 0, transform: 'scale(0.98)', transformOrigin: '50% 50%' },
+            ],
+            fade,
+          );
+        }
+      }
+      if (closeToken === token && dialog.open) dialog.close();
+    };
+
+    /** Runs however the dialog closed, so nothing is left behind. */
+    dialog.addEventListener('close', () => {
+      token += 1;
+      stopRunning();
+      unlockScroll();
+      const button = trigger;
+      source?.removeAttribute('data-preview-source');
+      source = null;
+      panel.style.width = '';
+      image.removeAttribute('srcset');
+      placeholder.removeAttribute('src');
+      trigger = null;
+      record = null;
+      closing = false;
+      button?.focus({ preventScroll: true });
+    });
+
+    dialog.addEventListener('cancel', (event) => {
+      event.preventDefault();
+      requestClose();
+    });
+
+    closeButton.addEventListener('click', () => requestClose());
+
+    // The modal already makes the page inert; this keeps Tab cycling through
+    // the dialog's own controls instead of leaving for the browser chrome.
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key !== 'Tab') return;
+      const stops = [...dialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled])')];
+      const first = stops[0];
+      const last = stops[stops.length - 1];
+      if (!first || !last) return;
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialog.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Only a press that starts and ends on the backdrop closes, so a drag
+    // that leaves the image never dismisses it.
+    dialog.addEventListener('pointerdown', (event) => {
+      downOnBackdrop = event.target === scrim || event.target === dialog;
+    });
+    dialog.addEventListener('click', (event) => {
+      const onBackdrop = event.target === scrim || event.target === dialog;
+      if (onBackdrop && downOnBackdrop) requestClose();
+      downOnBackdrop = false;
+    });
+
+    window.addEventListener('resize', () => {
+      if (dialog.open && record) size(record);
+    });
+
+    document.addEventListener('click', (event) => {
+      const button = (event.target as Element | null)?.closest<HTMLButtonElement>('[data-preview-trigger]');
+      if (button) open(button);
+    });
+
+    // Intent, not page load, fetches the large file.
+    const intent = (event: Event) => {
+      const button = (event.target as Element | null)?.closest<HTMLElement>('[data-preview-trigger]');
+      if (button?.dataset.previewTrigger) preload(button.dataset.previewTrigger);
+    };
+    document.addEventListener('pointerover', intent, { passive: true });
+    document.addEventListener('focusin', intent);
+    document.addEventListener('touchstart', intent, { passive: true });
+
+    // ---------- Hover preview ----------
+
+    const peek = document.querySelector<HTMLElement>('[data-peek]');
+    const peekImage = peek?.querySelector<HTMLImageElement>('img');
+    const hoverable = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+    if (peek && peekImage) {
+      const DELAY = 200;
+      const GRACE = 140;
+      const GAP = 12;
+      const MARGIN = 16;
+      const usesPopover = typeof peek.showPopover === 'function';
+      /** The screenshot being previewed, or waiting out the hover delay. */
+      let current: HTMLElement | null = null;
+      let shown = false;
+      let peekToken = 0;
+      let openTimer = 0;
+      let leaveTimer = 0;
+      /** Dismissed with Escape; stays closed until the pointer leaves it. */
+      let suppressed: HTMLElement | null = null;
+      /** After a scroll, wait for a real pointer move before previewing. */
+      let awaitingMove = false;
+      let motion: Animation | null = null;
+
+      const peekWidth = (entry: PreviewRecord) => {
+        const vw = root.clientWidth;
+        const vh = window.innerHeight;
+        const ratio = entry.width / entry.height;
+        return Math.round(
+          Math.min(800, Math.max(600, vw * 0.5), vw - MARGIN * 2, (vh - MARGIN * 2) * ratio),
+        );
+      };
+
+      /** Above the screenshot, else below, else beside it, always inside the window. */
+      const place = (from: DOMRect, width: number, height: number) => {
+        const vw = root.clientWidth;
+        const vh = window.innerHeight;
+        const clampX = (x: number) => Math.min(Math.max(x, MARGIN), vw - MARGIN - width);
+        const clampY = (y: number) => Math.min(Math.max(y, MARGIN), vh - MARGIN - height);
+        const cx = from.left + from.width / 2;
+        const cy = from.top + from.height / 2;
+        if (from.top - GAP - height >= MARGIN) {
+          const left = clampX(cx - width / 2);
+          return { left, top: from.top - GAP - height, origin: `${cx - left}px 100%` };
+        }
+        if (from.bottom + GAP + height <= vh - MARGIN) {
+          const left = clampX(cx - width / 2);
+          return { left, top: from.bottom + GAP, origin: `${cx - left}px 0` };
+        }
+        if (vw - from.right - GAP - MARGIN >= width) {
+          const top = clampY(cy - height / 2);
+          return { left: from.right + GAP, top, origin: `0 ${cy - top}px` };
+        }
+        if (from.left - GAP - MARGIN >= width) {
+          const top = clampY(cy - height / 2);
+          return { left: from.left - GAP - width, top, origin: `100% ${cy - top}px` };
+        }
+        const left = clampX(cx - width / 2);
+        const top = clampY(cy - height / 2);
+        return { left, top, origin: `${cx - left}px ${cy - top}px` };
+      };
+
+      const hide = (animate = true) => {
+        peekToken += 1;
+        clearTimeout(openTimer);
+        clearTimeout(leaveTimer);
+        current = null;
+        if (!shown) return;
+        shown = false;
+        motion?.cancel();
+        const done = () => {
+          if (shown) return;
+          if (usesPopover && peek.matches(':popover-open')) peek.hidePopover();
+          peek.hidden = true;
+        };
+        if (!animate) return done();
+        motion = peek.animate(
+          reduced.matches
+            ? [{ opacity: 1 }, { opacity: 0 }]
+            : [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'scale(0.98)' }],
+          { duration: 120, easing: 'ease-in', fill: 'forwards' },
+        );
+        motion.finished.then(done, () => undefined);
+      };
+
+      const show = async (shot: HTMLElement) => {
+        const slug = shot.dataset.shot ?? '';
+        const entry = records[slug];
+        if (!entry) return;
+        const showToken = ++peekToken;
+        const width = peekWidth(entry);
+        const height = Math.round((width * entry.height) / entry.width);
+        const sizes = `${width}px`;
+
+        // Never shown from the card file: it waits for the sharp capture.
+        await preload(slug, sizes);
+        if (showToken !== peekToken) return;
+        if (peekImage.dataset.slug !== slug || peekImage.sizes !== sizes) {
+          peekImage.sizes = sizes;
+          peekImage.srcset = entry.srcset;
+          peekImage.dataset.slug = slug;
+          await peekImage.decode().catch(() => undefined);
+          if (showToken !== peekToken) return;
+        }
+
+        const { left, top, origin } = place(shot.getBoundingClientRect(), width, height);
+        peek.style.left = `${left}px`;
+        peek.style.top = `${top}px`;
+        peek.style.width = `${width}px`;
+        peek.style.height = `${height}px`;
+        peek.style.transformOrigin = origin;
+
+        const switching = shown;
+        motion?.cancel();
+        peek.hidden = false;
+        if (usesPopover && !peek.matches(':popover-open')) peek.showPopover();
+        shown = true;
+        if (switching) return;
+        motion = peek.animate(
+          reduced.matches
+            ? [{ opacity: 0 }, { opacity: 1 }]
+            : [{ opacity: 0, transform: 'scale(0.96)' }, { opacity: 1, transform: 'none' }],
+          { duration: reduced.matches ? 120 : 180, easing: OPEN_EASE },
+        );
+      };
+
+      const enter = (shot: HTMLElement) => {
+        clearTimeout(leaveTimer);
+        if (shot === suppressed || shot === current || dialog.open) return;
+        const entry = records[shot.dataset.shot ?? ''];
+        if (!entry) return;
+        current = shot;
+        preload(shot.dataset.shot ?? '', `${peekWidth(entry)}px`);
+        clearTimeout(openTimer);
+        // Moving straight from one screenshot to the next needs no second wait.
+        if (shown) show(shot);
+        else openTimer = window.setTimeout(() => show(shot), DELAY);
+      };
+
+      const leave = (to: EventTarget | null) => {
+        if (to instanceof Node && peek.contains(to)) return;
+        clearTimeout(openTimer);
+        if (!shown) return hide(false);
+        leaveTimer = window.setTimeout(() => hide(), GRACE);
+      };
+
+      const shotFrom = (target: EventTarget | null) =>
+        target instanceof Element ? target.closest<HTMLElement>('[data-shot]') : null;
+
+      document.addEventListener('pointerover', (event) => {
+        if (event.pointerType !== 'mouse' || !hoverable.matches || awaitingMove) return;
+        const shot = shotFrom(event.target);
+        if (shot) enter(shot);
+      });
+
+      document.addEventListener('pointerout', (event) => {
+        const shot = shotFrom(event.target);
+        if (!shot) return;
+        const to = event.relatedTarget;
+        if (to instanceof Node && shot.contains(to)) return;
+        if (shot === suppressed) suppressed = null;
+        if (shot === current) leave(to);
+      });
+
+      // The pointer can cross into the preview and rest there.
+      peek.addEventListener('pointerenter', () => clearTimeout(leaveTimer));
+      peek.addEventListener('pointerleave', (event) => {
+        const to = event.relatedTarget;
+        if (current && to instanceof Node && current.contains(to)) return;
+        leaveTimer = window.setTimeout(() => hide(), GRACE);
+      });
+
+      // The preview is the screenshot, larger, so a click on it goes where the
+      // screenshot goes.
+      peek.addEventListener('click', () => {
+        const shot = current;
+        hide(false);
+        shot?.click();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape' || !current) return;
+        suppressed = current;
+        hide();
+      });
+
+      document.addEventListener('click', (event) => {
+        if (shotFrom(event.target)) hide(false);
+      });
+
+      window.addEventListener(
+        'scroll',
+        () => {
+          awaitingMove = true;
+          if (current) hide(false);
+        },
+        { passive: true },
+      );
+
+      document.addEventListener(
+        'pointermove',
+        (event) => {
+          if (!awaitingMove || event.pointerType !== 'mouse') return;
+          awaitingMove = false;
+          const shot = shotFrom(event.target);
+          if (shot && hoverable.matches) enter(shot);
+        },
+        { passive: true },
+      );
+
+      window.addEventListener('resize', () => hide(false));
+      window.addEventListener('blur', () => hide(false));
+      document.addEventListener('visibilitychange', () => hide(false));
+
+      dismissPeek = () => hide(false);
+    }
+  }
+</script>
+
+<style>
+  .preview {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: max(32px, env(safe-area-inset-top)) max(32px, env(safe-area-inset-right))
+      max(32px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left));
+    border: 0;
+    background: transparent;
+    color: var(--text);
+    overflow: hidden;
+  }
+
+  .preview[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  .preview::backdrop {
+    background: transparent;
+  }
+
+  /* A plain dim, no blur: the page recedes and the screenshot stays the only
+     thing in focus. */
+  .preview__scrim {
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 6, 9, 0.94);
+  }
+
+  .preview__panel {
+    position: relative;
+    display: grid;
+    gap: 14px;
+    max-width: 100%;
+  }
+
+  .preview__bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas: 'heading links close';
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+    min-height: 40px;
+  }
+
+  .preview__heading {
+    grid-area: heading;
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.15rem 0.75rem;
+  }
+
+  .preview__title {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
+    line-height: 1.3;
+  }
+
+  .preview__label {
+    font-size: var(--step-small);
+    color: var(--text-tertiary);
+    line-height: 1.3;
+  }
+
+  .preview__links {
+    grid-area: links;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 1.35rem;
+    font-size: var(--step-small);
+  }
+
+  .preview__links :global(.text-link) {
+    min-height: 40px;
+  }
+
+  .preview__close {
+    grid-area: close;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid rgba(242, 239, 233, 0.16);
+    border-radius: 999px;
+    background: rgba(242, 239, 233, 0.06);
+    color: var(--text);
+    cursor: pointer;
+    transition:
+      background-color 160ms var(--ease),
+      border-color 160ms var(--ease);
+  }
+
+  .preview__close:hover {
+    background: rgba(242, 239, 233, 0.12);
+    border-color: rgba(242, 239, 233, 0.28);
+  }
+
+  .preview__close:focus-visible {
+    outline-offset: 2px;
+    border-radius: 999px;
+  }
+
+  .preview__frame {
+    position: relative;
+    aspect-ratio: var(--ar, 16 / 9);
+    overflow: hidden;
+    border-radius: 10px;
+    background: #0e1117;
+    transform-origin: 0 0;
+  }
+
+  .preview__frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(242, 239, 233, 0.08);
+    pointer-events: none;
+  }
+
+  .preview__placeholder,
+  .preview__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  /* Only says anything if the full file is slow; a fast load never shows it. */
+  .preview__loading {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(11, 13, 18, 0.86);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    line-height: 1;
+    opacity: 0;
+    animation: preview-note 200ms ease-out 400ms forwards;
+  }
+
+  .preview__loading[hidden] {
+    display: none;
+  }
+
+  @keyframes preview-note {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Phones: tighter margins, links on their own line under the title, the
+     close control kept in the top corner within the safe area. */
+  @media (max-width: 719.98px) {
+    .preview {
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+        max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+    }
+
+    .preview__bar {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        'heading close'
+        'links links';
+      align-items: start;
+    }
+
+    .preview__heading {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-top: 0.2rem;
+    }
+
+    .preview__frame {
+      border-radius: 8px;
+    }
+
+    .preview__scrim {
+      background: rgba(5, 6, 9, 0.96);
+    }
+  }
+
+  /* ---------- Hover preview ---------- */
+
+  /* In the top layer where supported, so no card, grid or overflow can clip
+     it. A restrained edge and shadow; the page behind is left as it is. */
+  .peek {
+    position: fixed;
+    inset: auto;
+    z-index: 90;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0e1117;
+    color: inherit;
+    box-shadow:
+      0 0 0 1px rgba(242, 239, 233, 0.14),
+      0 10px 28px -10px rgba(0, 0, 0, 0.55),
+      0 30px 72px -20px rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+  }
+
+  .peek[hidden] {
+    display: none;
+  }
+
+  .peek__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

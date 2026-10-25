@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import SocialIcon from '../components/SocialIcon.astro';
 import { person, links, PERSON_ID } from '../data/site';
 import { SITE_URL } from '../config/site.mjs';
 
-const title = 'About Frances Sun | Lead UX Designer, Educator & Speaker';
+const title = 'About Frances Sun | UX Design, Leadership & Teaching';
 const description =
-  'Frances Sun is an Austin-based Lead UX Designer, educator, and UX speaker with experience across consumer electronics, enterprise software, complex workflows, systems thinking, interaction design, and prototyping.';
+  'Austin-based Lead UX Designer Frances Sun combines hands-on product design, team leadership, and UX teaching across consumer electronics and enterprise software.';
 
 // The page is about Frances, so it points at the same Person node rather than
 // describing a second one.
@@ -39,21 +40,19 @@ const structuredData = [
 
       <div class="about-page__body prose">
         <p>
-          I’m a Taiwanese Lead UX Designer based in Austin, Texas. I design complex products, teach
-          UX, and speak about the thinking behind the work. My experience spans consumer electronics
-          and enterprise software—from customer-facing experiences to operational tools.
+          I’m a Taiwanese Lead UX Designer based in Austin, Texas, with nearly two decades of
+          experience across consumer electronics and enterprise software.
         </p>
 
         <p>
-          I combine hands-on design with experience leading design teams. I start by understanding
-          how a process works, then shape workflows, information architecture, interactions, and
-          prototypes that help teams evaluate ideas before they are built.
+          I combine hands-on product design with design team leadership, shaping workflows,
+          information architecture, interactions, and prototypes.
         </p>
 
         <p>
-          I collaborate with product, engineering, finance, operations, and business partners.
-          Alongside my design work, I teach and mentor designers, and speak at conferences and
-          universities about enterprise UX, systems thinking, product clarity, and creativity.
+          I collaborate with product, engineering, finance, and operations teams. I also teach UX
+          and speak at conferences and universities about enterprise UX, systems thinking, and
+          creativity.
         </p>
 
         <div class="about-page__aside">
@@ -69,15 +68,9 @@ const structuredData = [
         </div>
 
         <p class="about-page__contact">
-          <a class="text-link" href={links.linkedin} target="_blank" rel="noopener noreferrer">
-            LinkedIn <span aria-hidden="true">↗</span>
-          </a>
-          <a class="text-link" href={links.instagram} target="_blank" rel="noopener noreferrer">
-            Instagram <span aria-hidden="true">↗</span>
-          </a>
-          <a class="text-link" href={links.resume} target="_blank" rel="noopener noreferrer">
-            Resume <span aria-hidden="true">↗</span>
-          </a>
+          <a class="text-link" href={links.linkedin} target="_blank" rel="noopener noreferrer"><span>LinkedIn</span><SocialIcon brand="LinkedIn" /></a>
+          <a class="text-link" href={links.instagram} target="_blank" rel="noopener noreferrer"><span>Instagram</span><SocialIcon brand="Instagram" /></a>
+          <a class="text-link" href={links.resume} target="_blank" rel="noopener noreferrer"><span>Resume</span><SocialIcon brand="Resume" /></a>
         </p>
       </div>
     </div>
@@ -175,5 +168,12 @@ const structuredData = [
     flex-wrap: wrap;
     gap: 1.5rem;
     margin-top: 1rem;
+  }
+
+  .about-page__contact a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
   }
 </style>

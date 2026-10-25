@@ -66,6 +66,7 @@ npm run slides            # export decks -> public/slides/
 npm run slides:verify     # verify exports against the .pptx sources
 npm run slides:textfit    # check text boxes for font-substitution rewrap
 npm run capture:ratecard  # re-capture the Rate Card Manager screenshot
+npm run capture:previews  # Selected Work cards + full-resolution previews
 npm run import:previous   # re-import the Previous Work archive — see below
 npm run check             # astro check (TypeScript)
 

@@ -1,5 +1,6 @@
 ---
 import { person, nav, social } from '../data/site';
+import SocialIcon from './SocialIcon.astro';
 
 const year = new Date().getFullYear();
 ---
@@ -28,9 +29,9 @@ const year = new Date().getFullYear();
         {
           social.map((item) => (
             <li>
-              <a href={item.href} target="_blank" rel="noopener noreferrer">
+              <a class="footer__social" href={item.href} target="_blank" rel="noopener noreferrer">
                 {item.label}
-                <span aria-hidden="true"> ↗</span>
+                <SocialIcon brand={item.label} />
               </a>
             </li>
           ))
@@ -80,6 +81,12 @@ const year = new Date().getFullYear();
     font-size: var(--step-small);
     color: var(--text-secondary);
     text-decoration: none;
+  }
+
+  .footer__nav a.footer__social {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
 
   .footer__nav a:hover {

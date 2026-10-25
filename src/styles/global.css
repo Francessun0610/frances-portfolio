@@ -270,7 +270,7 @@ button {
   text-decoration: none;
   cursor: pointer;
   transition: background-color 160ms var(--ease), border-color 160ms var(--ease),
-    color 160ms var(--ease);
+    color 160ms var(--ease), transform 160ms var(--ease);
 }
 
 .button--primary {
@@ -304,6 +304,119 @@ button {
 .text-link:hover {
   text-decoration: underline;
   text-underline-offset: 0.25em;
+}
+
+/* An arrow leans the way it points while its link is hovered or focused. The
+   glyph moves, never the label, so nothing around it shifts. */
+.arrow {
+  display: inline-block;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+a:hover > .arrow,
+a:focus-visible > .arrow {
+  transform: translate3d(3px, 0, 0);
+}
+
+a:hover > .arrow--out,
+a:focus-visible > .arrow--out {
+  transform: translate3d(2px, -2px, 0);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+/* ==========================================================================
+   Contained card glow
+   Shared by Selected Work, Linear, and Speaking. The layer is the card's
+   own box: nothing paints into the gap, and only this layer is clipped.
+   ========================================================================== */
+
+.item-glow-host {
+  isolation: isolate;
+}
+
+.item-glow {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 450ms var(--ease);
+}
+
+.item-glow__wash,
+.item-glow__field {
+  position: absolute;
+  pointer-events: none;
+}
+
+.item-glow__wash {
+  inset: 0;
+  background: rgba(239, 196, 119, 0.04);
+}
+
+/* Larger than the card, clipped by it. The center only drifts between
+   35% and 65%, so the light changes direction without becoming a spot. */
+.item-glow__field {
+  top: var(--glow-y, 48%);
+  left: var(--glow-x, 50%);
+  width: 180%;
+  height: 160%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(239, 196, 119, 0.03) 0%,
+    rgba(239, 196, 119, 0.018) 38%,
+    rgba(239, 196, 119, 0.006) 68%,
+    rgba(239, 196, 119, 0) 100%
+  );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .item-glow-host:hover > .item-glow {
+    opacity: 1;
+    transition-duration: 280ms;
+  }
+}
+
+.item-glow-host:focus-within > .item-glow {
+  opacity: 1;
+  transition-duration: 280ms;
+}
+
+/* A click can focus the card itself. That is not a hover, and it must not
+   leave the light on after the pointer has gone. */
+.item-glow-host:focus:not(:focus-visible):not(:hover) > .item-glow {
+  opacity: 0;
+  transition-duration: 450ms;
+}
+
+.item-zoom {
+  overflow: hidden;
+}
+
+.item-zoom img {
+  transition: transform 600ms var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .item-glow-host:hover .item-zoom img {
+    transform: scale(1.02);
+  }
+
+  .item-glow-host:hover .item-zoom--tight img {
+    transform: scale(1.01);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item-zoom img {
+    transform: none;
+  }
 }
 
 /* ==========================================================================

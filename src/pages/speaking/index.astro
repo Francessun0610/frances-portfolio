@@ -3,27 +3,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SpeakingCard from '../../components/SpeakingCard.astro';
 import { links, talksNewestFirst } from '../../data/site';
 
-const title = 'Enterprise UX Speaker | Frances Sun';
+const title = 'Frances Sun | Enterprise UX Speaker & Educator';
 const description =
-  'Conference and university talks by Frances Sun on enterprise UX, systems thinking, product clarity, complex workflows, and creativity in design.';
+  'Explore Frances Sun’s conference and university talks on enterprise UX, systems thinking, workflow clarity, and creativity in design.';
 ---
 
 <BaseLayout title={title} description={description} path="/speaking">
   <section class="speaking-index">
     <div class="shell">
       <header class="speaking-index__head">
-        <p class="eyebrow">Speaking</p>
         <h1>Speaking</h1>
-        <p class="lede measure">
-          I speak about enterprise UX, domain complexity, systems thinking, and the practical work
-          of making complicated products easier to understand and use.
+        <p class="lede">
+          I speak about enterprise UX, systems thinking, and making complex products easier to
+          understand.
         </p>
-        <p class="measure speaking-index__note">
-          My talks draw from hands-on experience designing enterprise software, operational
-          workflows, and connected product ecosystems.
-        </p>
-        <p class="measure speaking-index__invite">
-          For conference, university, and UX community speaking inquiries, get in touch.
+        <p class="speaking-index__note">
+          My talks draw on hands-on product design, team leadership, and teaching.
         </p>
         <p class="speaking-index__invite-action">
           <a class="button button--ghost" href={links.linkedin} target="_blank" rel="noopener noreferrer">
@@ -46,50 +41,37 @@ const description =
 
 <style>
   .speaking-index {
-    padding-block: clamp(2.5rem, 2rem + 4vw, 5rem) clamp(3rem, 2rem + 4vw, 5.5rem);
+    padding-top: 36px;
+    padding-bottom: clamp(3rem, 2rem + 4vw, 5.5rem);
   }
 
-  .speaking-index__head {
-    margin-bottom: clamp(2rem, 1.25rem + 1.5vw, 3rem);
-  }
-
-  .speaking-index__head h1 {
-    margin-bottom: 1.25rem;
-  }
-
-  /* Wider than the shared 58ch measure, and never past the card grid,
-     which is this same shell. The opening line stops at 52rem so it breaks
-     into two real lines instead of a full line and a short tail. */
-  .speaking-index__head .lede {
-    max-width: min(52rem, 100%);
-  }
-
-  .speaking-index__head .speaking-index__note,
-  .speaking-index__head .speaking-index__invite {
-    max-width: 100%;
-  }
-
-  /* Just below the width where the second sentence fits on one line, a full
-     container leaves a few words alone. Pull it in so the wrap stays even. */
-  @media (max-width: 1150px) {
-    .speaking-index__head .speaking-index__note {
-      max-width: 38rem;
+  @media (min-width: 900px) {
+    .speaking-index {
+      padding-top: 60px;
     }
   }
 
-  /* Second intro line sits a step quieter than the lede. */
-  .speaking-index__note {
-    margin-top: 0.85rem;
-    color: var(--text-secondary);
+  .speaking-index__head {
+    margin-bottom: 40px;
   }
 
-  .speaking-index__invite {
-    margin-top: 1.5rem;
+  .speaking-index__head h1 {
+    margin-bottom: 24px;
+  }
+
+  .speaking-index__head .lede,
+  .speaking-index__note {
+    max-width: none;
+    margin: 0;
+  }
+
+  .speaking-index__note {
+    margin-top: 12px;
     color: var(--text-secondary);
   }
 
   .speaking-index__invite-action {
-    margin-top: 1rem;
+    margin-top: 24px;
   }
 
   .speaking-index__grid {

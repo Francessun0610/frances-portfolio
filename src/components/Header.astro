@@ -1,5 +1,6 @@
 ---
 import { person, nav, social } from '../data/site';
+import SocialIcon from './SocialIcon.astro';
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 
@@ -51,7 +52,7 @@ function isCurrent(href: string) {
             <li>
               <a href={item.href} target="_blank" rel="noopener noreferrer">
                 {item.label}
-                <span aria-hidden="true"> ↗</span>
+                <SocialIcon brand={item.label} />
               </a>
             </li>
           ))
@@ -138,6 +139,9 @@ function isCurrent(href: string) {
   }
 
   .site-nav__list--social a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     color: var(--text-tertiary);
   }
 
@@ -249,6 +253,8 @@ function isCurrent(href: string) {
     }
 
     .site-nav__list--social a {
+      display: inline-flex;
+      width: 100%;
       color: var(--text-secondary);
     }
 
