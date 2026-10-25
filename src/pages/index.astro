@@ -584,7 +584,7 @@ const structuredData = [
     fill: none;
     stroke-width: 2px;
     vector-effect: non-scaling-stroke;
-    animation: sky-edge 13s linear both;
+    animation: sky-edge 10.5s linear both;
   }
 
   /* A wider, fainter copy of the same arc, only on the left, so the line
@@ -628,48 +628,48 @@ const structuredData = [
 
   /* ---------- Hero entrance ---------- */
 
-  /* The first second is the reveal. After that, the former 4s, 5s, and 3s
-     phases run unchanged, two seconds earlier: 5s, 10s, and 13s. Linear, so
-     the later light is not pulled forward inside those phases. */
+  /* The old 0–3s near-dark opening is now 0.5s. From there the former
+     3s, 5s, 10s, and 13s states keep their spacing: 2.5s, 7.5s, and 10.5s.
+     Linear, so those later phases are shifted, not sped up. */
   .sky__depth {
-    animation: sky-depth 13s linear both;
+    animation: sky-depth 10.5s linear both;
   }
 
   .sky__travel {
-    animation: sky-rise 13s linear both;
+    animation: sky-rise 10.5s linear both;
   }
 
   .sky__band {
-    animation: sky-band 13s linear both;
+    animation: sky-band 10.5s linear both;
   }
 
   .sky__rim {
-    animation: sky-rim 13s linear both;
+    animation: sky-rim 10.5s linear both;
   }
 
   .sky__core {
-    animation: sky-core 13s linear both;
+    animation: sky-core 10.5s linear both;
   }
 
   .sky__warm {
-    animation: sky-warm 13s linear both;
+    animation: sky-warm 10.5s linear both;
   }
 
   .sky__spread {
-    animation: sky-spread 13s linear both;
+    animation: sky-spread 10.5s linear both;
   }
 
   @keyframes sky-edge {
     from {
       opacity: 0.1;
     }
-    7.7% {
-      opacity: 0.12;
+    4.76% {
+      opacity: 0.22;
     }
-    38.5% {
+    23.81% {
       opacity: 0.32;
     }
-    76.9% {
+    71.43% {
       opacity: 0.68;
     }
     to {
@@ -681,13 +681,13 @@ const structuredData = [
     from {
       opacity: calc(0.08 * (1 - var(--sp, 0)));
     }
-    7.7% {
-      opacity: calc(0.22 * (1 - var(--sp, 0)));
+    4.76% {
+      opacity: calc(0.45 * (1 - var(--sp, 0)));
     }
-    38.5% {
+    23.81% {
       opacity: calc(0.68 * (1 - var(--sp, 0)));
     }
-    76.9% {
+    71.43% {
       opacity: calc(0.7 * (1 - var(--sp, 0)));
     }
     to {
@@ -699,13 +699,13 @@ const structuredData = [
     from {
       transform: translate3d(0, 2.25rem, 0);
     }
-    7.7% {
-      transform: translate3d(0, 2rem, 0);
+    4.76% {
+      transform: translate3d(0, 1.575rem, 0);
     }
-    38.5% {
+    23.81% {
       transform: translate3d(0, 1.15rem, 0);
     }
-    76.9% {
+    71.43% {
       transform: translate3d(0, 0.35rem, 0);
     }
     to {
@@ -718,15 +718,15 @@ const structuredData = [
       opacity: 0.08;
       transform: scale(0.2, 0.44);
     }
-    7.7% {
-      opacity: 0.16;
-      transform: scale(0.28, 0.5);
+    4.76% {
+      opacity: 0.25;
+      transform: scale(0.39, 0.58);
     }
-    38.5% {
+    23.81% {
       opacity: 0.34;
       transform: scale(0.5, 0.66);
     }
-    76.9% {
+    71.43% {
       opacity: 0.72;
       transform: scale(0.86, 0.88);
     }
@@ -741,15 +741,15 @@ const structuredData = [
       opacity: 0.1;
       transform: scale(0.22, 0.28);
     }
-    7.7% {
-      opacity: 0.2;
-      transform: scale(0.3, 0.34);
+    4.76% {
+      opacity: 0.29;
+      transform: scale(0.41, 0.42);
     }
-    38.5% {
+    23.81% {
       opacity: 0.38;
       transform: scale(0.52, 0.5);
     }
-    76.9% {
+    71.43% {
       opacity: 0.7;
       transform: scale(0.84, 0.8);
     }
@@ -764,15 +764,15 @@ const structuredData = [
       opacity: 0.1;
       transform: scale(0.16, 0.82);
     }
-    7.7% {
-      opacity: 0.18;
-      transform: scale(0.22, 0.86);
+    4.76% {
+      opacity: 0.27;
+      transform: scale(0.34, 0.89);
     }
-    38.5% {
+    23.81% {
       opacity: 0.36;
       transform: scale(0.46, 0.92);
     }
-    76.9% {
+    71.43% {
       opacity: 0.72;
       transform: scale(0.84, 0.97);
     }
@@ -787,15 +787,15 @@ const structuredData = [
       opacity: 0.05;
       transform: scale(0.26, 0.24);
     }
-    7.7% {
-      opacity: 0.1;
-      transform: scale(0.32, 0.28);
+    4.76% {
+      opacity: 0.2;
+      transform: scale(0.435, 0.38);
     }
-    38.5% {
+    23.81% {
       opacity: 0.3;
       transform: scale(0.55, 0.48);
     }
-    76.9% {
+    71.43% {
       opacity: 0.7;
       transform: scale(0.86, 0.8);
     }
@@ -810,15 +810,15 @@ const structuredData = [
       opacity: 0.03;
       transform: scale(0.48, 0.16);
     }
-    7.7% {
-      opacity: 0.08;
-      transform: scale(0.55, 0.22);
+    4.76% {
+      opacity: 0.18;
+      transform: scale(0.625, 0.32);
     }
-    38.5% {
+    23.81% {
       opacity: 0.28;
       transform: scale(0.7, 0.42);
     }
-    76.9% {
+    71.43% {
       opacity: 0.72;
       transform: scale(0.92, 0.8);
     }
