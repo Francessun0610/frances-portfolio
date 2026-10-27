@@ -15,7 +15,7 @@ const current = screen ?? screens[0];
 if (!current) throw new Error('Missing Linear screen');
 const firstN = screens[0].n;
 const lastN = screens[screens.length - 1].n;
-const position = current.n - firstN + 1;
+const position = screens.findIndex((item) => item.n === current.n) + 1;
 
 const clientScreens = screens.map((item) => ({
   n: item.n,
@@ -30,7 +30,7 @@ const clientScreens = screens.map((item) => ({
   title={`${current.title} · Linear Ad Platform`}
   description="A visual introduction to the Linear Ad Platform team Frances Sun led."
 >
-  <div class="deck" data-linear-deck data-screen={current.n}>
+  <div class="deck" data-linear-deck data-screen={current.n} data-kind={current.kind}>
     <div class="deck__stage" data-stage>
       <div class="deck__column">
         <div class="deck__toolbar">
@@ -91,84 +91,43 @@ const clientScreens = screens.map((item) => ({
           />
         </section>
 
-        <section class="panel panel--copy" data-panel="math" hidden={current.kind !== 'math'}>
-          <p class="eyebrow">An illustration, not a viewing study</p>
-          <h1>How the minutes add up</h1>
-          <p class="lede">
-            At 15 minutes of advertising per hour, 30-second spots add up to 30 ads. Across a
-            five-hour viewing window, that would be 75 minutes of advertising.
-          </p>
-        </section>
-
-        <section class="panel panel--copy" data-panel="networks" hidden={current.kind !== 'networks'}>
-          <p class="eyebrow">Narrative snapshot</p>
-          <h1>Networks referenced in this story</h1>
-          <p class="lede">
-            Names as written in the original narrative, with the duplicated Entertainment list
-            removed. This is not a current list of networks in operation.
-          </p>
-          <div class="nets">
-            <div>
-              <h2>ABC</h2>
-              <p>ABC-30 · ABC-5</p>
-            </div>
-            <div>
-              <h2>Entertainment</h2>
-              <p>Freeform · FX · FXM · FXX · Nat Geo Channel · Nat Geo Wild</p>
-              <h2>Entertainment Kids</h2>
-              <p>Disney Channel · Disney Junior · Disney XD</p>
-              <h2>Entertainment Spanish</h2>
-              <p>Nat Geo Mundo</p>
-            </div>
-            <div>
-              <h2>Sports</h2>
-              <p>
-                ACC Network · ESPN · ESPN2 · ESPN3 North · ESPNU · ESPN Classic · ESPN Deportes ·
-                ESPN México · ESPN Caribbean · ESPN Centroamérica · ESPN College Extra · ESPN Pac Rim ·
-                Longhorn Network · SEC Network
-              </p>
-            </div>
-            <div>
-              <h2>Addressable</h2>
-              <p>Disney Plus event · YouTube Kids · Disney Kids · Nat Geo Kids</p>
-            </div>
+        <section class="panel panel--summary" data-panel="narrative" hidden={current.kind !== 'narrative'}>
+          <div class="lsum">
+            <header class="lsum__header">
+              <h1 class="lsum__title">A shared view of our team’s work</h1>
+              <p class="lsum__subtitle">I regularly use this story in team presentations to explain how our products and workflows connect.</p>
+            </header>
+            <ol class="lsum__points">
+              <li>
+                <p class="lsum__num">01</p>
+                <h2>Team scope</h2>
+                <p>Make each product’s role in the advertising workflow clear.</p>
+              </li>
+              <li>
+                <p class="lsum__num">02</p>
+                <h2>Connections</h2>
+                <p>Show how work moves between products and teams.</p>
+              </li>
+              <li>
+                <p class="lsum__num">03</p>
+                <h2>Common language</h2>
+                <p>Use a familiar metaphor to explain a complex platform.</p>
+              </li>
+            </ol>
           </div>
         </section>
 
-        <section class="panel panel--copy" data-panel="narrative" hidden={current.kind !== 'narrative'}>
-          <p class="eyebrow">What this narrative makes clear</p>
-          <h1>A shared view of our team’s work.</h1>
-          <p class="lede">One connected story across planning, inventory, and trafficking.</p>
-          <ol class="points">
-            <li>
-              <span>01</span>
-              <h2>Team scope</h2>
-              <p>See what each tool contributes to the advertising workflow.</p>
-            </li>
-            <li>
-              <span>02</span>
-              <h2>Connections</h2>
-              <p>Understand how work moves between products and teams.</p>
-            </li>
-            <li>
-              <span>03</span>
-              <h2>Common language</h2>
-              <p>Use a familiar candy-store metaphor to explain a complex platform.</p>
-            </li>
-          </ol>
-        </section>
-
-        <section class="panel panel--copy" data-panel="closing" hidden={current.kind !== 'closing'}>
-          <h1>Making complexity understandable.</h1>
-          <p class="lede">
-            This visual narrative connects our team’s work into one understandable story—from
-            planning an advertising opportunity to preparing it for airtime.
-          </p>
-        </section>
-
-        <section class="panel panel--copy" data-panel="thanks" hidden={current.kind !== 'thanks'}>
-          <h1>Thank you</h1>
-          <p class="cover__role">Frances Sun · Lead Product Designer</p>
+        <section class="panel panel--thanks" data-panel="thanks" hidden={current.kind !== 'thanks'}>
+          <div class="cov">
+            <h1 class="cov__title">Thank you</h1>
+            <p class="cov__presenter">Frances Sun</p>
+            <p class="cov__role">Lead Designer · Enterprise UX</p>
+            <p class="cov__contacts">
+              <a href="https://francessun.design/" target="_blank" rel="noopener noreferrer">francessun.design</a>
+              <a href="mailto:francessun@gmail.com">francessun@gmail.com</a>
+              <a href="https://www.linkedin.com/in/sun0610/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </p>
+          </div>
         </section>
       </div>
       <div class="deck__bar" data-bar>
@@ -256,6 +215,14 @@ const clientScreens = screens.map((item) => ({
     border-radius: 12px;
     overflow: hidden;
     position: relative;
+  }
+
+  /* These two endings are the rounded 1920×1080 panels. 40px on that
+     stage is 2.083% of the width and 3.704% of the height. */
+  .deck[data-kind='narrative'] .deck__frame,
+  .deck[data-kind='thanks'] .deck__frame {
+    background: #020024;
+    border-radius: 2.0833% / 3.7037%;
   }
 
   .deck__frame[data-moving='true'] {
@@ -347,80 +314,195 @@ const clientScreens = screens.map((item) => ({
     }
   }
 
-  .panel--copy {
+  /* Shared understanding. Positions are the interview slide’s 1920×1080
+     coordinates, scaled to this frame. */
+  .panel--summary,
+  .panel--thanks {
+    container-type: size;
+    color: #fff;
+  }
+
+  .panel--summary {
+    background: #020024;
+  }
+
+  .panel--thanks {
+    background: url('/slides/linear/cover-background.svg') 0 0 / 100% 100% no-repeat;
+  }
+
+  .lsum,
+  .cov {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
+  }
+
+  .lsum__header {
+    position: absolute;
+    left: 3.28125cqw;
+    top: 8.148148cqh;
+    width: 93.4375cqw;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: clamp(1.25rem, 2vw, 2.5rem) clamp(1.4rem, 3vw, 3.25rem);
-    background:
-      radial-gradient(80% 60% at 88% 18%, rgba(36, 58, 110, 0.35), transparent 60%),
-      #070b16;
+    gap: 0.740741cqh;
   }
 
-  .eyebrow {
-    margin: 0 0 0.55rem;
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-tertiary);
+  .lsum__title,
+  .lsum__subtitle,
+  .lsum__num,
+  .lsum__points h2,
+  .lsum__points p,
+  .cov__title,
+  .cov__presenter,
+  .cov__role,
+  .cov__contacts {
+    letter-spacing: 0;
+    text-wrap: wrap;
   }
 
-  h1 {
-    font-size: clamp(1.7rem, 2.4vw, 3rem);
-    max-width: 18ch;
+  .lsum__title {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    font-size: 2.916667cqw;
+    font-weight: 900;
+    line-height: 1;
+    white-space: nowrap;
+    color: #fff;
   }
 
-  .lede {
-    margin: 0.75rem 0 0;
-    max-width: 42ch;
-    color: var(--text);
-    font-size: clamp(1rem, 1.2vw, 1.25rem);
+  .lsum__subtitle {
+    margin: 0;
+    width: 100%;
+    font-size: 1.875cqw;
+    font-weight: 500;
+    line-height: 1.3333;
+    white-space: nowrap;
+    color: #d2d2d7;
   }
 
-  .cover__role {
-    margin: 0.4rem 0 0;
-    color: var(--text-secondary);
-    font-size: 0.92rem;
-  }
-
-  .points {
+  .lsum__points {
+    position: absolute;
+    left: 3.28125cqw;
+    top: 39.259259cqh;
+    width: 93.4375cqw;
+    margin: 0;
+    padding: 0;
     list-style: none;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
-    margin: 1.75rem 0 0;
-    padding: 0;
+    column-gap: 4.166667cqw;
+    align-items: start;
   }
 
-  .points li {
-    border-top: 1px solid rgba(242, 239, 233, 0.1);
-    padding-top: 0.8rem;
-  }
-
-  .points span {
-    color: #e7a15a;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-  }
-
-  .points h2,
-  .nets h2 {
-    margin: 0.35rem 0 0.3rem;
-    font-size: 1.05rem;
-  }
-
-  .points p,
-  .nets p {
+  .lsum__points li {
     margin: 0;
-    color: var(--text-secondary);
-    font-size: 0.92rem;
+    padding: 2.592593cqh 0 0;
+    border-top: 1px solid #6cb8ff;
+    min-width: 0;
   }
 
-  .nets {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
-    margin-top: 1.25rem;
+  .lsum__num {
+    margin: 0;
+    font-weight: 500;
+    font-size: 1.110938cqw;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    color: #6cb8ff;
+  }
+
+  .lsum__points h2 {
+    margin: 2.592593cqh 0 0;
+    font-weight: 500;
+    font-size: 1.875cqw;
+    line-height: 1.15;
+    color: #fff;
+  }
+
+  .lsum__points li > p:not(.lsum__num) {
+    margin: 1.481481cqh 0 0;
+    max-width: 23.958333cqw;
+    font-weight: 400;
+    font-size: 1.354167cqw;
+    line-height: 1.35;
+    color: #b8bcc7;
+  }
+
+  .cov__title,
+  .cov__presenter,
+  .cov__role {
+    position: absolute;
+    left: 8.333333cqw;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    color: #fff;
+    font-weight: 900;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .cov__title {
+    top: 47.962963cqh;
+    width: 92.708333cqw;
+    height: 13.518519cqh;
+    max-width: none;
+    font-size: 5cqw;
+  }
+
+  .cov__presenter {
+    top: 61.481481cqh;
+    width: 37.5cqw;
+    height: 5.37037cqh;
+    font-size: 2.5cqw;
+  }
+
+  .cov__role {
+    top: 66.851852cqh;
+    width: 46.875cqw;
+    height: 7.037037cqh;
+    font-size: 1.875cqw;
+    opacity: 0.3;
+  }
+
+  .cov__contacts {
+    position: absolute;
+    left: 8.333333cqw;
+    top: 78.333333cqh;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 2.916667cqw;
+    row-gap: 1.111111cqh;
+    width: 78.125cqw;
+    margin: 0;
+    font-size: 1.666667cqw;
+    font-weight: 400;
+    line-height: 1.375;
+  }
+
+  .cov__contacts a {
+    color: rgba(255, 255, 255, 0.78);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .cov__contacts a:hover {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 0.3125cqw;
+  }
+
+  .cov__contacts a:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 0.3125cqw;
+    outline: 2px solid #fff;
+    outline-offset: 0.3125cqw;
+    border-radius: 4px;
   }
 
   .deck__bar {
@@ -480,11 +562,6 @@ const clientScreens = screens.map((item) => ({
   }
 
   @media (max-width: 800px) {
-    .points,
-    .nets {
-      grid-template-columns: 1fr;
-    }
-
     .deck__stage {
       padding-inline: 0.85rem;
       min-width: 0;
@@ -509,6 +586,121 @@ const clientScreens = screens.map((item) => ({
 
     .panel[hidden] {
       display: none;
+    }
+
+    .deck[data-kind='narrative'] .deck__frame,
+    .deck[data-kind='thanks'] .deck__frame {
+      max-height: none;
+      overflow: hidden;
+      border-radius: 16px;
+    }
+
+    .panel--summary,
+    .panel--thanks {
+      container-type: normal;
+    }
+
+    .lsum,
+    .cov {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1.15rem 1.4rem;
+      gap: 1.35rem;
+    }
+
+    .cov {
+      min-height: min(72dvh, 36rem);
+      justify-content: flex-end;
+      padding-top: 4.5rem;
+      gap: 0.2rem;
+      background: url('/slides/linear/cover-background.svg') 0 0 / 100% 100% no-repeat;
+    }
+
+    .lsum__header,
+    .lsum__points,
+    .cov__title,
+    .cov__presenter,
+    .cov__role,
+    .cov__contacts {
+      position: static;
+      left: auto;
+      top: auto;
+      width: auto;
+      height: auto;
+    }
+
+    .lsum__title,
+    .lsum__subtitle,
+    .cov__title,
+    .cov__presenter,
+    .cov__role {
+      white-space: normal;
+    }
+
+    .lsum__title {
+      font-size: 1.65rem;
+      line-height: 1.12;
+    }
+
+    .lsum__subtitle {
+      margin-top: 0.45rem;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .lsum__points {
+      grid-template-columns: 1fr;
+      row-gap: 1.15rem;
+    }
+
+    .lsum__points li {
+      padding-top: 0.85rem;
+    }
+
+    .lsum__num {
+      font-size: 0.8rem;
+    }
+
+    .lsum__points h2 {
+      margin-top: 0.55rem;
+      font-size: 1.15rem;
+    }
+
+    .lsum__points li > p:not(.lsum__num) {
+      max-width: 36rem;
+      margin-top: 0.4rem;
+      font-size: 0.98rem;
+    }
+
+    .cov__title {
+      font-size: 2.5rem;
+    }
+
+    .cov__presenter {
+      margin-top: 0.35rem;
+      font-size: 1.35rem;
+    }
+
+    .cov__role {
+      font-size: 1.05rem;
+    }
+
+    .cov__contacts {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.55rem;
+      margin-top: 1.1rem;
+      font-size: 1rem;
+    }
+
+    .cov__contacts a:hover,
+    .cov__contacts a:focus-visible {
+      text-underline-offset: 0.22em;
+    }
+
+    .cov__contacts a:focus-visible {
+      outline-offset: 4px;
     }
   }
 

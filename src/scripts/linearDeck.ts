@@ -3,7 +3,8 @@
  * The markup for the current screen is server-rendered; this script
  * moves between the static routes without a second handler on the same event.
  * Route numbers stay on the previous index (source slide minus 2). The
- * counter uses the position in the 49-screen sequence.
+ * counter uses the position in the active sequence, which is no longer a
+ * run of consecutive route numbers.
  */
 
 type DeckScreen = {
@@ -39,7 +40,8 @@ if (root && root.dataset.ready !== 'true') {
 
   const pad = (n: number) => String(n).padStart(2, '0');
   const screenAt = (n: number) => byN.get(n);
-  const positionOf = (n: number) => n - first + 1;
+  const indexOf = (n: number) => screens.findIndex((screen) => screen.n === n);
+  const positionOf = (n: number) => indexOf(n) + 1;
 
   function rememberReturn() {
     sessionStorage.setItem('fs-linear-return', '1');
@@ -67,8 +69,9 @@ if (root && root.dataset.ready !== 'true') {
       shot.alt = screen.transcript;
     }
     progress.textContent = `${pad(positionOf(n))} / ${pad(total)}`;
-    prev.disabled = n <= first;
-    next.disabled = n >= last;
+    prev.disabled = indexOf(n) <= 0;
+    next.disabled = indexOf(n) >= total - 1;
+    deck.dataset.kind = screen.kind;
     document.title = `${screen.title} · Linear Ad Platform`;
     if (announce) live.textContent = `${screen.title}. Screen ${positionOf(n)} of ${total}.`;
     const url = `/work/linear/${n}`;
@@ -79,7 +82,7 @@ if (root && root.dataset.ready !== 'true') {
   }
 
   function go(n: number) {
-    if (n < first || n > last || n === current) return;
+    if (!screenAt(n) || n === current) return;
     if (reduced) {
       render(n, true, 'push');
       return;
@@ -93,13 +96,19 @@ if (root && root.dataset.ready !== 'true') {
     }, 140);
   }
 
-  prev.addEventListener('click', () => go(current - 1));
-  next.addEventListener('click', () => go(current + 1));
+  function step(delta: number) {
+    const screen = screens[indexOf(current) + delta];
+    if (!screen) return;
+    go(screen.n);
+  }
+
+  prev.addEventListener('click', () => step(-1));
+  next.addEventListener('click', () => step(1));
 
   root.querySelector<HTMLElement>('[data-stage]')?.addEventListener('click', (event) => {
     const target = event.target as Element | null;
     if (target?.closest('a, button, input, textarea, summary')) return;
-    go(current + 1);
+    step(1);
   });
 
   fullBtn.addEventListener('click', async () => {
@@ -132,10 +141,10 @@ if (root && root.dataset.ready !== 'true') {
     if (nextKeys.includes(event.key)) {
       if (target?.closest('button, a') && event.key === ' ') return;
       event.preventDefault();
-      go(current + 1);
+      step(1);
     } else if (prevKeys.includes(event.key)) {
       event.preventDefault();
-      go(current - 1);
+      step(-1);
     } else if (event.key === 'Home') {
       event.preventDefault();
       go(first);

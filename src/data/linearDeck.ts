@@ -1,18 +1,24 @@
 /**
  * Linear Ad Platform presentation.
- * 49 screens: original Figma slides 4–52, in that order. Slides 1–3 stay out.
- * Slide 15 and slide 23 stay in their narrative positions.
+ * 44 screens. Original Figma slides 4–45 stay in order, then the shared
+ * understanding screen (source 50) and Thank you (source 52). Slides 1–3
+ * stay out. Slides 46–49 and 51 are no longer in the story.
  *
  * The route number is not the counter. It stays `sourceSlide - 2`, which is
  * how these URLs were already assigned, so /work/linear/13 is still source
- * slide 15 and /work/linear/50 is still source slide 52. The removed cover
- * was /work/linear/1; that address redirects to /work/linear/2 (source slide 4).
- * The on-screen counter is the position in this 49-screen sequence.
+ * slide 15, /work/linear/43 is the candy workflow, /work/linear/48 is shared
+ * understanding, and /work/linear/50 is Thank you. The removed cover was
+ * /work/linear/1 and redirects to /work/linear/2. Retired routes 44–47 and
+ * 49 redirect to /work/linear/48. The on-screen counter is the position in
+ * this 44-screen sequence.
  */
 
-export const LINEAR_TOTAL = 49;
+export const LINEAR_TOTAL = 44;
 
-export type LinearKind = 'image' | 'upfront' | 'math' | 'networks' | 'narrative' | 'closing' | 'thanks';
+/** Source slides taken out of the active sequence. Their routes redirect. */
+const RETIRED_SOURCES = new Set([46, 47, 48, 49, 51]);
+
+export type LinearKind = 'image' | 'upfront' | 'narrative' | 'thanks';
 
 export type LinearScreen = {
   n: number;
@@ -68,12 +74,7 @@ const SOURCE_TITLES: Record<number, string> = {
   43: 'Log Scheduling',
   44: 'Now the ads are ready for consumption!',
   45: 'Here’s how the candy actually gets on the shelves.',
-  46: 'People keep asking why the UI looks so complicated.',
-  47: 'An illustrative look at advertising time',
-  48: 'Promos, graphics, and audio',
-  49: 'Networks referenced in this narrative',
   50: 'A shared view of our team’s work',
-  51: 'Making complexity understandable',
   52: 'Thank you',
 };
 
@@ -97,6 +98,7 @@ export function linearScreens(): LinearScreen[] {
   const screens: LinearScreen[] = [];
 
   for (let source = 4; source <= 52; source++) {
+    if (RETIRED_SOURCES.has(source)) continue;
     const n = source - 2;
     const title = sourceTitle(source);
     let kind: LinearKind = 'image';
@@ -111,29 +113,14 @@ export function linearScreens(): LinearScreen[] {
       adaptation =
         'Same Figma city as the previous slide. The original bills fall continuously over Disney. The dollar figure is not independently verified for publication.';
     }
-    if (source === 47) {
-      kind = 'math';
-      adaptation =
-        'Replaced 28 ads and 3 hours. 15 minutes of 30-second spots is 30 ads an hour. Five hours at that rate is 75 minutes of advertising. Framed as an illustration, not typical viewing.';
-    }
-    if (source === 49) {
-      kind = 'networks';
-      adaptation =
-        'Removed the duplicated Entertainment list. Did not treat “40+ networks” as a current operations claim. The names are the ones written in the source, presented as a narrative snapshot.';
-    }
     if (source === 50) {
       kind = 'narrative';
       adaptation =
-        'Replaced the five-item Impact list and its unverified outcome claims with one statement and three supporting points.';
-    }
-    if (source === 51) {
-      kind = 'closing';
-      adaptation =
-        'Replaced “Why this matter” and the outcome claims with the approved closing about communication value.';
+        'Shared-understanding close: one statement and three points, in the interview presentation’s layout.';
     }
     if (source === 52) {
       kind = 'thanks';
-      adaptation = 'Removed the email address from the closing slide.';
+      adaptation = 'Closing slide with website, email, and LinkedIn.';
     }
     if (source === 15) {
       adaptation = 'Original slide 15, kept in its narrative position.';
